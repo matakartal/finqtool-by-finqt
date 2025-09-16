@@ -1,0 +1,266 @@
+{
+  "common": {
+    "live": "LIVE",
+    "version": "v1.0",
+    "howToUse": "How to use?",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "search": "Search",
+    "searchSymbol": "Search symbol...",
+    "filter": "Filter",
+    "export": "Export",
+    "import": "Import",
+    "add": "Add",
+    "remove": "Remove",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info",
+    "returnHome": "Return to Home"
+  },
+  "tabs": {
+    "markets": "Markets",
+    "financial": "Financial",
+    "calculator": "Calculator",
+    "notes": "Notes",
+    "rules": "Rules"
+  },
+  "financial": {
+    "title": "Financial Tools",
+    "description": "Calculate position sizes, risk management, and profit targets",
+    "info": {
+      "title": "Financial Tools",
+      "description": "Our comprehensive suite of financial tools helps you make informed trading decisions with precision:",
+      "features": [
+        "Calculate optimal position sizes based on your account size and risk tolerance",
+        "Determine exact stop-loss and take-profit levels using our pip calculator",
+        "Analyze potential profit/loss scenarios with real-time calculations",
+        "Monitor risk-to-reward ratios as you adjust your trading parameters",
+        "Track drawdown and manage risk effectively",
+        "Calculate breakeven points for complex multi-position strategies"
+      ]
+    },
+    "calculator": {
+      "tabs": {
+        "pnl": "Profit/Loss",
+        "breakeven": "Breakeven",
+        "position": "Position Size",
+        "drawdown": "Drawdown"
+      },
+      "labels": {
+        "entryPrice": "Entry Price",
+        "exitPrice": "Exit Price",
+        "quantity": "Quantity",
+        "leverage": "Leverage",
+        "tradingFees": "Trading Fees (%)",
+        "includeFees": "Include fees in calculation",
+        "calculate": "Calculate",
+        "results": "Results",
+        "hideDetails": "Hide Details",
+        "showDetails": "Show Details",
+        "profitLoss": "Profit/Loss",
+        "roi": "ROI",
+        "effectiveCost": "Effective Cost",
+        "breakEvenPrice": "Break-even Price",
+        "positionType": "Position Type",
+        "defaultFeeRate": "Default Fee Rate (%)",
+        "entryPositions": "Entry Positions",
+        "addEntry": "Add Entry",
+        "entry": "Entry",
+        "price": "Price ($)",
+        "fee": "Fee (%)",
+        "calculateBreakeven": "Calculate Breakeven",
+        "totalQuantity": "Total Quantity",
+        "totalCost": "Total Cost",
+        "totalCredit": "Total Credit",
+        "accountSize": "Account Size ($)",
+        "riskPercentage": "Risk Percentage (%)",
+        "stopLoss": "Stop Loss Price ($)",
+        "positionSize": "Position Size",
+        "riskAmount": "Risk Amount",
+        "liquidationPrice": "Liquidation Price",
+        "unitsToTrade": "Units to trade",
+        "amountAtRisk": "Amount at risk",
+        "approximate": "Approximate",
+        "peakValue": "Peak Value ($)",
+        "currentValue": "Current Value ($)",
+        "initialInvestment": "Initial Investment ($, optional)",
+        "drawdownAmount": "Drawdown Amount",
+        "drawdownPercentage": "Drawdown Percentage",
+        "totalReturn": "Total Return"
+      },
+      "messages": {
+        "incompleteInfo": "Please fill in all required fields",
+        "calculationComplete": "Calculation Complete",
+        "missingData": "Missing Data",
+        "missingFields": "Please fill in account size, entry price, and stop loss",
+        "positionSizeCalculated": "Position Size Calculated",
+        "missingValues": "Please enter both peak and current values",
+        "drawdownAnalysis": "Drawdown Analysis",
+        "breakEvenInfo": "Breakeven calculation includes entry costs and fees for all positions. Exit fees are also factored in.",
+        "shortBreakEvenInfo": "For short positions, the breakeven is the price at which you need to buy back to neither profit nor lose, including all fees.",
+        "drawdownInfo": "Drawdown measures the decline from a peak to a trough in an investment's value. It indicates potential risk and volatility."
+      }
+    }
+  },
+  "calculator": {
+    "title": "Basic Calculator",
+    "description": "Simple calculations for quick trading decisions",
+    "info": {
+      "title": "Calculator",
+      "description": "A powerful yet simple calculator designed specifically for traders:",
+      "features": [
+        "Perform quick arithmetic operations with a trading-focused interface",
+        "Calculate percentage changes and price movements instantly",
+        "Use decimal precision for accurate trading calculations",
+        "Clear function to start new calculations without losing your train of thought",
+        "Keyboard shortcuts for efficient operation",
+        "Dark mode support for comfortable use in any environment"
+      ]
+    }
+  },
+  "markets": {
+    "title": "Markets",
+    "description": "Real-time market data and analysis",
+    "info": {
+      "title": "Markets",
+      "description": "Stay ahead of the market with our comprehensive market overview:",
+      "features": [
+        "Monitor real-time price movements across major cryptocurrency exchanges",
+        "Compare trading volumes and market depth for informed decisions",
+        "Track 24-hour price changes and identify market trends",
+        "View funding rates for perpetual futures markets",
+        "Save favorite pairs for quick access",
+        "Toggle auto-refresh to stay updated with market movements",
+        "Sort and filter markets by various metrics"
+      ]
+    }
+  },
+  "notes": {
+    "title": "Notes",
+    "description": "Keep track of your trading ideas and strategies",
+    "newNote": "New Note",
+    "editNote": "Edit Note",
+    "deleteNote": "Delete Note",
+    "searchNotes": "Search notes...",
+    "noNotes": "No notes found",
+    "categories": {
+      "all": "All Categories",
+      "trade": "Trade",
+      "analysis": "Analysis",
+      "strategy": "Strategy",
+      "other": "Other"
+    },
+    "templates": {
+      "title": "Templates",
+      "save": "Save as Template",
+      "load": "Load Template",
+      "delete": "Delete Template",
+      "showTemplates": "Show Templates",
+      "hideTemplates": "Hide Templates",
+      "noTemplates": "No templates found"
+    },
+    "placeholders": {
+      "title": "Enter note title...",
+      "content": "Enter your note here..."
+    },
+    "info": {
+      "title": "Notes",
+      "description": "Your personal trading journal and strategy notebook:",
+      "features": [
+        "Create and organize trading notes with customizable categories",
+        "Use pre-made templates for trade setup, analysis, and review",
+        "Quick-add notes with the floating action button",
+        "Export your notes as text files for backup or analysis",
+        "Auto-save functionality to never lose your thoughts",
+        "Track last update times for each note",
+        "Search and filter notes for easy access"
+      ]
+    }
+  },
+  "rules": {
+    "title": "Rules",
+    "description": "Trading rules and guidelines",
+    "addRule": "Add a new rule...",
+    "emptyRuleError": "Please enter a rule before adding",
+    "allChecked": "All rules checked!",
+    "info": {
+      "title": "Rules",
+      "description": "Maintain your trading discipline with our comprehensive rule management system:",
+      "features": [
+        "Create and manage your personal trading rules checklist",
+        "Check off each rule before entering a trade",
+        "Add custom rules specific to your trading strategy",
+        "Get visual confirmation when all rules are checked",
+        "Rules persist between sessions to maintain consistency",
+        "Categorize rules by trading style or market conditions",
+        "Track rule compliance over time"
+      ]
+    }
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "profile": "Profile",
+    "changePassword": "Change Password",
+    "subscription": "Subscription",
+    "notSignedIn": "Not signed in"
+  },
+  "settings": {
+    "autoRefresh": "Auto Refresh",
+    "theme": {
+      "light": "Light Mode",
+      "dark": "Dark Mode"
+    },
+    "language": "Language"
+  },
+  "about": {
+    "title": "About",
+    "description": "finqtool is a trading tools extension for cryptocurrency traders. Built by finqt."
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Questions, feedback or support? Email us at:",
+    "email": "info@finqt.com"
+  },
+  "data": {
+    "deleteAll": "Delete All Personal Data",
+    "deleteSuccess": "All personal data deleted",
+    "deleteMessage": "Your notes, favorites, and local data have been cleared."
+  },
+  "pro": {
+    "title": "Upgrade to PRO",
+    "description": "Unlock all features and enjoy an ad-free experience:",
+    "features": [
+      "Favourite coins in screener",
+      "Up to 10 notes",
+      "Trading rules feature",
+      "Priority access to new features",
+      "No ads",
+      "Access to all advanced calculators"
+    ],
+    "price": "3$ / Month",
+    "cancel": "Cancel anytime",
+    "upgrade": "Upgrade Now",
+    "message": "A single mistake can cost you far more than PRO. Invest in your edge for less than a coffee each month.",
+    "ad": {
+      "label": "advertisement",
+      "title": "Ad Banner: ",
+      "message": "This is where your ad will appear. Upgrade to Pro to remove ads!"
+    }
+  },
+  "loading": "Loading...",
+  "notFound": {
+    "title": "404 - Page Not Found",
+    "description": "The page you are looking for does not exist."
+  }
+} 

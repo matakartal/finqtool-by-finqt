@@ -1,0 +1,20 @@
+
+/* Core styling for app container */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+  contain: layout style; /* CSS containment for better performance */
+}
+
+/* Only essential animations */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade {
+  animation: fade-in 0.3s ease-out;
+  will-change: opacity; /* Hardware acceleration hint */
+}

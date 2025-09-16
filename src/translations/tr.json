@@ -1,0 +1,267 @@
+{
+  "common": {
+    "live": "CANLI",
+    "version": "v1.0",
+    "howToUse": "Nasıl Kullanılır?",
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "create": "Oluştur",
+    "search": "Ara",
+    "searchSymbol": "Sembol Ara",
+    "filter": "Filtrele",
+    "export": "Dışa Aktar",
+    "import": "İçe Aktar",
+    "add": "Ekle",
+    "remove": "Kaldır",
+    "close": "Kapat",
+    "confirm": "Onayla",
+    "back": "Geri",
+    "next": "İleri",
+    "done": "Tamam",
+    "error": "Hata",
+    "success": "Başarılı",
+    "warning": "Uyarı",
+    "info": "Bilgi",
+    "returnHome": "Ana Sayfaya Dön"
+  },
+  "tabs": {
+    "markets": "Piyasalar",
+    "financial": "Araçlar",
+    "calculator": "Hesap Makinesi",
+    "notes": "Notlar",
+    "rules": "Kurallar"
+  },
+  "financial": {
+    "title": "Finansal Araçlar",
+    "description": "Pozisyon büyüklükleri, risk yönetimi ve kar hedefleri hesaplayın",
+    "info": {
+      "title": "Finansal Araçlar",
+      "description": "Kapsamlı finansal araçlar paketimiz, hassas ve bilinçli alım satım kararları almanıza yardımcı olur:",
+      "features": [
+        "Hesap büyüklüğünüze ve risk toleransınıza göre optimal pozisyon büyüklüklerini hesaplayın",
+        "Pip hesaplayıcımızı kullanarak kesin stop-loss ve take-profit seviyelerini belirleyin",
+        "Gerçek zamanlı hesaplamalarla potansiyel kar/zarar senaryolarını analiz edin",
+        "Alım satım parametrelerinizi ayarlarken risk-getiri oranlarını izleyin",
+        "Düşüşleri takip edin ve riski etkin bir şekilde yönetin",
+        "Karmaşık çoklu pozisyon stratejileri için başabaş noktalarını hesaplayın"
+      ]
+    },
+    "calculator": {
+      "tabs": {
+        "pnl": "Kar/Zarar",
+        "breakeven": "Başabaş",
+        "position": "Pozisyon Büyüklüğü",
+        "drawdown": "Düşüş"
+      },
+      "labels": {
+        "entryPrice": "Giriş Fiyatı",
+        "exitPrice": "Çıkış Fiyatı",
+        "quantity": "Miktar",
+        "leverage": "Kaldıraç",
+        "tradingFees": "İşlem Ücretleri (%)",
+        "includeFees": "Ücretleri hesaplamaya dahil et",
+        "calculate": "Hesapla",
+        "results": "Sonuçlar",
+        "hideDetails": "Detayları Gizle",
+        "showDetails": "Detayları Göster",
+        "profitLoss": "Kar/Zarar",
+        "roi": "Yatırım Getirisi",
+        "effectiveCost": "Efektif Maliyet",
+        "breakEvenPrice": "Başabaş Fiyatı",
+        "positionType": "Pozisyon Türü",
+        "defaultFeeRate": "Varsayılan Ücret Oranı (%)",
+        "entryPositions": "Giriş Pozisyonları",
+        "addEntry": "Giriş Ekle",
+        "entry": "Giriş",
+        "price": "Fiyat ($)",
+        "fee": "Ücret (%)",
+        "calculateBreakeven": "Başabaş Hesapla",
+        "totalQuantity": "Toplam Miktar",
+        "totalCost": "Toplam Maliyet",
+        "totalCredit": "Toplam Kredi",
+        "accountSize": "Hesap Büyüklüğü ($)",
+        "riskPercentage": "Risk Yüzdesi (%)",
+        "stopLoss": "Stop Loss Fiyatı ($)",
+        "positionSize": "Pozisyon Büyüklüğü",
+        "riskAmount": "Risk Miktarı",
+        "liquidationPrice": "Tasfiye Fiyatı",
+        "unitsToTrade": "İşlem birimleri",
+        "amountAtRisk": "Risk altındaki miktar",
+        "approximate": "Yaklaşık",
+        "peakValue": "Zirve Değeri ($)",
+        "currentValue": "Mevcut Değer ($)",
+        "initialInvestment": "Başlangıç Yatırımı ($, opsiyonel)",
+        "drawdownAmount": "Düşüş Miktarı",
+        "drawdownPercentage": "Düşüş Yüzdesi",
+        "totalReturn": "Toplam Getiri"
+      },
+      "messages": {
+        "incompleteInfo": "Lütfen tüm gerekli alanları doldurun",
+        "calculationComplete": "Hesaplama Tamamlandı",
+        "missingData": "Eksik Veri",
+        "missingFields": "Lütfen hesap büyüklüğü, giriş fiyatı ve stop loss'u doldurun",
+        "positionSizeCalculated": "Pozisyon Büyüklüğü Hesaplandı",
+        "missingValues": "Lütfen hem zirve hem de mevcut değerleri girin",
+        "drawdownAnalysis": "Düşüş Analizi",
+        "breakEvenInfo": "Başabaş hesaplaması tüm pozisyonlar için giriş maliyetlerini ve ücretleri içerir. Çıkış ücretleri de hesaba katılır.",
+        "shortBreakEvenInfo": "Short pozisyonlar için, başabaş fiyatı, tüm ücretler dahil olmak üzere ne kar ne zarar etmeden geri almanız gereken fiyattır.",
+        "drawdownInfo": "Düşüş, bir yatırımın değerindeki zirveden dibe düşüşü ölçer. Potansiyel riski ve oynaklığı gösterir."
+      }
+    }
+  },
+  "calculator": {
+    "title": "Temel Hesap Makinesi",
+    "description": "Hızlı alım satım kararları için basit hesaplamalar",
+    "info": {
+      "title": "Hesap Makinesi",
+      "description": "Tüccarlar için özel olarak tasarlanmış güçlü ama basit bir hesap makinesi:",
+      "features": [
+        "Alım satım odaklı arayüzle hızlı aritmetik işlemler yapın",
+        "Yüzde değişimleri ve fiyat hareketlerini anında hesaplayın",
+        "Hassas alım satım hesaplamaları için ondalık hassasiyet kullanın",
+        "Düşünce akışınızı kaybetmeden yeni hesaplamalara başlamak için temizleme fonksiyonu",
+        "Verimli kullanım için klavye kısayolları",
+        "Her ortamda rahat kullanım için karanlık mod desteği"
+      ]
+    }
+  },
+  "markets": {
+    "title": "Piyasalar",
+    "description": "Gerçek zamanlı piyasa verileri ve analizi",
+    "info": {
+      "title": "Piyasalar",
+      "description": "Kapsamlı piyasa genel bakışımızla piyasanın önünde olun:",
+      "features": [
+        "Büyük kripto para borsalarındaki gerçek zamanlı fiyat hareketlerini izleyin",
+        "Bilinçli kararlar için işlem hacimlerini ve piyasa derinliğini karşılaştırın",
+        "24 saatlik fiyat değişimlerini takip edin ve piyasa trendlerini belirleyin",
+        "Sürekli vadeli işlem piyasaları için fonlama oranlarını görüntüleyin",
+        "Hızlı erişim için favori çiftleri kaydedin",
+        "Piyasa hareketleriyle güncel kalmak için otomatik yenilemeyi açın",
+        "Çeşitli metriklerle piyasaları sıralayın ve filtreleyin"
+      ]
+    }
+  },
+  "notes": {
+    "title": "Notlar",
+    "description": "Alım satım fikirlerinizi ve stratejilerinizi takip edin",
+    "newNote": "Yeni Not",
+    "editNote": "Notu Düzenle",
+    "deleteNote": "Notu Sil",
+    "clickAddNote": "Not eklemek için tıklayın",
+    "searchNotes": "Notlarda ara...",
+    "noNotes": "Not bulunamadı",
+    "categories": {
+      "all": "Tüm Kategoriler",
+      "trade": "İşlem",
+      "analysis": "Analiz",
+      "strategy": "Strateji",
+      "other": "Diğer"
+    },
+    "templates": {
+      "title": "Şablonlar",
+      "save": "Şablon Olarak Kaydet",
+      "load": "Şablon Yükle",
+      "delete": "Şablonu Sil",
+      "showTemplates": "Şablonları Göster",
+      "hideTemplates": "Şablonları Gizle",
+      "noTemplates": "Şablon bulunamadı"
+    },
+    "placeholders": {
+      "title": "Not başlığı girin...",
+      "content": "Notunuzu buraya yazın..."
+    },
+    "info": {
+      "title": "Notlar",
+      "description": "Kişisel alım satım günlüğünüz ve strateji defteriniz:",
+      "features": [
+        "Özelleştirilebilir kategorilerle alım satım notları oluşturun ve düzenleyin",
+        "İşlem kurulumu, analiz ve değerlendirme için hazır şablonları kullanın",
+        "Yüzen eylem düğmesiyle hızlı not ekleyin",
+        "Yedekleme veya analiz için notlarınızı metin dosyaları olarak dışa aktarın",
+        "Düşüncelerinizi asla kaybetmemek için otomatik kaydetme işlevi",
+        "Her not için son güncelleme zamanlarını takip edin",
+        "Kolay erişim için notları arayın ve filtreleyin"
+      ]
+    }
+  },
+  "rules": {
+    "title": "Kurallar",
+    "description": "Alım satım kuralları ve yönergeleri",
+    "addRule": "Yeni kural ekleyin...",
+    "emptyRuleError": "Lütfen eklemeden önce bir kural girin",
+    "allChecked": "Tüm kurallar kontrol edildi!",
+    "info": {
+      "title": "Kurallar",
+      "description": "Kapsamlı kural yönetim sistemimizle alım satım disiplininizi koruyun:",
+      "features": [
+        "Kişisel alım satım kuralları kontrol listenizi oluşturun ve yönetin",
+        "İşleme girmeden önce her kuralı kontrol edin",
+        "Alım satım stratejinize özel özel kurallar ekleyin",
+        "Tüm kurallar işaretlendiğinde görsel onay alın",
+        "Tutarlılığı korumak için kurallar oturumlar arasında kalıcıdır",
+        "Kuralları alım satım stiline veya piyasa koşullarına göre kategorize edin",
+        "Zaman içinde kural uyumunu takip edin"
+      ]
+    }
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "signup": "Kayıt Ol",
+    "logout": "Çıkış Yap",
+    "profile": "Profil",
+    "changePassword": "Şifre Değiştir",
+    "subscription": "Abonelik",
+    "notSignedIn": "Giriş yapılmadı"
+  },
+  "settings": {
+    "autoRefresh": "Otomatik Yenile",
+    "theme": {
+      "light": "Açık Tema",
+      "dark": "Koyu Tema"
+    },
+    "language": "Dil"
+  },
+  "about": {
+    "title": "Hakkında",
+    "description": "finqtool, kripto para tüccarları için bir alım satım araçları uzantısıdır. finqt tarafından geliştirilmiştir."
+  },
+  "contact": {
+    "title": "İletişim",
+    "description": "Sorular, geri bildirimler veya reklamlar için bize e-posta gönderin:",
+    "email": "info@finqt.com"
+  },
+  "data": {
+    "deleteAll": "Tüm Kişisel Verileri Sil",
+    "deleteSuccess": "Tüm kişisel veriler silindi",
+    "deleteMessage": "Notlarınız, favorileriniz ve yerel verileriniz temizlendi."
+  },
+  "pro": {
+    "title": "PRO'ya Yükselt",
+    "description": "Tüm özellikleri açın ve reklamsız bir deneyim yaşayın:",
+    "features": [
+      "Ekranda favori coinler",
+      "10'a kadar not",
+      "Alım satım kuralları özelliği",
+      "Yeni özelliklere öncelikli erişim",
+      "Reklamsız deneyim",
+      "Tüm gelişmiş hesaplayıcılara erişim"
+    ],
+    "price": "3$ / Ay",
+    "cancel": "İstediğiniz zaman iptal edin",
+    "upgrade": "Şimdi Yükselt",
+    "message": "Tek bir hata, PRO'dan çok daha fazlasına mal olabilir. Bir fincan kahveden daha azına kenarınıza yatırım yapın.",
+    "ad": {
+      "label": "reklam",
+      "title": "Reklam Alanı: ",
+      "message": "Reklamınız burada görünecek. Reklamları kaldırmak için Pro'ya yükseltin!"
+    }
+  },
+  "loading": "Yükleniyor...",
+  "notFound": {
+    "title": "404 - Sayfa Bulunamadı",
+    "description": "Aradığınız sayfa mevcut değil."
+  }
+} 
