@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer: React.FC = () => {
     return (
-        <footer className="sticky bottom-0 bg-gradient-to-r from-black to-zinc-900 backdrop-blur-lg border-t border-zinc-800 px-4 py-2 flex justify-between items-center text-white z-50">
+        <footer className="sticky bottom-0 bg-black/30 backdrop-blur-lg border-t border-black/20 px-4 py-2 flex justify-between items-center text-white z-50">
             <div className="text-sm font-medium">
                 Built by finqt
             </div>
