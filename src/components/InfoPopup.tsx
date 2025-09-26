@@ -26,25 +26,22 @@ const InfoPopup: React.FC<InfoPopupProps> = ({ open, onClose, title, children, i
     }
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-3">
         <div>
-          <p className="text-sm text-muted-foreground leading-relaxed">
+          <p className="text-sm text-foreground leading-relaxed mb-2">
             {infoData.description}
           </p>
-        </div>
-
-        {infoData.features && Array.isArray(infoData.features) && infoData.features.length > 0 && (
-          <div>
-            <ul className="space-y-1">
+          {infoData.features && Array.isArray(infoData.features) && infoData.features.length > 0 && (
+            <ul className="space-y-1 ml-1">
               {infoData.features.map((feature: string, index: number) => (
-                <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
+                <li key={index} className="text-sm text-foreground flex items-start gap-2">
                   <span className="text-primary text-xs mt-0.5">•</span>
                   <span>{feature}</span>
                 </li>
               ))}
             </ul>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     );
   };
@@ -52,10 +49,10 @@ const InfoPopup: React.FC<InfoPopupProps> = ({ open, onClose, title, children, i
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
-        <DialogHeader className="text-left pb-2">
-          <DialogTitle className="text-xl font-bold text-left">{title}</DialogTitle>
+        <DialogHeader className="text-left pb-3">
+          <DialogTitle className="text-xl font-bold text-foreground text-left">{title}</DialogTitle>
         </DialogHeader>
-        <div className="px-1 pb-1">
+        <div className="px-1">
           {infoKey ? renderStructuredInfo(infoKey) : children}
         </div>
       </DialogContent>
