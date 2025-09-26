@@ -143,8 +143,8 @@ const NotificationDropdown: React.FC = () => {
           )}
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[320px] p-0">
-        <div className="flex items-center justify-between border-b border-zinc-200 bg-white/80 px-4 pb-2 pt-3 dark:border-zinc-800 dark:bg-zinc-900/80 backdrop-blur-sm">
+      <DropdownMenuContent align="end" className="w-[320px] p-0 bg-white/10 dark:bg-black/20 backdrop-blur-md border-white/20 dark:border-zinc-800/50 rounded-xl">
+        <div className="flex items-center justify-between border-b border-white/20 dark:border-zinc-800/50 bg-white/5 dark:bg-black/10 backdrop-blur-sm px-4 pb-2 pt-3">
           <DropdownMenuLabel className="p-0 text-base font-semibold tracking-tight">
             Notifications
           </DropdownMenuLabel>
@@ -165,7 +165,7 @@ const NotificationDropdown: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="max-h-[420px] overflow-y-auto py-1">
+        <div className="max-h-[420px] overflow-y-auto py-0.5">
           {notifications.length === 0 ? (
             <div className="px-4 py-8 text-center text-[13px] font-medium text-muted-foreground">
               No notifications
@@ -202,9 +202,9 @@ const NotificationDropdown: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <DropdownMenuItem 
-                  key={notif.id} 
-                  className={`flex cursor-pointer flex-col items-start gap-0.5 px-4 py-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 ${!notif.read ? 'bg-zinc-50 dark:bg-zinc-900' : ''}`}
+                <DropdownMenuItem
+                  key={notif.id}
+                  className={`flex cursor-pointer flex-col items-start gap-0.5 px-4 py-2.5 hover:bg-white/15 dark:hover:bg-black/25 ${!notif.read ? 'bg-white/10 dark:bg-black/20' : ''}`}
                   onClick={() => handleNotificationClick(notif.id)}
                 >
                   <span className="text-[13px] font-semibold tracking-tight">
