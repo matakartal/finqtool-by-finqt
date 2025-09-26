@@ -16,31 +16,31 @@ const FinancialCalculator: React.FC = () => {
   const [calculatorType, setCalculatorType] = useState('pnl');
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-1 space-y-3 animate-fade-in">
+    <div className="space-y-3 animate-fade-in">
       <Card className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
-        <div className="px-3 sm:px-4 pt-3">
+        <div className="p-0">
           <Tabs defaultValue="pnl" className="w-full">
-            <TabsList className="w-full grid grid-cols-4 mb-3 bg-neutral-100 dark:bg-neutral-800/50 p-1 rounded-lg">
-              <TabsTrigger 
-                value="pnl" 
+            <TabsList className="w-[95%] mx-auto grid grid-cols-4 px-4 mt-4 mb-2 bg-neutral-100 dark:bg-neutral-800/50 p-1 rounded-lg">
+              <TabsTrigger
+                value="pnl"
                 className="text-xs sm:text-sm transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm data-[state=active]:text-neutral-900 dark:data-[state=active]:text-neutral-100"
               >
                 {t('financial.calculator.tabs.pnl')}
               </TabsTrigger>
-              <TabsTrigger 
-                value="breakeven" 
+              <TabsTrigger
+                value="breakeven"
                 className="text-xs sm:text-sm transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm data-[state=active]:text-neutral-900 dark:data-[state=active]:text-neutral-100"
               >
                 {t('financial.calculator.tabs.breakeven')}
               </TabsTrigger>
-              <TabsTrigger 
-                value="position" 
+              <TabsTrigger
+                value="position"
                 className="text-xs sm:text-sm transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm data-[state=active]:text-neutral-900 dark:data-[state=active]:text-neutral-100"
               >
                 {t('financial.calculator.tabs.position')}
               </TabsTrigger>
-              <TabsTrigger 
-                value="drawdown" 
+              <TabsTrigger
+                value="drawdown"
                 className="text-xs sm:text-sm transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm data-[state=active]:text-neutral-900 dark:data-[state=active]:text-neutral-100"
               >
                 {t('financial.calculator.tabs.drawdown')}
@@ -75,15 +75,16 @@ const resultLabelStyles = "text-sm text-neutral-600 dark:text-neutral-400";
 const resultValueStyles = "text-xl font-bold text-neutral-900 dark:text-neutral-100";
 const resultSubtextStyles = "text-xs mt-1 text-neutral-500 dark:text-neutral-400";
 
-// Update the input styles
-const inputStyles = "bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 focus:border-primary dark:focus:border-primary";
-const labelStyles = "text-sm font-medium text-neutral-700 dark:text-neutral-300";
+// Update the input styles - standardized for consistency
+const inputStyles = "w-full h-11 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:border-primary dark:focus:border-primary rounded-md px-3 text-sm";
+const currencyInputStyles = "w-full h-11 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:border-primary dark:focus:border-primary rounded-md pl-8 pr-3 text-sm";
+const labelStyles = "block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2";
 
 // Update the select styles
-const selectStyles = "bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 focus:border-primary dark:focus:border-primary";
+const selectStyles = "w-full h-11 bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 focus:border-primary dark:focus:border-primary rounded-md";
 
 // Update the button styles
-const buttonStyles = "w-full mt-1 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all hover:scale-[1.01] shadow-sm";
+const buttonStyles = "w-full h-11 mt-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all hover:scale-[1.01] shadow-sm font-medium";
 
 // Update the switch styles
 const switchStyles = "data-[state=checked]:bg-primary";
@@ -160,98 +161,112 @@ const ProfitLossCalculator: React.FC = () => {
   const togglePosition = () => {
     setPosition(position === 'long' ? 'short' : 'long');
   };
-  return <CardContent className="pb-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-        <div>
-          <Label htmlFor="entry-price" className={labelStyles}>{t('financial.calculator.labels.entryPrice')}</Label>
-          <div className="relative">
-            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
-            <Input 
-              id="entry-price" 
-              type="number" 
-              placeholder="0.00" 
-              className={`pl-6 ${inputStyles}`}
-              value={entryPrice} 
-              onChange={e => setEntryPrice(e.target.value)} 
-            />
+  return <CardContent className="px-4 py-4">
+      <div className="space-y-4">
+        {/* First row - Entry and Exit prices */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="entry-price" className={labelStyles}>{t('financial.calculator.labels.entryPrice')}</Label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">$</span>
+              <Input
+                id="entry-price"
+                type="number"
+                placeholder="0.00"
+                className={currencyInputStyles}
+                value={entryPrice}
+                onChange={e => setEntryPrice(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="exit-price" className={labelStyles}>{t('financial.calculator.labels.exitPrice')}</Label>
+            <div className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">$</span>
+              <Input
+                id="exit-price"
+                type="number"
+                placeholder="0.00"
+                className={currencyInputStyles}
+                value={exitPrice}
+                onChange={e => setExitPrice(e.target.value)}
+              />
+            </div>
           </div>
         </div>
-        
-        <div>
-          <Label htmlFor="exit-price" className={labelStyles}>{t('financial.calculator.labels.exitPrice')}</Label>
-          <div className="relative">
-            <span className="absolute left-2 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
-            <Input 
-              id="exit-price" 
-              type="number" 
-              placeholder="0.00" 
-              className={`pl-6 ${inputStyles}`}
-              value={exitPrice} 
-              onChange={e => setExitPrice(e.target.value)} 
+
+        {/* Second row - Quantity and Leverage */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="quantity" className={labelStyles}>{t('financial.calculator.labels.quantity')}</Label>
+            <Input
+              id="quantity"
+              type="number"
+              placeholder="0.00"
+              className={inputStyles}
+              value={positionSize}
+              onChange={e => setPositionSize(e.target.value)}
             />
           </div>
+
+          <div>
+            <Label htmlFor="leverage" className={labelStyles}>{t('financial.calculator.labels.leverage')}</Label>
+            <Select value={leverage} onValueChange={setLeverage}>
+              <SelectTrigger className={selectStyles}>
+                <SelectValue placeholder={t('financial.calculator.labels.leverage')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="1">1x</SelectItem>
+                <SelectItem value="2">2x</SelectItem>
+                <SelectItem value="3">3x</SelectItem>
+                <SelectItem value="5">5x</SelectItem>
+                <SelectItem value="10">10x</SelectItem>
+                <SelectItem value="20">20x</SelectItem>
+                <SelectItem value="50">50x</SelectItem>
+                <SelectItem value="100">100x</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
-        
-        <div>
-          <Label htmlFor="quantity" className={labelStyles}>{t('financial.calculator.labels.quantity')}</Label>
-          <Input 
-            id="quantity" 
-            type="number" 
-            placeholder="0.00" 
-            className={inputStyles}
-            value={positionSize} 
-            onChange={e => setPositionSize(e.target.value)} 
-          />
+
+        {/* Third row - Fee percentage and Include Fees switch */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="fee-percentage" className={labelStyles}>{t('financial.calculator.labels.tradingFees')}</Label>
+            <Input
+              id="fee-percentage"
+              type="number"
+              placeholder="0.1"
+              className={inputStyles}
+              value={fee}
+              onChange={e => setFee(e.target.value)}
+            />
+          </div>
+
+          <div className="flex items-end">
+            <div className="flex items-center space-x-3">
+              <Switch
+                id="include-fees"
+                checked={includeFees}
+                onCheckedChange={setIncludeFees}
+                className={switchStyles}
+              />
+              <Label htmlFor="include-fees" className="text-sm font-medium text-neutral-700 dark:text-neutral-300 cursor-pointer">
+                {t('financial.calculator.labels.includeFees')}
+              </Label>
+            </div>
+          </div>
         </div>
-        
-        <div>
-          <Label htmlFor="leverage" className={labelStyles}>{t('financial.calculator.labels.leverage')}</Label>
-          <Select value={leverage} onValueChange={setLeverage}>
-            <SelectTrigger id="leverage" className={selectStyles}>
-              <SelectValue placeholder={t('financial.calculator.labels.leverage')} />
-            </SelectTrigger>
-            <SelectContent className={selectStyles}>
-              <SelectItem value="1">1x</SelectItem>
-              <SelectItem value="2">2x</SelectItem>
-              <SelectItem value="3">3x</SelectItem>
-              <SelectItem value="5">5x</SelectItem>
-              <SelectItem value="10">10x</SelectItem>
-              <SelectItem value="20">20x</SelectItem>
-              <SelectItem value="50">50x</SelectItem>
-              <SelectItem value="100">100x</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        
-        <div>
-          <Label htmlFor="fee-percentage" className={labelStyles}>{t('financial.calculator.labels.tradingFees')}</Label>
-          <Input 
-            id="fee-percentage" 
-            type="number" 
-            placeholder="0.1" 
-            className={inputStyles}
-            value={fee} 
-            onChange={e => setFee(e.target.value)} 
-          />
-        </div>
-        
-        <div className="flex items-center space-x-2 mt-6">
-          <Switch 
-            id="include-fees" 
-            checked={includeFees} 
-            onCheckedChange={setIncludeFees}
-            className={switchStyles}
-          />
-          <Label htmlFor="include-fees" className={labelStyles}>{t('financial.calculator.labels.includeFees')}</Label>
-        </div>
+
+        {/* Calculate button */}
+        <Button
+          className={buttonStyles}
+          onClick={calculateResults}
+        >
+          {t('financial.calculator.labels.calculate')}
+        </Button>
       </div>
-      
-      <Button
-        className={buttonStyles}
-        onClick={calculateResults}
-      >
-        {t('financial.calculator.labels.calculate')}
-      </Button>
       
       {result && (
         <div className={resultCardStyles}>
@@ -400,127 +415,132 @@ const BreakevenCalculator: React.FC = () => {
   };
 
   return (
-    <CardContent className="pb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-        <div>
-          <Label htmlFor="position-type" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.positionType')}
-          </Label>
-          <Select value={position} onValueChange={setPosition}>
-            <SelectTrigger id="position-type" className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700">
-              <SelectValue placeholder={t('financial.calculator.labels.positionType')} />
-            </SelectTrigger>
-            <SelectContent className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700">
-              <SelectItem value="long">Long</SelectItem>
-              <SelectItem value="short">Short</SelectItem>
-            </SelectContent>
-          </Select>
+    <CardContent className="px-4 py-4">
+      <div className="space-y-4">
+        {/* Position type and default fee */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="position-type" className={labelStyles}>
+              {t('financial.calculator.labels.positionType')}
+            </Label>
+            <Select value={position} onValueChange={setPosition}>
+              <SelectTrigger className={selectStyles}>
+                <SelectValue placeholder={t('financial.calculator.labels.positionType')} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="long">Long</SelectItem>
+                <SelectItem value="short">Short</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="default-fee" className={labelStyles}>
+              {t('financial.calculator.labels.defaultFeeRate')}
+            </Label>
+            <Input
+              id="default-fee"
+              type="number"
+              placeholder="0.1"
+              className={inputStyles}
+              value={fees}
+              onChange={(e) => setFees(e.target.value)}
+            />
+          </div>
         </div>
 
-        <div>
-          <Label htmlFor="default-fee" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.defaultFeeRate')}
-          </Label>
-          <Input
-            id="default-fee"
-            type="number"
-            placeholder="0.1"
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"
-            value={fees}
-            onChange={(e) => setFees(e.target.value)}
-          />
-        </div>
-      </div>
+        {/* Entry positions section */}
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              {t('financial.calculator.labels.entryPositions')}
+            </h3>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={addEntry}
+              className="flex items-center text-xs h-8 px-3 bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-700"
+            >
+              <PlusCircle size={14} className="mr-1" />
+              {t('financial.calculator.labels.addEntry')}
+            </Button>
+          </div>
 
-      <div className="space-y-3 mt-3">
-        <div className="flex justify-between items-center">
-          <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.entryPositions')}
-          </h3>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={addEntry}
-            className="flex items-center text-xs bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"
-          >
-            <PlusCircle size={14} className="mr-1" />
-            {t('financial.calculator.labels.addEntry')}
-          </Button>
-        </div>
-
-        {entries.map((entry, index) => (
-          <div key={index} className="p-3 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-white dark:bg-neutral-800">
-            <div className="flex justify-between items-center mb-2">
-              <h4 className="text-xs font-medium text-neutral-700 dark:text-neutral-300">
-                {t('financial.calculator.labels.entry')} #{index + 1}
-              </h4>
-              {entries.length > 1 && (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeEntry(index)}
-                  className="h-6 w-6 p-0 text-neutral-400 hover:text-red-500"
-                >
-                  <Trash size={14} />
-                </Button>
-              )}
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-              <div>
-                <Label htmlFor={`entry-price-${index}`} className="text-xs text-neutral-700 dark:text-neutral-300">
-                  {t('financial.calculator.labels.price')}
-                </Label>
-                <div className="relative">
-                  <span className="absolute left-2 top-1/2 -translate-y-1/2 text-neutral-400">$</span>
+          {entries.map((entry, index) => (
+            <div key={index} className="p-4 border border-neutral-200 dark:border-neutral-700 rounded-lg bg-neutral-50 dark:bg-neutral-800/50">
+              <div className="flex justify-between items-center mb-3">
+                <h4 className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  {t('financial.calculator.labels.entry')} #{index + 1}
+                </h4>
+                {entries.length > 1 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeEntry(index)}
+                    className="h-6 w-6 p-0 text-neutral-400 hover:text-red-500"
+                  >
+                    <Trash size={14} />
+                  </Button>
+                )}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div>
+                  <Label htmlFor={`entry-price-${index}`} className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                    {t('financial.calculator.labels.price')}
+                  </Label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 text-sm">$</span>
+                    <Input
+                      id={`entry-price-${index}`}
+                      type="number"
+                      placeholder="0.00"
+                      className={currencyInputStyles}
+                      value={entry.price}
+                      onChange={(e) => updateEntry(index, 'price', e.target.value)}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor={`entry-quantity-${index}`} className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                    {t('financial.calculator.labels.quantity')}
+                  </Label>
                   <Input
-                    id={`entry-price-${index}`}
+                    id={`entry-quantity-${index}`}
                     type="number"
                     placeholder="0.00"
-                    className="pl-6 bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"
-                    value={entry.price}
-                    onChange={(e) => updateEntry(index, 'price', e.target.value)}
+                    className={inputStyles}
+                    value={entry.quantity}
+                    onChange={(e) => updateEntry(index, 'quantity', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor={`entry-fee-${index}`} className="text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
+                    {t('financial.calculator.labels.fee')}
+                  </Label>
+                  <Input
+                    id={`entry-fee-${index}`}
+                    type="number"
+                    placeholder="0.1"
+                    className={inputStyles}
+                    value={entry.fee}
+                    onChange={(e) => updateEntry(index, 'fee', e.target.value)}
                   />
                 </div>
               </div>
-              <div>
-                <Label htmlFor={`entry-quantity-${index}`} className="text-xs text-neutral-700 dark:text-neutral-300">
-                  {t('financial.calculator.labels.quantity')}
-                </Label>
-                <Input
-                  id={`entry-quantity-${index}`}
-                  type="number"
-                  placeholder="0.00"
-                  className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"
-                  value={entry.quantity}
-                  onChange={(e) => updateEntry(index, 'quantity', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor={`entry-fee-${index}`} className="text-xs text-neutral-700 dark:text-neutral-300">
-                  {t('financial.calculator.labels.fee')}
-                </Label>
-                <Input
-                  id={`entry-fee-${index}`}
-                  type="number"
-                  placeholder="0.1"
-                  className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700"
-                  value={entry.fee}
-                  onChange={(e) => updateEntry(index, 'fee', e.target.value)}
-                />
-              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      <Button 
-        className="w-full mt-4 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all hover:scale-[1.01] shadow-sm" 
-        onClick={calculateBreakeven}
-      >
-        {t('financial.calculator.labels.calculateBreakeven')}
-      </Button>
+        {/* Calculate button */}
+        <Button
+          className={buttonStyles}
+          onClick={calculateBreakeven}
+        >
+          {t('financial.calculator.labels.calculateBreakeven')}
+        </Button>
+      </div>
 
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
@@ -620,73 +640,80 @@ const PositionSizeCalculator: React.FC = () => {
     );
   };
 
-  return <CardContent className="pb-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-        <div>
-          <Label htmlFor="account-size" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.accountSize')}
-          </Label>
-          <Input 
-            id="account-size" 
-            type="number" 
-            placeholder="0.00" 
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700" 
-            value={accountSize} 
-            onChange={e => setAccountSize(e.target.value)} 
-          />
+  return <CardContent className="px-4 py-4">
+      <div className="space-y-4">
+        {/* First row - Account size and Risk percentage */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="account-size" className={labelStyles}>
+              {t('financial.calculator.labels.accountSize')}
+            </Label>
+            <Input
+              id="account-size"
+              type="number"
+              placeholder="0.00"
+              className={inputStyles}
+              value={accountSize}
+              onChange={e => setAccountSize(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="risk-percentage" className={labelStyles}>
+              {t('financial.calculator.labels.riskPercentage')}
+            </Label>
+            <Input
+              id="risk-percentage"
+              type="number"
+              placeholder="1.00"
+              className={inputStyles}
+              value={riskPercentage}
+              onChange={e => setRiskPercentage(e.target.value)}
+            />
+          </div>
         </div>
-        
-        <div>
-          <Label htmlFor="risk-percentage" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.riskPercentage')}
-          </Label>
-          <Input 
-            id="risk-percentage" 
-            type="number" 
-            placeholder="1.00" 
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700" 
-            value={riskPercentage} 
-            onChange={e => setRiskPercentage(e.target.value)} 
-          />
+
+        {/* Second row - Entry price and Stop loss */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="entry-price-ps" className={labelStyles}>
+              {t('financial.calculator.labels.entryPrice')}
+            </Label>
+            <Input
+              id="entry-price-ps"
+              type="number"
+              placeholder="0.00"
+              className={inputStyles}
+              value={entryPrice}
+              onChange={e => setEntryPrice(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="stop-loss" className={labelStyles}>
+              {t('financial.calculator.labels.stopLoss')}
+            </Label>
+            <Input
+              id="stop-loss"
+              type="number"
+              placeholder="0.00"
+              className={inputStyles}
+              value={stopLoss}
+              onChange={e => setStopLoss(e.target.value)}
+            />
+          </div>
         </div>
-        
+
+        {/* Leverage select */}
         <div>
-          <Label htmlFor="entry-price-ps" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.entryPrice')}
-          </Label>
-          <Input 
-            id="entry-price-ps" 
-            type="number" 
-            placeholder="0.00" 
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700" 
-            value={entryPrice} 
-            onChange={e => setEntryPrice(e.target.value)} 
-          />
-        </div>
-        
-        <div>
-          <Label htmlFor="stop-loss" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.stopLoss')}
-          </Label>
-          <Input 
-            id="stop-loss" 
-            type="number" 
-            placeholder="0.00" 
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700" 
-            value={stopLoss} 
-            onChange={e => setStopLoss(e.target.value)} 
-          />
-        </div>
-        
-        <div>
-          <Label htmlFor="leverage-ps" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          <Label htmlFor="leverage-ps" className={labelStyles}>
             {t('financial.calculator.labels.leverage')}
           </Label>
           <Select value={leverage} onValueChange={setLeverage}>
-            <SelectTrigger id="leverage-ps" className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700">
+            <SelectTrigger className={selectStyles}>
               <SelectValue placeholder={t('financial.calculator.labels.leverage')} />
             </SelectTrigger>
-            <SelectContent className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700">
+            <SelectContent>
               <SelectItem value="1">1x</SelectItem>
               <SelectItem value="2">2x</SelectItem>
               <SelectItem value="3">3x</SelectItem>
@@ -698,14 +725,15 @@ const PositionSizeCalculator: React.FC = () => {
             </SelectContent>
           </Select>
         </div>
+
+        {/* Calculate button */}
+        <Button
+          className={buttonStyles}
+          onClick={calculatePositionSize}
+        >
+          {t('financial.calculator.labels.calculate')}
+        </Button>
       </div>
-      
-      <Button 
-        className="w-full mt-2 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all hover:scale-[1.01] shadow-sm" 
-        onClick={calculatePositionSize}
-      >
-        {t('financial.calculator.labels.calculate')}
-      </Button>
       
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
@@ -792,57 +820,62 @@ const DrawdownCalculator: React.FC = () => {
     );
   };
 
-  return <CardContent className="pb-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-        <div>
-          <Label htmlFor="peak-value" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.peakValue')}
-          </Label>
-          <Input 
-            id="peak-value" 
-            type="number" 
-            placeholder="0.00" 
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700" 
-            value={peakValue} 
-            onChange={e => setPeakValue(e.target.value)} 
-          />
+  return <CardContent className="px-4 py-4">
+      <div className="space-y-4">
+        {/* First row - Peak and Current values */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="peak-value" className={labelStyles}>
+              {t('financial.calculator.labels.peakValue')}
+            </Label>
+            <Input
+              id="peak-value"
+              type="number"
+              placeholder="0.00"
+              className={inputStyles}
+              value={peakValue}
+              onChange={e => setPeakValue(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="current-value" className={labelStyles}>
+              {t('financial.calculator.labels.currentValue')}
+            </Label>
+            <Input
+              id="current-value"
+              type="number"
+              placeholder="0.00"
+              className={inputStyles}
+              value={currentValue}
+              onChange={e => setCurrentValue(e.target.value)}
+            />
+          </div>
         </div>
-        
+
+        {/* Initial investment */}
         <div>
-          <Label htmlFor="current-value" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-            {t('financial.calculator.labels.currentValue')}
-          </Label>
-          <Input 
-            id="current-value" 
-            type="number" 
-            placeholder="0.00" 
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700" 
-            value={currentValue} 
-            onChange={e => setCurrentValue(e.target.value)} 
-          />
-        </div>
-        
-        <div>
-          <Label htmlFor="initial-investment" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+          <Label htmlFor="initial-investment" className={labelStyles}>
             {t('financial.calculator.labels.initialInvestment')}
           </Label>
-          <Input 
-            id="initial-investment" 
-            type="number" 
-            placeholder="0.00" 
-            className="bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700" 
-            value={initialInvestment} 
-            onChange={e => setInitialInvestment(e.target.value)} 
+          <Input
+            id="initial-investment"
+            type="number"
+            placeholder="0.00"
+            className={inputStyles}
+            value={initialInvestment}
+            onChange={e => setInitialInvestment(e.target.value)}
           />
         </div>
+
+        {/* Calculate button */}
+        <Button
+          className={buttonStyles}
+          onClick={calculateDrawdown}
+        >
+          {t('financial.calculator.labels.calculate')}
+        </Button>
       </div>
-      
-      <Button 
-        className="w-full mt-2 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all hover:scale-[1.01] shadow-sm" 
-        onClick={calculateDrawdown}
-      >
-        {t('financial.calculator.labels.calculate')}
-      </Button>
       
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
