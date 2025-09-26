@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+} from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { CheckCircle, PlusCircle, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -89,49 +97,87 @@ const Rules: React.FC = () => {
   return (
     <>
       <div className="w-full max-w-4xl mx-auto py-2">
-      <Card className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
-        <CardHeader className="pb-0">
-          <div className="flex mb-4 gap-2">
-            <input
-              className="flex-1 border border-border dark:border-zinc-700 bg-muted dark:bg-zinc-900 text-foreground dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 rounded px-3 py-2 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary focus:bg-white dark:focus:bg-zinc-800"
-              placeholder={t('rules.addRule')}
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') handleAdd(); }}
-            />
-            <Button variant="default" className="flex items-center gap-1 h-10 px-4 py-2 text-sm font-medium rounded-md" onClick={handleAdd}>
-              <PlusCircle size={16} /> {t('common.add')}
-            </Button>
+        <div className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn">
+          <div className="bg-black backdrop-blur-lg border-b border-zinc-800 px-3 md:px-6 pt-3 sm:pt-2 pb-3 rounded-t-xl shadow-sm">
+            <div className="w-full flex items-center gap-2">
+              <input
+                type="text"
+                placeholder={t('rules.addRule')}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') handleAdd(); }}
+                className="bg-zinc-800 border border-zinc-700 rounded-lg py-1.5 px-3 text-sm text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-500 transition-all flex-1 shadow-sm"
+                style={{ fontFamily: 'inherit', fontWeight: 500 }}
+              />
+              <button
+                type="button"
+                onClick={handleAdd}
+                className="flex items-center justify-center h-8 w-8 rounded-lg bg-crypto-green text-white hover:bg-green-600 border border-crypto-green transition-all focus:outline-none focus:ring-2 focus:ring-crypto-green"
+                aria-label="Add rule"
+              >
+                <PlusCircle size={16} />
+              </button>
+            </div>
           </div>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-2 px-4 py-3 bg-muted/40">
-          <ul className="flex flex-col gap-2">
-            {rules.map(rule => (
-              <li key={rule.id} className={`flex items-center bg-neutral-50 dark:bg-muted rounded-xl px-3 py-2 border border-neutral-200 dark:border-border shadow-sm transition-all ${rule.done ? 'opacity-70' : ''}`}>
-                <input
-                  type="checkbox"
-                  checked={rule.done}
-                  onChange={() => handleToggle(rule.id)}
-                  className="mr-3 accent-primary w-5 h-5"
-                />
-                <span className={`flex-1 text-sm font-medium ${rule.done ? 'line-through text-zinc-400 dark:text-zinc-500' : 'text-neutral-900 dark:text-neutral-100'}`}>{rule.text}</span>
-                <Button variant="ghost" size="icon" className="text-red-500 hover:bg-red-100 dark:hover:bg-red-900 ml-2" onClick={() => handleDelete(rule.id)} title={t('common.delete')}>
-                  <Trash2 size={16} />
-                </Button>
-              </li>
-            ))}
-          </ul>
-          {allDone && (
-            <div className="flex items-center justify-center mt-6">
-              <span className="text-crypto-green dark:text-green-400 text-base font-semibold flex items-center gap-2">
-                <CheckCircle size={18} className="text-crypto-green" />
-                {t('rules.allChecked')}
-              </span>
+          {rules.length === 0 ? (
+            <div className="text-center py-12 text-muted-foreground">No rules added yet.</div>
+          ) : (
+            <div className="w-full overflow-x-auto">
+              <Table className="w-full">
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="px-2 py-2 text-left w-[50px]">Status</TableHead>
+                    <TableHead className="px-2 py-2 text-left">Rule</TableHead>
+                    <TableHead className="px-2 py-2 text-right w-[80px]">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {rules.map(rule => (
+                    <TableRow key={rule.id} className="hover:bg-muted/50">
+                      <TableCell className="px-2 py-2 text-left w-[50px]">
+                        <input
+                          type="checkbox"
+                          checked={rule.done}
+                          onChange={() => handleToggle(rule.id)}
+                          className="accent-primary w-5 h-5"
+                        />
+                      </TableCell>
+                      <TableCell className={`px-2 py-2 text-left text-neutral-900 dark:text-foreground ${rule.done ? 'line-through text-zinc-400 dark:text-zinc-500 opacity-70' : ''}`}>
+                        {rule.text}
+                      </TableCell>
+                      <TableCell className="px-2 py-2 text-right w-[80px]">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-red-500 hover:bg-red-100 dark:hover:bg-red-900"
+                          onClick={() => handleDelete(rule.id)}
+                          title={t('common.delete')}
+                        >
+                          <Trash2 size={16} />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+                <TableFooter>
+                  <TableRow>
+                    <TableCell colSpan={3} className="text-xs text-muted-foreground text-center p-2 bg-muted/40 rounded-b-xl">
+                      {allDone ? (
+                        <span className="text-crypto-green dark:text-green-400 text-base font-semibold flex items-center justify-center gap-2">
+                          <CheckCircle size={18} className="text-crypto-green" />
+                          {t('rules.allChecked')}
+                        </span>
+                      ) : (
+                        `${rules.filter(r => r.done).length}/${rules.length} rules completed`
+                      )}
+                    </TableCell>
+                  </TableRow>
+                </TableFooter>
+              </Table>
             </div>
           )}
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </div>
     </>
   );
 };
