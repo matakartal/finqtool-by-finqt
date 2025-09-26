@@ -65,10 +65,10 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
         </div>
       </TableCell>
       <TableCell className="px-2 py-2 text-left text-neutral-900 dark:text-foreground">
-        <AnimatedNumberWithFlash value={parseFloat(market.lastPrice)} symbol={market.symbol} field="lastPrice" />
+        <AnimatedNumberWithFlash value={parseFloat(market.lastPrice)} symbol={market.symbol} field="lastPrice" className="font-mono" />
       </TableCell>
       <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground">
-        <AnimatedNumberWithFlash value={market.quoteVolume} symbol={market.symbol} field="quoteVolume" compact />
+        <AnimatedNumberWithFlash value={market.quoteVolume} symbol={market.symbol} field="quoteVolume" compact className="font-mono" />
       </TableCell>
       <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground">
         {typeof market.priceChangePercent !== 'undefined' && market.priceChangePercent !== '-' ? (
@@ -79,9 +79,9 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
             percent
             className={
               parseFloat(market.priceChangePercent) > 0
-                ? 'text-green-600 dark:text-green-400 font-bold font-mono'
+                ? 'text-green-600 dark:text-green-400 font-mono'
                 : parseFloat(market.priceChangePercent) < 0
-                ? 'text-red-600 dark:text-red-400 font-bold font-mono'
+                ? 'text-red-600 dark:text-red-400 font-mono'
                 : 'text-muted-foreground font-mono'
             }
           />
@@ -133,7 +133,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center gap-1">
           Symbol
           {sortBy === 'symbol' && (
-            <span className="text-xs">{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -141,7 +141,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center gap-1">
           Price
           {sortBy === 'lastPrice' && (
-            <span className="text-xs">{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -149,7 +149,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center justify-end gap-1">
           Volume
           {sortBy === 'quoteVolume' && (
-            <span className="text-xs">{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -157,7 +157,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center justify-end gap-1">
           Change
           {sortBy === 'priceChangePercent' && (
-            <span className="text-xs">{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -165,7 +165,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center justify-end gap-1">
           Funding
           {sortBy === 'fundingRate' && (
-            <span className="text-xs">{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -194,6 +194,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
   const [showFavouritesOnly, setShowFavouritesOnly] = useState(false);
   const [selectedExchange, setSelectedExchange] = useState<Exchange>('BINANCE');
   const [retryCount, setRetryCount] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { addNotification } = useNotificationStore();
 
   const MAX_RETRIES = 3;
@@ -237,6 +238,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
     try {
       setLoading(true);
       setError(null);
+      if (manual) setIsRefreshing(true);
       
       const exchange = EXCHANGES[selectedExchange];
       let rawData: any;
@@ -357,6 +359,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
       console.error('MarketsTable fetch error:', e);
     } finally {
       setLoading(false);
+      if (manual) setIsRefreshing(false);
     }
   }, [search, sortBy, sortDir, selectedExchange]);
 
@@ -470,7 +473,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
                   aria-label="Refresh"
                   style={{ verticalAlign: 'middle' }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: 'block' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 text-zinc-300 ${isRefreshing ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: 'block' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582M20 20v-5h-.581m-2.838-7.362A7.963 7.963 0 004.582 9M19.418 15A7.963 7.963 0 0112 19a7.963 7.963 0 01-7.418-5" />
                   </svg>
                 </button>
