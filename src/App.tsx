@@ -20,15 +20,17 @@ const App: React.FC = () => (
         <Toaster />
         <Sonner />
         {/* Use HashRouter for Chrome extensions */}
-        <ErrorBoundary>
-          <HashRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/rules" element={<Rules />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </HashRouter>
-        </ErrorBoundary>
+        <div className="h-screen">
+          <ErrorBoundary>
+            <HashRouter>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/rules" element={<Rules />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+            </HashRouter>
+          </ErrorBoundary>
+        </div>
       </TooltipProvider>
     </QueryClientProvider>
   </ThemeProvider>

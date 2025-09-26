@@ -17,6 +17,7 @@ import ErrorBoundary from '@/components/ErrorBoundary';
 import LoadingState from '@/components/LoadingState';
 import AppLogo from '@/components/AppLogo';
 import InfoPopup from '@/components/InfoPopup';
+import Footer from '@/components/Footer';
 import { useTranslation } from 'react-i18next';
 
 const HomePage = () => {
@@ -71,7 +72,8 @@ const HomePage = () => {
 
     return (
         <ErrorBoundary>
-            <div className="flex flex-col min-h-screen bg-[#f5f5f7] dark:bg-[#121212] p-0">
+            <>
+                <div className="flex flex-col min-h-full bg-[#f5f5f7] dark:bg-[#121212] p-0">
                 <div className="bg-gradient-to-r from-black to-zinc-900 backdrop-blur-lg border-b border-zinc-800 p-3 flex justify-between items-center sticky top-0 z-10">
                     <AppLogo />
                     <div className="flex items-center space-x-2">
@@ -92,7 +94,7 @@ const HomePage = () => {
                     </div>
                 </div>
                 
-                <div className="bg-white dark:bg-[#1c1c1c] px-2 py-1.5 shadow-sm">
+                <div className="bg-white dark:bg-[#1c1c1c] px-2 py-1 shadow-sm">
                     <Tabs
                         value={activeTab}
                         onValueChange={handleTabChange}
@@ -116,12 +118,12 @@ const HomePage = () => {
                     </Tabs>
                 </div>
 
-                <div className="flex-1 h-full overflow-y-auto p-2 sm:p-3 relative">
+                <div className="flex-1 h-full overflow-y-auto p-1.5 sm:p-2 relative">
                     <Tabs value={activeTab} className="h-full">
                         {TABS.map((tab) => (
                             <TabsContent key={tab.id} value={tab.id} className="mt-0">
-                                <div className="w-full max-w-4xl mx-auto py-2">
-                                    <div className="flex flex-col items-start gap-2 mb-4 px-2 sm:px-0">
+                                <div className="w-full max-w-4xl mx-auto py-1">
+                                    <div className="flex flex-col items-start gap-1.5 mb-3 px-2 sm:px-0">
                                         <div className="flex items-center justify-between w-full">
                                             <div className="flex items-center gap-2">
                                                 <tab.icon size={22} className="text-primary" />
@@ -169,11 +171,21 @@ const HomePage = () => {
 
                 {activeInfoTab && (
                     <InfoPopup
-                        tabId={activeInfoTab}
+                        open={!!activeInfoTab}
                         onClose={() => setActiveInfoTab(null)}
-                    />
+                        title={t(`${activeInfoTab}.title`)}
+                    >
+                        <div className="space-y-2">
+                            <p>{t(`${activeInfoTab}.description`)}</p>
+                            <p className="text-xs text-muted-foreground">
+                                {t(`${activeInfoTab}.howToUse`)}
+                            </p>
+                        </div>
+                    </InfoPopup>
                 )}
-            </div>
+                </div>
+                <Footer />
+            </>
         </ErrorBoundary>
     );
 };

@@ -16,11 +16,11 @@ const FinancialCalculator: React.FC = () => {
   const [calculatorType, setCalculatorType] = useState('pnl');
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-2 space-y-4 animate-fade-in">
+    <div className="w-full max-w-4xl mx-auto py-1 space-y-3 animate-fade-in">
       <Card className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
-        <div className="px-3 sm:px-6 pt-4">
+        <div className="px-3 sm:px-4 pt-3">
           <Tabs defaultValue="pnl" className="w-full">
-            <TabsList className="w-full grid grid-cols-4 mb-4 bg-neutral-100 dark:bg-neutral-800/50 p-1 rounded-lg">
+            <TabsList className="w-full grid grid-cols-4 mb-3 bg-neutral-100 dark:bg-neutral-800/50 p-1 rounded-lg">
               <TabsTrigger 
                 value="pnl" 
                 className="text-xs sm:text-sm transition-all data-[state=active]:bg-white dark:data-[state=active]:bg-neutral-800 data-[state=active]:shadow-sm data-[state=active]:text-neutral-900 dark:data-[state=active]:text-neutral-100"
@@ -70,7 +70,7 @@ const FinancialCalculator: React.FC = () => {
 };
 
 // Update the result card styles in each calculator component
-const resultCardStyles = "mt-4 p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in";
+const resultCardStyles = "mt-3 p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in";
 const resultLabelStyles = "text-sm text-neutral-600 dark:text-neutral-400";
 const resultValueStyles = "text-xl font-bold text-neutral-900 dark:text-neutral-100";
 const resultSubtextStyles = "text-xs mt-1 text-neutral-500 dark:text-neutral-400";
@@ -83,7 +83,7 @@ const labelStyles = "text-sm font-medium text-neutral-700 dark:text-neutral-300"
 const selectStyles = "bg-white dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 focus:border-primary dark:focus:border-primary";
 
 // Update the button styles
-const buttonStyles = "w-full mt-2 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all hover:scale-[1.01] shadow-sm";
+const buttonStyles = "w-full mt-1 bg-primary text-white py-2 rounded-lg hover:bg-primary/90 transition-all hover:scale-[1.01] shadow-sm";
 
 // Update the switch styles
 const switchStyles = "data-[state=checked]:bg-primary";
@@ -160,8 +160,8 @@ const ProfitLossCalculator: React.FC = () => {
   const togglePosition = () => {
     setPosition(position === 'long' ? 'short' : 'long');
   };
-  return <CardContent className="pb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+  return <CardContent className="pb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
         <div>
           <Label htmlFor="entry-price" className={labelStyles}>{t('financial.calculator.labels.entryPrice')}</Label>
           <div className="relative">
@@ -246,7 +246,7 @@ const ProfitLossCalculator: React.FC = () => {
         </div>
       </div>
       
-      <Button 
+      <Button
         className={buttonStyles}
         onClick={calculateResults}
       >
@@ -401,7 +401,7 @@ const BreakevenCalculator: React.FC = () => {
 
   return (
     <CardContent className="pb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
         <div>
           <Label htmlFor="position-type" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
             {t('financial.calculator.labels.positionType')}
@@ -432,7 +432,7 @@ const BreakevenCalculator: React.FC = () => {
         </div>
       </div>
 
-      <div className="space-y-4 mt-4">
+      <div className="space-y-3 mt-3">
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
             {t('financial.calculator.labels.entryPositions')}
@@ -620,8 +620,8 @@ const PositionSizeCalculator: React.FC = () => {
     );
   };
 
-  return <CardContent className="pb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+  return <CardContent className="pb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
         <div>
           <Label htmlFor="account-size" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
             {t('financial.calculator.labels.accountSize')}
@@ -792,8 +792,8 @@ const DrawdownCalculator: React.FC = () => {
     );
   };
 
-  return <CardContent className="pb-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+  return <CardContent className="pb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
         <div>
           <Label htmlFor="peak-value" className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
             {t('financial.calculator.labels.peakValue')}
