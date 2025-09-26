@@ -94,14 +94,14 @@ const HomePage = () => {
                     </div>
                 </div>
                 
-                <div className="bg-white dark:bg-[#1c1c1c] px-2 py-1 shadow-sm sticky top-14 z-10">
+                <div className="bg-white/10 dark:bg-black/20 backdrop-blur-md px-2 py-1 shadow-sm sticky top-14 z-10 border-b border-white/20 dark:border-zinc-800/50">
                     <Tabs
                         value={selectedTab}
                         onValueChange={handleTabChange}
                         className="w-full"
                     >
                         <TabsList
-                            className="flex flex-row gap-0.5 p-0.5 bg-white dark:bg-[#232323] rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 overflow-x-auto no-scrollbar min-w-0 whitespace-nowrap h-8"
+                            className="flex flex-row gap-0.5 p-0.5 bg-white/5 dark:bg-black/10 backdrop-blur-sm rounded-lg shadow-sm border border-white/10 dark:border-zinc-700/30 overflow-x-auto no-scrollbar min-w-0 whitespace-nowrap h-8"
                             style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
                             aria-label="Main navigation tabs"
                         >
