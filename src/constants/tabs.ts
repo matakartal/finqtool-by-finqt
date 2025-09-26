@@ -10,7 +10,7 @@ export const TABS: TabConfig[] = [
   },
   {
     id: 'financial',
-    label: 'Financial Tools',
+    label: 'Tools',
     icon: DollarSign,
     description: 'Essential calculators for risk, position sizing, and more—designed for crypto traders. All calculations run locally, no data is sent anywhere.'
   },

@@ -28,16 +28,16 @@
   },
   "tabs": {
     "markets": "Markets",
-    "financial": "Financial",
+    "financial": "Tools",
     "calculator": "Calculator",
     "notes": "Notes",
     "rules": "Rules"
   },
   "financial": {
-    "title": "Financial Tools",
+    "title": "Tools",
     "description": "Calculate position sizes, risk management, and profit targets",
     "info": {
-      "title": "Financial Tools",
+      "title": "Tools",
       "description": "Our comprehensive suite of financial tools helps you make informed trading decisions with precision:",
       "features": [
         "Calculate optimal position sizes based on your account size and risk tolerance",

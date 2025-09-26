@@ -178,7 +178,7 @@ const Notes: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-1 space-y-3 animate-fade-in">
+    <div className="space-y-3 animate-fade-in">
       <div className="flex justify-end mb-4">
         <Button
           variant="outline"

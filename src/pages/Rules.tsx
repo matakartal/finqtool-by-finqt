@@ -95,8 +95,6 @@ const Rules: React.FC = () => {
   const allDone = rules.length > 0 && rules.every(r => r.done);
 
   return (
-    <>
-      <div className="w-full max-w-4xl mx-auto py-2">
         <div className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn">
           <div className="bg-black backdrop-blur-lg border-b border-zinc-800 px-3 md:px-6 pt-3 sm:pt-2 pb-3 rounded-t-xl shadow-sm">
             <div className="w-full flex items-center gap-2">
@@ -177,8 +175,6 @@ const Rules: React.FC = () => {
             </div>
           )}
         </div>
-      </div>
-    </>
   );
 };
 
