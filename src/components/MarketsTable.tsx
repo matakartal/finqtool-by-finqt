@@ -435,12 +435,12 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
     <>
       <div className="w-full max-w-4xl mx-auto py-2">
       <div className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn">
-        <div className="px-3 md:px-6 pt-4 pb-3 bg-muted/60 rounded-t-xl border-b border-border shadow-sm">
+        <div className="bg-gradient-to-r from-black to-zinc-900 backdrop-blur-lg border-b border-zinc-800 px-3 md:px-6 pt-4 pb-3 rounded-t-xl shadow-sm">
           <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div className="flex items-center justify-between w-full gap-2">
               <div className="flex items-center gap-2">
                 <div className="relative flex items-center w-56 h-10">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-muted-foreground">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                   </span>
                   <input
@@ -448,14 +448,14 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
                     placeholder={t('common.searchSymbol')}
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    className="bg-neutral-50 dark:bg-muted border border-neutral-200 dark:border-border rounded-lg py-1.5 pl-9 pr-3 text-sm text-neutral-900 dark:text-foreground placeholder:text-neutral-400 dark:placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all w-full shadow-sm"
+                    className="bg-zinc-800 border border-zinc-700 rounded-lg py-1.5 pl-9 pr-3 text-sm text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-zinc-500 transition-all w-full shadow-sm"
                     style={{ fontFamily: 'inherit', fontWeight: 500 }}
                   />
                 </div>
                 <select
                   value={selectedExchange}
                   onChange={(e) => setSelectedExchange(e.target.value as Exchange)}
-                  className="bg-neutral-50 dark:bg-muted border border-neutral-200 dark:border-border rounded-lg px-3 text-sm text-neutral-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-ring transition-all shadow-sm font-medium h-8"
+                  className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-zinc-500 transition-all shadow-sm font-medium h-8"
                 >
                   {Object.entries(EXCHANGES).map(([key, { name }]) => (
                     <option key={key} value={key}>{name}</option>
@@ -466,18 +466,18 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
                 <button
                   type="button"
                   onClick={() => fetchData(true)}
-                  className="flex items-center justify-center h-8 w-8 rounded-lg bg-neutral-100 dark:bg-muted hover:bg-neutral-200 dark:hover:bg-muted/70 border border-neutral-200 dark:border-border transition-all focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="flex items-center justify-center h-8 w-8 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-500"
                   aria-label="Refresh"
                   style={{ verticalAlign: 'middle' }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: 'block' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: 'block' }}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582M20 20v-5h-.581m-2.838-7.362A7.963 7.963 0 004.582 9M19.418 15A7.963 7.963 0 0112 19a7.963 7.963 0 01-7.418-5" />
                   </svg>
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowFavouritesOnly(v => !v)}
-                  className={`flex items-center justify-center h-8 w-8 rounded-lg border transition-all focus:outline-none ${showFavouritesOnly ? 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-300 dark:border-yellow-700' : 'bg-neutral-100 dark:bg-muted hover:bg-neutral-200 dark:hover:bg-muted/70 border-neutral-200 dark:border-border'}`}
+                  className={`flex items-center justify-center h-8 w-8 rounded-lg border transition-all focus:outline-none ${showFavouritesOnly ? 'bg-yellow-900/50 border-yellow-600 text-yellow-300' : 'bg-zinc-800 text-white hover:bg-zinc-700 border-zinc-700'}`}
                   aria-label={showFavouritesOnly ? 'Show all assets' : 'Show only favourites'}
                   title={showFavouritesOnly ? 'Show all assets' : 'Show only favourites'}
                   style={{ verticalAlign: 'middle' }}
