@@ -174,14 +174,8 @@ const HomePage = () => {
                         open={!!selectedInfoTab}
                         onClose={() => setSelectedInfoTab(null)}
                         title={t(`${selectedInfoTab}.title`)}
-                    >
-                        <div className="space-y-2">
-                            <p>{t(`${selectedInfoTab}.description`)}</p>
-                            <p className="text-xs text-muted-foreground">
-                                {t(`${selectedInfoTab}.howToUse`)}
-                            </p>
-                        </div>
-                    </InfoPopup>
+                        infoKey={selectedInfoTab}
+                    />
                 )}
                 </div>
                 <Footer />
