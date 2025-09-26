@@ -228,7 +228,7 @@ const UserNotes: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {notes.map(note => (
             <Card key={note.id} className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
-              <CardHeader className="px-3 pt-4 pb-2 flex flex-row items-center gap-2 border-b bg-gradient-to-r from-white via-neutral-50 to-white dark:from-[#232526] dark:via-[#18191a] dark:to-[#232526]">
+              <CardHeader className="px-3 pt-2 pb-2 flex flex-row items-center gap-2 border-b bg-gradient-to-r from-white via-neutral-50 to-white dark:from-[#232526] dark:via-[#18191a] dark:to-[#232526]">
                 {renamingId === note.id ? (
                   <input
                     value={renameValue}

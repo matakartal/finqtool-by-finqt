@@ -271,7 +271,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh }) => {
                 {(showFavouritesOnly ? displayedMarkets.filter(m => isFavourite(m.symbol)) : displayedMarkets).map((m, i) => (
                   <TableRow
                     key={m.symbol}
-                    className={`transition-all duration-300 ease-in-out ${i < 3 ? 'bg-green-50 dark:bg-green-900/10 font-semibold' : ''} hover:bg-accent/30 animate-fadeIn`}
+                    className={`transition-all duration-300 ease-in-out ${i < 3 ? 'bg-crypto-green/10 dark:bg-green-900/10 font-semibold' : ''} hover:bg-accent/30 animate-fadeIn`}
                     style={{ animationDelay: `${i * 10}ms` }}
                   >
                     <TableCell className="px-1 text-left">
@@ -306,7 +306,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh }) => {
                           percent
                           className={
                             parseFloat(m.priceChangePercent) > 0
-                              ? 'text-green-600 dark:text-green-400 font-bold font-mono'
+                              ? 'text-crypto-green dark:text-green-400 font-bold font-mono'
                               : parseFloat(m.priceChangePercent) < 0
                               ? 'text-red-600 dark:text-red-400 font-bold font-mono'
                               : 'text-muted-foreground font-mono'
@@ -326,7 +326,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh }) => {
                           decimals={4}
                           className={
                             parseFloat(m.fundingRate) > 0
-                              ? 'text-green-600 dark:text-green-400 font-bold font-mono'
+                              ? 'text-crypto-green dark:text-green-400 font-bold font-mono'
                               : parseFloat(m.fundingRate) < 0
                               ? 'text-red-600 dark:text-red-400 font-bold font-mono'
                               : 'text-muted-foreground font-mono'
@@ -417,7 +417,7 @@ function AnimatedNumberWithFlash({ value, symbol, field, compact = false, percen
   if (compact) display = formatCompactNumber(value);
   else if (percent && typeof value === 'number') display = `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`;
   else if (typeof value === 'number') display = value.toLocaleString();
-  return <span className={`inline-block px-1 rounded transition-all duration-300 ${flash === 'up' ? 'bg-green-100 dark:bg-green-900' : flash === 'down' ? 'bg-red-100 dark:bg-red-900' : ''} ${className}`}>{display}</span>;
+  return <span className={`inline-block px-1 rounded transition-all duration-300 ${flash === 'up' ? 'bg-crypto-green/20 dark:bg-green-900' : flash === 'down' ? 'bg-red-100 dark:bg-red-900' : ''} ${className}`}>{display}</span>;
 }
 
 // Example breathing SVG animation (not rendered, just for reference)

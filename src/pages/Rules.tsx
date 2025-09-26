@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle, PlusCircle, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '@/components/ui/use-toast';
-import Footer from '@/components/Footer';
 
 const RULES_STORAGE_KEY = 'trading-rules';
 
@@ -89,8 +88,7 @@ const Rules: React.FC = () => {
 
   return (
     <>
-      <div className="flex flex-col min-h-full bg-[#f5f5f7] dark:bg-[#121212]">
-        <div className="flex-1 w-full max-w-4xl mx-auto py-4 px-4 space-y-3 animate-fade-in overflow-y-auto">
+      <div className="w-full max-w-4xl mx-auto py-2">
       <Card className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
         <CardHeader className="pb-0">
           <div className="flex mb-4 gap-2">
@@ -125,17 +123,15 @@ const Rules: React.FC = () => {
           </ul>
           {allDone && (
             <div className="flex items-center justify-center mt-6">
-              <span className="text-green-600 dark:text-green-400 text-base font-semibold flex items-center gap-2">
-                <CheckCircle size={18} className="text-green-500" />
+              <span className="text-crypto-green dark:text-green-400 text-base font-semibold flex items-center gap-2">
+                <CheckCircle size={18} className="text-crypto-green" />
                 {t('rules.allChecked')}
               </span>
             </div>
           )}
         </CardContent>
       </Card>
-      </div>
-      </div>
-      <Footer />
+    </div>
     </>
   );
 };

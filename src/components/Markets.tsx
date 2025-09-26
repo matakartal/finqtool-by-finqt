@@ -61,7 +61,7 @@ const Markets: React.FC = () => {
             </div>
             <div className="flex items-center justify-between">
               <span className="text-[13px] font-medium tracking-tight">${market.price.toLocaleString()}</span>
-              <span className={`text-[12px] font-medium ${market.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              <span className={`text-[12px] font-medium ${market.change >= 0 ? 'text-crypto-green' : 'text-red-500'}`}>
                 {market.change >= 0 ? '+' : ''}{market.change}%
               </span>
             </div>

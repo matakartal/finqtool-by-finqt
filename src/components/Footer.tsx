@@ -10,8 +10,8 @@ const Footer: React.FC = () => {
                 v1.0
             </div>
             <div className="flex items-center space-x-2">
-                <span className="text-sm font-medium">live</span>
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                <span className="text-sm font-medium">Live</span>
+                <div className="w-2 h-2 bg-crypto-green rounded-full animate-pulse"></div>
             </div>
         </footer>
     );

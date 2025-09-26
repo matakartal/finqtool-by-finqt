@@ -270,14 +270,14 @@ const ProfitLossCalculator: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <p className={resultLabelStyles}>{t('financial.calculator.labels.profitLoss')}</p>
-              <p className={`text-xl font-bold ${result.profit ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+              <p className={`text-xl font-bold ${result.profit ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 ${result.pl}
               </p>
             </div>
             
             <div>
               <p className={resultLabelStyles}>{t('financial.calculator.labels.roi')}</p>
-              <p className={`text-xl font-bold ${parseFloat(result.roi) > 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+              <p className={`text-xl font-bold ${parseFloat(result.roi) > 0 ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 {result.roi}%
               </p>
             </div>
@@ -870,7 +870,7 @@ const DrawdownCalculator: React.FC = () => {
                 <p className="text-sm text-neutral-500 dark:text-neutral-400">
                   {t('financial.calculator.labels.totalReturn')}
                 </p>
-                <p className={`text-xl font-bold ${parseFloat(result.totalReturn) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                <p className={`text-xl font-bold ${parseFloat(result.totalReturn) >= 0 ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                   {result.totalReturn}%
                 </p>
               </div>

@@ -79,7 +79,7 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
             percent
             className={
               parseFloat(market.priceChangePercent) > 0
-                ? 'text-green-600 dark:text-green-400 font-mono'
+                ? 'text-crypto-green dark:text-green-400 font-mono'
                 : parseFloat(market.priceChangePercent) < 0
                 ? 'text-red-600 dark:text-red-400 font-mono'
                 : 'text-muted-foreground font-mono'
@@ -98,7 +98,7 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
             percent
             className={`font-mono ${
               parseFloat(market.fundingRate) > 0
-                ? 'text-green-600 dark:text-green-400'
+                ? 'text-crypto-green dark:text-green-400'
                 : parseFloat(market.fundingRate) < 0
                 ? 'text-red-600 dark:text-red-400'
                 : 'text-muted-foreground'
@@ -133,7 +133,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center gap-1">
           Symbol
           {sortBy === 'symbol' && (
-            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -141,7 +141,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center gap-1">
           Price
           {sortBy === 'lastPrice' && (
-            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -149,7 +149,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center justify-end gap-1">
           Volume
           {sortBy === 'quoteVolume' && (
-            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -157,7 +157,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center justify-end gap-1">
           Change
           {sortBy === 'priceChangePercent' && (
-            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -165,7 +165,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
         <div className="flex items-center justify-end gap-1">
           Funding
           {sortBy === 'fundingRate' && (
-            <span className={`text-xs ${sortDir === 'asc' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
+            <span className={`text-xs ${sortDir === 'asc' ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>{sortDir === 'asc' ? '↑' : '↓'}</span>
           )}
         </div>
       </TableHead>
@@ -438,7 +438,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
     <>
       <div className="w-full max-w-4xl mx-auto py-2">
       <div className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn">
-        <div className="bg-black backdrop-blur-lg border-b border-zinc-800 px-3 md:px-6 pt-4 pb-3 rounded-t-xl shadow-sm">
+        <div className="bg-black backdrop-blur-lg border-b border-zinc-800 px-3 md:px-6 pt-2 pb-3 rounded-t-xl shadow-sm">
           <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div className="flex items-center justify-between w-full gap-2">
               <div className="flex items-center gap-2">
@@ -626,7 +626,7 @@ function AnimatedNumberWithFlash({
 
   return (
     <span className={`inline-block px-1 rounded transition-all duration-300 ${
-      flash === 'up' ? 'bg-green-100 dark:bg-green-900' : 
+      flash === 'up' ? 'bg-crypto-green/20 dark:bg-green-900' :
       flash === 'down' ? 'bg-red-100 dark:bg-red-900' : ''
     } ${className}`}>
       {display}

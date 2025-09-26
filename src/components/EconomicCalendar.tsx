@@ -238,7 +238,7 @@ const EconomicCalendar: React.FC = () => {
 
   return (
     <MainCard className="space-y-2 sm:space-y-3 p-4">
-      <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6 pt-3 sm:pt-4 flex flex-col gap-2">
+      <CardHeader className="pb-2 sm:pb-3 px-4 sm:px-6 pt-3 sm:pt-2 flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base sm:text-lg font-semibold flex items-center gap-2">
             <Calendar size={18} className="text-primary" />

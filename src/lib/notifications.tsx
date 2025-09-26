@@ -11,7 +11,7 @@ export const showSuccessToast = (message: string, title: string = "Success") => 
     variant: "default",
     duration: 3000,
     className: "success-toast",
-    icon: <CheckCircle className="h-5 w-5 text-green-500" />
+    icon: <CheckCircle className="h-5 w-5 text-crypto-green" />
   });
 };
 
