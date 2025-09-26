@@ -5,7 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { AlertCircle, Calculator, TrendingUp, BarChart3, DollarSign, ArrowDownUp, PlusCircle, Trash, Info } from 'lucide-react';
+import { AlertCircle, Calculator, BarChart3, DollarSign, ArrowDownUp, PlusCircle, Trash, Info } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { showSuccessToast, showInfoToast } from '@/lib/notifications';
@@ -269,48 +269,97 @@ const ProfitLossCalculator: React.FC = () => {
       </div>
       
       {result && (
-        <div className={resultCardStyles}>
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="font-medium text-neutral-900 dark:text-neutral-100">{t('financial.calculator.labels.results')}</h3>
+        <div className="mt-4 p-4 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Calculation Results
+            </span>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowDetails(!showDetails)}
               className="text-xs text-neutral-500 hover:text-neutral-700 dark:text-neutral-400 dark:hover:text-neutral-200"
             >
-              {showDetails ? t('financial.calculator.labels.hideDetails') : t('financial.calculator.labels.showDetails')}
+              {showDetails ? 'Hide Details' : 'Show Details'}
             </Button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className={resultLabelStyles}>{t('financial.calculator.labels.profitLoss')}</p>
-              <p className={`text-xl font-bold ${result.profit ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+            {/* Primary Results */}
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                {t('financial.calculator.labels.profitLoss')}
+              </span>
+              <span className={`text-lg font-bold ${result.profit ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 ${result.pl}
-              </p>
+              </span>
             </div>
-            
-            <div>
-              <p className={resultLabelStyles}>{t('financial.calculator.labels.roi')}</p>
-              <p className={`text-xl font-bold ${parseFloat(result.roi) > 0 ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                {t('financial.calculator.labels.roi')}
+              </span>
+              <span className={`text-lg font-bold ${parseFloat(result.roi) > 0 ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                 {result.roi}%
-              </p>
+              </span>
             </div>
-            
+
+            {/* Position Details */}
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                Position Type
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100 capitalize">
+                {position}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                Leverage
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                {leverage}x
+              </span>
+            </div>
+
+            {/* Additional Details when expanded */}
             {showDetails && (
               <>
-                <div>
-                  <p className={resultLabelStyles}>{t('financial.calculator.labels.effectiveCost')}</p>
-                  <p className={resultValueStyles}>
-                    ${result.effectiveCost}
-                  </p>
+                <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+                  <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                    Entry Price
+                  </span>
+                  <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                    ${entryPrice}
+                  </span>
                 </div>
-                
-                <div>
-                  <p className={resultLabelStyles}>{t('financial.calculator.labels.breakEvenPrice')}</p>
-                  <p className={resultValueStyles}>
+
+                <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+                  <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                    Exit Price
+                  </span>
+                  <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                    ${exitPrice}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+                  <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                    {t('financial.calculator.labels.effectiveCost')}
+                  </span>
+                  <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                    ${result.effectiveCost}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+                  <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                    {t('financial.calculator.labels.breakEvenPrice')}
+                  </span>
+                  <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
                     ${result.breakEven}
-                  </p>
+                  </span>
                 </div>
               </>
             )}
@@ -544,45 +593,48 @@ const BreakevenCalculator: React.FC = () => {
 
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                {t('financial.calculator.labels.breakEvenPrice')}
-              </p>
-              <p className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
-                ${result.breakEvenPrice}
-              </p>
-              <p className="text-xs mt-1 text-neutral-500 dark:text-neutral-400">
-                {t('financial.calculator.messages.breakEvenInfo')}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                {t('financial.calculator.labels.totalQuantity')}
-              </p>
-              <p className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
-                {result.totalQuantity}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
-                {position === 'long' ? t('financial.calculator.labels.totalCost') : t('financial.calculator.labels.totalCredit')}
-              </p>
-              <p className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
-                ${result.totalCost}
-              </p>
-            </div>
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Breakeven Results
+            </span>
           </div>
 
-          <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-4 flex items-start">
-            <AlertCircle size={14} className="mr-1 mt-0.5 flex-shrink-0" />
-            <span>
-              {position === 'long'
-                ? t('financial.calculator.messages.breakEvenInfo')
-                : t('financial.calculator.messages.shortBreakEvenInfo')}
-            </span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                {t('financial.calculator.labels.breakEvenPrice')}
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                ${result.breakEvenPrice}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                {t('financial.calculator.labels.totalQuantity')}
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                {result.totalQuantity}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                {position === 'long' ? t('financial.calculator.labels.totalCost') : t('financial.calculator.labels.totalCredit')}
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                ${result.totalCost}
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                Position Type
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100 capitalize">
+                {position}
+              </span>
+            </div>
           </div>
         </div>
       )}
@@ -737,41 +789,47 @@ const PositionSizeCalculator: React.FC = () => {
       
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Position Size Results
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
                 {t('financial.calculator.labels.positionSize')}
-              </p>
-              <p className="text-xl font-bold text-neutral-900 dark:text-neutral-100">
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
                 {result.positionSize}
-              </p>
-              <p className="text-xs mt-1 text-neutral-500 dark:text-neutral-400">
-                {t('financial.calculator.labels.unitsToTrade')}
-              </p>
+              </span>
             </div>
-            
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
                 {t('financial.calculator.labels.riskAmount')}
-              </p>
-              <p className="text-xl font-bold text-red-600 dark:text-red-400">
+              </span>
+              <span className="text-lg font-bold text-red-600 dark:text-red-400">
                 ${result.riskAmount}
-              </p>
-              <p className="text-xs mt-1 text-neutral-500 dark:text-neutral-400">
-                {t('financial.calculator.labels.amountAtRisk')}
-              </p>
+              </span>
             </div>
-            
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
                 {t('financial.calculator.labels.liquidationPrice')}
-              </p>
-              <p className="text-xl font-bold text-red-600 dark:text-red-400">
+              </span>
+              <span className="text-lg font-bold text-red-600 dark:text-red-400">
                 ${result.liquidationPrice}
-              </p>
-              <p className="text-xs mt-1 text-neutral-500 dark:text-neutral-400">
-                {t('financial.calculator.labels.approximate')}
-              </p>
+              </span>
+            </div>
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                Leverage
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                {leverage}x
+              </span>
             </div>
           </div>
         </div>
@@ -879,42 +937,50 @@ const DrawdownCalculator: React.FC = () => {
       
       {result && (
         <div className="mt-4 p-4 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              Drawdown Results
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
                 {t('financial.calculator.labels.drawdownAmount')}
-              </p>
-              <p className="text-xl font-bold text-red-600 dark:text-red-400">
+              </span>
+              <span className="text-lg font-bold text-red-600 dark:text-red-400">
                 ${result.drawdownAmount}
-              </p>
+              </span>
             </div>
-            
-            <div>
-              <p className="text-sm text-neutral-500 dark:text-neutral-400">
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
                 {t('financial.calculator.labels.drawdownPercentage')}
-              </p>
-              <p className="text-xl font-bold text-red-600 dark:text-red-400">
+              </span>
+              <span className="text-lg font-bold text-red-600 dark:text-red-400">
                 {result.drawdownPercentage}%
-              </p>
+              </span>
             </div>
-            
+
             {initialInvestment && (
-              <div>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400">
+              <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+                <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
                   {t('financial.calculator.labels.totalReturn')}
-                </p>
-                <p className={`text-xl font-bold ${parseFloat(result.totalReturn) >= 0 ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                </span>
+                <span className={`text-lg font-bold ${parseFloat(result.totalReturn) >= 0 ? 'text-crypto-green dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                   {result.totalReturn}%
-                </p>
+                </span>
               </div>
             )}
-          </div>
-          
-          <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-4 flex items-start">
-            <AlertCircle size={14} className="mr-1 mt-0.5 flex-shrink-0" />
-            <span>
-              {t('financial.calculator.messages.drawdownInfo')}
-            </span>
+
+            <div className="flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-700/30 rounded-lg">
+              <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                Peak Value
+              </span>
+              <span className="text-lg font-bold text-neutral-900 dark:text-neutral-100">
+                ${peakValue}
+              </span>
+            </div>
           </div>
         </div>
       )}
