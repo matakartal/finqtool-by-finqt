@@ -141,19 +141,21 @@ const BasicCalculator: React.FC = () => {
   );
 
   return (
-    <div className="w-full max-w-4xl mx-auto py-2">
+    <div>
       <Card className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
         <CardContent className="p-0">
           {/* Display */}
-          <div className="flex flex-col gap-1 px-6 pt-8 pb-4">
-            <div className="text-crypto-neutral-400 text-xs sm:text-sm min-h-[1.5em] text-right pr-1 select-none">
-              {/* Show operation if present */}
-              {operator && (
-                <span>{currentValue} {operator}</span>
-              )}
+          <div className="flex flex-col gap-1.5 px-4 py-3 sm:py-4">
+            <div className="flex items-center justify-end min-h-[1rem] sm:min-h-[1.25rem]">
+              <div className="text-neutral-500 dark:text-neutral-400 text-xs font-medium select-none">
+                {/* Show operation if present */}
+                {operator && (
+                  <span className="opacity-75">{currentValue} {operator}</span>
+                )}
+              </div>
             </div>
             <div
-              className="rounded-xl bg-black/20 dark:bg-black/40 border border-[rgba(255,255,255,0.13)] shadow-inner text-right text-3xl sm:text-5xl font-bold text-white dark:text-white px-4 py-5 sm:py-7 mb-2 focus:outline-none transition-all"
+              className="rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-right text-2xl sm:text-3xl lg:text-4xl font-bold text-neutral-900 dark:text-white px-3 py-3 sm:py-4 focus:outline-none transition-all shadow-sm"
               tabIndex={0}
               aria-label="Calculator display"
             >
@@ -162,16 +164,16 @@ const BasicCalculator: React.FC = () => {
           </div>
 
           {/* Buttons Grid */}
-          <div className="grid grid-cols-4 gap-2 px-4 pb-6">
+          <div className="grid grid-cols-4 gap-2 sm:gap-3 px-4 pb-4 sm:pb-6">
             {BUTTONS.flat().map((btn, idx) => {
               const base =
-                'rounded-full font-semibold text-lg sm:text-2xl h-14 sm:h-20 transition-all focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 active:scale-95 select-none';
+                'rounded-lg font-semibold text-base sm:text-lg lg:text-xl h-11 sm:h-12 lg:h-16 transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 active:scale-95 select-none shadow-sm';
               const color =
                 btn.type === 'operator'
-                  ? 'bg-[#ff9500]/90 text-white hover:bg-[#ff9500] shadow-orange-200/30'
+                  ? 'bg-primary text-white hover:bg-primary/90 shadow-primary/20'
                   : btn.type === 'action'
-                  ? 'bg-[#a0a0a0]/80 text-white hover:bg-[#a0a0a0]'
-                  : 'bg-[#323232]/80 text-white hover:bg-[#323232]';
+                  ? 'bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 dark:hover:bg-neutral-600'
+                  : 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-700 border border-neutral-200 dark:border-neutral-600';
               return (
                 <button
                   key={btn.text + idx}
@@ -204,31 +206,46 @@ const BasicCalculator: React.FC = () => {
             })}
           </div>
 
-          {/* History */}
+          {/* History/Results */}
           {memory.length > 0 && (
-            <div className="bg-white/40 dark:bg-[#23232a]/70 rounded-b-2xl border-t border-[rgba(255,255,255,0.08)] px-6 py-4">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs sm:text-sm font-medium text-crypto-neutral-400">History</span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-6 sm:h-8 px-2 text-crypto-neutral-400 hover:text-crypto-neutral-200 focus:ring-0"
-                  onClick={clearHistory}
-                  aria-label="Clear history"
-                >
-                  <Trash2 size={isMobile ? 12 : 14} className="mr-1" />
-                  Clear
-                </Button>
-              </div>
-              <div className="max-h-32 sm:max-h-44 overflow-y-auto space-y-1.5 rounded-lg border border-[rgba(255,255,255,0.08)] p-2 bg-black/10 dark:bg-black/20">
-                {memory.map((item, index) => (
-                  <div
-                    key={index}
-                    className="text-[10px] sm:text-xs p-1.5 sm:p-2.5 bg-black/10 dark:bg-black/30 rounded-md"
+            <div className="px-4 pb-4">
+              <div className="mt-4 p-4 rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 animate-scale-in">
+                <div className="flex justify-between items-center mb-3">
+                  <h3 className="font-medium text-neutral-900 dark:text-neutral-100">Calculation History</h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-8 px-3 text-neutral-500 hover:text-red-600 dark:text-neutral-400 dark:hover:text-red-400 border-neutral-300 dark:border-neutral-600 hover:border-red-300 dark:hover:border-red-500"
+                    onClick={clearHistory}
+                    aria-label="Clear history"
                   >
-                    {item}
+                    <Trash2 size={14} className="mr-1" />
+                    Clear All
+                  </Button>
+                </div>
+
+                <div className="max-h-32 sm:max-h-40 overflow-y-auto space-y-2">
+                  {memory.map((item, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between p-2 sm:p-3 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-md shadow-sm hover:shadow-md transition-shadow"
+                    >
+                      <span className="text-xs sm:text-sm font-mono text-neutral-900 dark:text-neutral-100 flex-1 break-all">
+                        {item}
+                      </span>
+                      <div className="text-xs text-neutral-500 dark:text-neutral-400 ml-2 flex-shrink-0">
+                        #{memory.length - index}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-3 pt-3 border-t border-neutral-200 dark:border-neutral-600">
+                  <div className="flex justify-between items-center text-xs text-neutral-500 dark:text-neutral-400">
+                    <span>Total calculations: {memory.length}</span>
+                    <span>Most recent first</span>
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           )}
