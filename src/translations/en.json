@@ -206,15 +206,6 @@
       ]
     }
   },
-  "auth": {
-    "login": "Login",
-    "signup": "Sign Up",
-    "logout": "Logout",
-    "profile": "Profile",
-    "changePassword": "Change Password",
-    "subscription": "Subscription",
-    "notSignedIn": "Not signed in"
-  },
   "settings": {
     "autoRefresh": "Auto Refresh",
     "theme": {
@@ -231,32 +222,6 @@
     "title": "Contact",
     "description": "Questions, feedback or support? Email us at:",
     "email": "info@finqt.com"
-  },
-  "data": {
-    "deleteAll": "Delete All Personal Data",
-    "deleteSuccess": "All personal data deleted",
-    "deleteMessage": "Your notes, favorites, and local data have been cleared."
-  },
-  "pro": {
-    "title": "Upgrade to PRO",
-    "description": "Unlock all features and enjoy an ad-free experience:",
-    "features": [
-      "Favourite coins in screener",
-      "Up to 10 notes",
-      "Trading rules feature",
-      "Priority access to new features",
-      "No ads",
-      "Access to all advanced calculators"
-    ],
-    "price": "3$ / Month",
-    "cancel": "Cancel anytime",
-    "upgrade": "Upgrade Now",
-    "message": "A single mistake can cost you far more than PRO. Invest in your edge for less than a coffee each month.",
-    "ad": {
-      "label": "advertisement",
-      "title": "Ad Banner: ",
-      "message": "This is where your ad will appear. Upgrade to Pro to remove ads!"
-    }
   },
   "loading": "Loading...",
   "notFound": {

@@ -8,7 +8,6 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Bell } from "lucide-react";
-import { useProStatus } from '@/hooks/useProStatus';
 
 export type Notification = {
   id: number;
@@ -68,8 +67,8 @@ const notificationStore = {
     this.notifyListeners();
   },
 
-  clearNotifications(isPro: boolean) {
-    this.notifications = isPro ? [] : this.notifications.filter(n => n.sponsored);
+  clearNotifications() {
+    this.notifications = [];
     this.notifyListeners();
   },
 
@@ -105,20 +104,19 @@ export function useNotificationStore() {
     addNotification: notificationStore.addNotification.bind(notificationStore),
     markAsRead: notificationStore.markAsRead.bind(notificationStore),
     markAllAsRead: notificationStore.markAllAsRead.bind(notificationStore),
-    clearNotifications: (isPro: boolean) => notificationStore.clearNotifications(isPro)
+    clearNotifications: () => notificationStore.clearNotifications()
   };
 }
 
 const NotificationDropdown: React.FC = () => {
   const { notifications, markAsRead, markAllAsRead, clearNotifications } = useNotificationStore();
-  const [isPro] = useProStatus();
   const [isOpen, setIsOpen] = useState(false);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
   const handleClearAll = (e: React.MouseEvent) => {
     e.stopPropagation();
-    clearNotifications(isPro);
+    clearNotifications();
   };
 
   const handleMarkAllAsRead = (e: React.MouseEvent) => {

@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef, memo } from 'react';
 import { useNotificationStore } from './NotificationDropdown';
-import { useProStatus } from '@/hooks/useProStatus';
-import ProUpgradeModal from './ProUpgradeModal';
 import { useTranslation } from 'react-i18next';
 import {
   Table,
@@ -184,8 +182,6 @@ interface MarketsTableProps {
 
 const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterval = 8000 }) => {
   const { t } = useTranslation();
-  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
-  const [isPro] = useProStatus();
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [markets, setMarkets] = useState<MarketData[]>([]);
   const [displayedMarkets, setDisplayedMarkets] = useState<MarketData[]>([]);
@@ -232,10 +228,6 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
   }, [favourites]);
 
   const toggleFavourite = (symbol: string) => {
-    if (!isPro) {
-      setUpgradeModalOpen(true);
-      return;
-    }
     setFavourites(favs => favs.includes(symbol) ? favs.filter(s => s !== symbol) : [...favs, symbol]);
   };
   const isFavourite = (symbol: string) => favourites.includes(symbol);
@@ -535,14 +527,6 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
         )}
       </div>
     </div>
-      <ProUpgradeModal
-        open={upgradeModalOpen}
-        onClose={() => setUpgradeModalOpen(false)}
-        onUpgrade={() => {
-          setUpgradeModalOpen(false);
-          // Optionally trigger subscription flow here
-        }}
-      />
     </>
   );
 }

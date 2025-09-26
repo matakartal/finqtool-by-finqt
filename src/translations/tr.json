@@ -207,15 +207,6 @@
       ]
     }
   },
-  "auth": {
-    "login": "Giriş Yap",
-    "signup": "Kayıt Ol",
-    "logout": "Çıkış Yap",
-    "profile": "Profil",
-    "changePassword": "Şifre Değiştir",
-    "subscription": "Abonelik",
-    "notSignedIn": "Giriş yapılmadı"
-  },
   "settings": {
     "autoRefresh": "Otomatik Yenile",
     "theme": {
@@ -232,32 +223,6 @@
     "title": "İletişim",
     "description": "Sorular, geri bildirimler veya reklamlar için bize e-posta gönderin:",
     "email": "info@finqt.com"
-  },
-  "data": {
-    "deleteAll": "Tüm Kişisel Verileri Sil",
-    "deleteSuccess": "Tüm kişisel veriler silindi",
-    "deleteMessage": "Notlarınız, favorileriniz ve yerel verileriniz temizlendi."
-  },
-  "pro": {
-    "title": "PRO'ya Yükselt",
-    "description": "Tüm özellikleri açın ve reklamsız bir deneyim yaşayın:",
-    "features": [
-      "Ekranda favori coinler",
-      "10'a kadar not",
-      "Alım satım kuralları özelliği",
-      "Yeni özelliklere öncelikli erişim",
-      "Reklamsız deneyim",
-      "Tüm gelişmiş hesaplayıcılara erişim"
-    ],
-    "price": "3$ / Ay",
-    "cancel": "İstediğiniz zaman iptal edin",
-    "upgrade": "Şimdi Yükselt",
-    "message": "Tek bir hata, PRO'dan çok daha fazlasına mal olabilir. Bir fincan kahveden daha azına kenarınıza yatırım yapın.",
-    "ad": {
-      "label": "reklam",
-      "title": "Reklam Alanı: ",
-      "message": "Reklamınız burada görünecek. Reklamları kaldırmak için Pro'ya yükseltin!"
-    }
   },
   "loading": "Yükleniyor...",
   "notFound": {

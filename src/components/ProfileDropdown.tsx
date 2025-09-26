@@ -8,60 +8,44 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
-import { User, Key, CreditCard, Trash2, RefreshCcw, Building, Info, Mail, Globe, Check } from "lucide-react";
-import { useProStatus } from "@/hooks/useProStatus";
-import { showSuccessToast } from "@/lib/notifications";
+import { Settings, RefreshCcw, Building, Info, Mail, Globe, Check } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useTranslation } from "react-i18next";
 
-const ProfileDropdown: React.FC<{ 
-  onChangePassword: () => void;
-  onSubscription: () => void;
-  user: any;
+const ProfileDropdown: React.FC<{
   autoRefresh: boolean;
   onAutoRefreshChange: (checked: boolean) => void;
-}> = ({ onChangePassword, onSubscription, user, autoRefresh, onAutoRefreshChange }) => {
-  const [isPro] = useProStatus();
+}> = ({ autoRefresh, onAutoRefreshChange }) => {
   const { i18n, t } = useTranslation();
-
-  const handleDeleteData = () => {
-    localStorage.removeItem('multi_financial_notes');
-    localStorage.removeItem('favourites');
-    showSuccessToast(t('data.deleteSuccess'), t('data.deleteMessage'));
-    setTimeout(() => window.location.reload(), 600);
-  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button
           className="relative flex h-8 w-8 items-center justify-center rounded-full bg-zinc-800 text-white hover:bg-zinc-700 focus:outline-none"
-          aria-label="Profile"
+          aria-label="Settings"
         >
-          <User size={15} />
+          <Settings size={15} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[280px]">
         <DropdownMenuLabel className="text-[13px] font-semibold tracking-tight">
           <div className="flex flex-col gap-1">
-            <span className="text-[13px] text-muted-foreground">{user?.email || t('auth.notSignedIn')}</span>
+            <span className="text-[13px] text-muted-foreground">Settings</span>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem 
-            className="flex cursor-pointer items-center gap-2 text-[13px]"
-            onClick={onChangePassword}
-          >
-            <Key size={15} />
-            {t('auth.changePassword')}
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            className="flex cursor-pointer items-center gap-2 text-[13px]"
-            onClick={handleDeleteData}
-          >
-            <Trash2 size={15} className="text-red-500" />
-            {t('data.deleteAll')}
+          <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <Info size={15} />
+              {t('about.title')}
+            </div>
+          </DropdownMenuLabel>
+          <DropdownMenuItem className="flex cursor-pointer items-center gap-2 text-[13px] pl-2">
+            <p className="text-[13px] text-muted-foreground">
+              {t('about.description')}
+            </p>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
@@ -134,17 +118,6 @@ const ProfileDropdown: React.FC<{
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Info size={15} />
-              {t('about.title')}
-            </div>
-          </DropdownMenuLabel>
-          <DropdownMenuItem className="flex cursor-pointer items-center gap-2 text-[13px] pl-2">
-            <p className="text-[13px] text-muted-foreground">
-              {t('about.description')}
-            </p>
-          </DropdownMenuItem>
           <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-muted-foreground">
             <div className="flex items-center gap-2">
               <Mail size={15} />

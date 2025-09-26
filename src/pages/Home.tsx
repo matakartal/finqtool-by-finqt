@@ -4,11 +4,7 @@ import BasicCalculator from '@/components/BasicCalculator';
 import MarketsTable from '@/components/MarketsTable';
 import Notes from '@/components/Notes';
 import Rules from './Rules';
-import ProUpgradeModal from '@/components/ProUpgradeModal';
-import { useProStatus } from '@/hooks/useProStatus';
 import ProfileDropdown from '@/components/ProfileDropdown';
-import ChangePasswordModal from '@/components/ChangePasswordModal';
-import SubscriptionModal from '@/components/SubscriptionModal';
 import { useNotificationStore } from '@/components/NotificationDropdown';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CircleAlert, Moon, Sun, Info } from 'lucide-react';
@@ -25,12 +21,8 @@ import { useTranslation } from 'react-i18next';
 
 const HomePage = () => {
     const { t, i18n } = useTranslation();
-    const [showChangePassword, setShowChangePassword] = useState(false);
-    const [showSubscription, setShowSubscription] = useState(false);
     const { addNotification } = useNotificationStore();
 
-    const [isPro, setIsPro] = useProStatus();
-    const [showProModal, setShowProModal] = useState(false);
     const [activeTab, setActiveTab] = useState<string>("calculator");
     const [currentTime, setCurrentTime] = useState<string>('');
     const [autoRefresh, setAutoRefresh] = useState(true);
@@ -75,22 +67,7 @@ const HomePage = () => {
         toggleTheme();
     }, [toggleTheme]);
 
-    const handleProUpgrade = useCallback(() => {
-        setIsPro(true);
-        setShowProModal(false);
-    }, []);
 
-    const handleCloseProModal = useCallback(() => {
-        setShowProModal(false);
-    }, []);
-
-    const handleCloseChangePassword = useCallback(() => {
-        setShowChangePassword(false);
-    }, []);
-
-    const handleCloseSubscription = useCallback(() => {
-        setShowSubscription(false);
-    }, []);
 
     return (
         <ErrorBoundary>
@@ -109,9 +86,6 @@ const HomePage = () => {
                         <NotificationDropdown />
 
                         <ProfileDropdown
-                            user={{ email: 'demo@example.com' }}
-                            onChangePassword={() => setShowChangePassword(true)}
-                            onSubscription={() => setShowSubscription(true)}
                             autoRefresh={autoRefresh}
                             onAutoRefreshChange={handleAutoRefreshChange}
                         />
@@ -192,28 +166,6 @@ const HomePage = () => {
                         ))}
                     </Tabs>
                 </div>
-
-                {showProModal && (
-                    <ProUpgradeModal
-                        isOpen={showProModal}
-                        onClose={handleCloseProModal}
-                        onUpgrade={handleProUpgrade}
-                    />
-                )}
-
-                {showChangePassword && (
-                    <ChangePasswordModal
-                        open={showChangePassword}
-                        onClose={handleCloseChangePassword}
-                    />
-                )}
-
-                {showSubscription && (
-                    <SubscriptionModal
-                        open={showSubscription}
-                        onClose={handleCloseSubscription}
-                    />
-                )}
 
                 {activeInfoTab && (
                     <InfoPopup
