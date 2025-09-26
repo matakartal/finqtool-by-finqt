@@ -24,12 +24,12 @@ const HomePage = () => {
     const { t, i18n } = useTranslation();
     const { addNotification } = useNotificationStore();
 
-    const [activeTab, setActiveTab] = useState<string>("calculator");
+    const [selectedTab, setSelectedTab] = useState<string>("calculator");
     const [currentTime, setCurrentTime] = useState<string>('');
     const [autoRefresh, setAutoRefresh] = useState(true);
     const isMobile = useIsMobile();
     const { theme, toggleTheme } = useTheme();
-    const [activeInfoTab, setActiveInfoTab] = useState<string | null>(null);
+    const [selectedInfoTab, setSelectedInfoTab] = useState<string | null>(null);
 
     useEffect(() => {
         const loadAutoRefresh = async () => {
@@ -61,7 +61,7 @@ const HomePage = () => {
     }, []);
 
     const handleTabChange = useCallback((value: string) => {
-        setActiveTab(value);
+        setSelectedTab(value);
     }, []);
 
     const handleThemeToggle = useCallback(() => {
@@ -94,22 +94,22 @@ const HomePage = () => {
                     </div>
                 </div>
                 
-                <div className="bg-white dark:bg-[#1c1c1c] px-2 py-1 shadow-sm">
+                <div className="bg-white dark:bg-[#1c1c1c] px-2 py-1 shadow-sm sticky top-14 z-10">
                     <Tabs
-                        value={activeTab}
+                        value={selectedTab}
                         onValueChange={handleTabChange}
                         className="w-full"
                     >
                         <TabsList
-                            className="flex flex-row gap-0.5 p-0.5 bg-white dark:bg-[#232323] rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 overflow-x-auto no-scrollbar min-w-0 whitespace-nowrap h-7"
+                            className="flex flex-row gap-0.5 p-0.5 bg-white dark:bg-[#232323] rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 overflow-x-auto no-scrollbar min-w-0 whitespace-nowrap h-8"
                             style={{ WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}
                             aria-label="Main navigation tabs"
                         >
                             {TABS.map((tab) => (
-                                <TabsTrigger 
+                                <TabsTrigger
                                     key={tab.id}
-                                    value={tab.id} 
-                                    className="text-xs sm:text-sm px-2.5 py-0.5 focus:outline-none focus:ring-0 whitespace-nowrap font-medium"
+                                    value={tab.id}
+                                    className="text-xs sm:text-sm px-3 py-1 focus:outline-none focus:ring-0 whitespace-nowrap font-medium"
                                 >
                                     {t(`tabs.${tab.id}`)}
                                 </TabsTrigger>
@@ -119,7 +119,7 @@ const HomePage = () => {
                 </div>
 
                 <div className="flex-1 h-full overflow-y-auto p-1.5 sm:p-2 relative">
-                    <Tabs value={activeTab} className="h-full">
+                    <Tabs value={selectedTab} className="h-full">
                         {TABS.map((tab) => (
                             <TabsContent key={tab.id} value={tab.id} className="mt-0">
                                 <div className="w-full max-w-4xl mx-auto py-1">
@@ -132,7 +132,7 @@ const HomePage = () => {
                                                 </h2>
                                             </div>
                                             <button
-                                                onClick={() => setActiveInfoTab(tab.id)}
+                                                onClick={() => setSelectedInfoTab(tab.id)}
                                                 className="p-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-full transition-colors"
                                                 title={t('common.howToUse')}
                                             >
@@ -169,16 +169,16 @@ const HomePage = () => {
                     </Tabs>
                 </div>
 
-                {activeInfoTab && (
+                {selectedInfoTab && (
                     <InfoPopup
-                        open={!!activeInfoTab}
-                        onClose={() => setActiveInfoTab(null)}
-                        title={t(`${activeInfoTab}.title`)}
+                        open={!!selectedInfoTab}
+                        onClose={() => setSelectedInfoTab(null)}
+                        title={t(`${selectedInfoTab}.title`)}
                     >
                         <div className="space-y-2">
-                            <p>{t(`${activeInfoTab}.description`)}</p>
+                            <p>{t(`${selectedInfoTab}.description`)}</p>
                             <p className="text-xs text-muted-foreground">
-                                {t(`${activeInfoTab}.howToUse`)}
+                                {t(`${selectedInfoTab}.howToUse`)}
                             </p>
                         </div>
                     </InfoPopup>
