@@ -435,7 +435,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
     <>
       <div className="w-full max-w-4xl mx-auto py-2">
       <div className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn">
-        <div className="bg-gradient-to-r from-black to-zinc-900 backdrop-blur-lg border-b border-zinc-800 px-3 md:px-6 pt-4 pb-3 rounded-t-xl shadow-sm">
+        <div className="bg-black backdrop-blur-lg border-b border-zinc-800 px-3 md:px-6 pt-4 pb-3 rounded-t-xl shadow-sm">
           <div className="w-full flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <div className="flex items-center justify-between w-full gap-2">
               <div className="flex items-center gap-2">
