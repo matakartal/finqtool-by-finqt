@@ -126,24 +126,25 @@ const Rules: React.FC = () => {
               <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="px-2 py-2 text-left w-[50px]">Status</TableHead>
-                    <TableHead className="px-2 py-2 text-left">Rule</TableHead>
+                    <TableHead className="px-2 py-2 text-left">Rules</TableHead>
                     <TableHead className="px-2 py-2 text-right w-[80px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {rules.map(rule => (
                     <TableRow key={rule.id} className="hover:bg-muted/50">
-                      <TableCell className="px-2 py-2 text-left w-[50px]">
-                        <input
-                          type="checkbox"
-                          checked={rule.done}
-                          onChange={() => handleToggle(rule.id)}
-                          className="accent-primary w-5 h-5"
-                        />
-                      </TableCell>
-                      <TableCell className={`px-2 py-2 text-left text-neutral-900 dark:text-foreground ${rule.done ? 'line-through text-zinc-400 dark:text-zinc-500 opacity-70' : ''}`}>
-                        {rule.text}
+                      <TableCell className="px-2 py-2 text-left">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={rule.done}
+                            onChange={() => handleToggle(rule.id)}
+                            className="accent-primary w-5 h-5"
+                          />
+                          <span className={`text-sm font-medium ${rule.done ? 'line-through text-zinc-400 dark:text-zinc-500 opacity-70' : 'text-neutral-900 dark:text-foreground'}`}>
+                            {rule.text}
+                          </span>
+                        </div>
                       </TableCell>
                       <TableCell className="px-2 py-2 text-right w-[80px]">
                         <Button
@@ -161,11 +162,10 @@ const Rules: React.FC = () => {
                 </TableBody>
                 <TableFooter>
                   <TableRow>
-                    <TableCell colSpan={3} className="text-xs text-muted-foreground text-center p-2 bg-muted/40 rounded-b-xl">
+                    <TableCell colSpan={2} className="text-xs text-muted-foreground text-center p-2 bg-muted/40 rounded-b-xl">
                       {allDone ? (
-                        <span className="text-crypto-green dark:text-green-400 text-base font-semibold flex items-center justify-center gap-2">
-                          <CheckCircle size={18} className="text-crypto-green" />
-                          {t('rules.allChecked')}
+                        <span className="text-crypto-green dark:text-green-400 text-xs font-semibold flex items-center justify-center gap-2">
+                          All rules checked. Ready to trade.
                         </span>
                       ) : (
                         `${rules.filter(r => r.done).length}/${rules.length} rules completed`
