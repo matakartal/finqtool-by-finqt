@@ -124,14 +124,14 @@ const Rules: React.FC = () => {
               <Table className="w-full">
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="px-2 py-2 text-left">Rules</TableHead>
-                    <TableHead className="px-2 py-2 text-right w-[80px]">Actions</TableHead>
+                    <TableHead className="px-3 py-2 text-left">Rules</TableHead>
+                    <TableHead className="px-3 py-2 text-right w-[80px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {rules.map(rule => (
                     <TableRow key={rule.id} className="hover:bg-muted/50">
-                      <TableCell className="px-2 py-2 text-left">
+                      <TableCell className="px-3 py-2 text-left">
                         <div className="flex items-center gap-3">
                           <input
                             type="checkbox"
@@ -144,7 +144,7 @@ const Rules: React.FC = () => {
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell className="px-2 py-2 text-right w-[80px]">
+                      <TableCell className="px-3 py-2 text-right w-[80px]">
                         <Button
                           variant="ghost"
                           size="icon"

@@ -1,5 +1,5 @@
 import { TabConfig } from '@/types';
-import { BarChart3, Calculator, DollarSign, Banknote, FileText } from 'lucide-react';
+import { BarChart3, Calculator, DollarSign, Banknote, FileText, ShieldCheck } from 'lucide-react';
 
 export const TABS: TabConfig[] = [
   {
@@ -29,7 +29,7 @@ export const TABS: TabConfig[] = [
   {
     id: 'rules',
     label: 'Rules',
-    icon: BarChart3,
+    icon: ShieldCheck,
     description: 'Trading rules and guidelines.'
   }
 ]; 
