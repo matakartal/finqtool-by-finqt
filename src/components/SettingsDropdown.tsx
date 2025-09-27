@@ -12,7 +12,7 @@ import { Settings, RefreshCcw, Building, Info, Mail, Globe, Check } from "lucide
 import { Switch } from "@/components/ui/switch";
 import { useTranslation } from "react-i18next";
 
-const ProfileDropdown: React.FC<{
+const SettingsDropdown: React.FC<{
   autoRefresh: boolean;
   onAutoRefreshChange: (checked: boolean) => void;
 }> = ({ autoRefresh, onAutoRefreshChange }) => {
@@ -34,7 +34,7 @@ const ProfileDropdown: React.FC<{
             <span className="text-[13px] text-foreground">Settings</span>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="!bg-neutral-200/50 dark:!bg-muted" />
         <DropdownMenuGroup>
           <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-foreground">
             <div className="flex items-center gap-2">
@@ -47,7 +47,7 @@ const ProfileDropdown: React.FC<{
             </p>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="!bg-neutral-200/50 dark:!bg-muted" />
         <DropdownMenuGroup>
           <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-foreground">
             <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ const ProfileDropdown: React.FC<{
             <span className="tracking-tight">Bybit</span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="!bg-neutral-200/50 dark:!bg-muted" />
         <DropdownMenuGroup>
           <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-foreground">
             <div className="flex items-center gap-2">
@@ -88,7 +88,7 @@ const ProfileDropdown: React.FC<{
             />
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="!bg-neutral-200/50 dark:!bg-muted" />
         <DropdownMenuGroup>
           <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-foreground">
             <div className="flex items-center gap-2">
@@ -118,7 +118,7 @@ const ProfileDropdown: React.FC<{
             </span>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="!bg-neutral-200/50 dark:!bg-muted" />
         <DropdownMenuGroup>
           <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-foreground">
             <div className="flex items-center gap-2">
@@ -142,4 +142,4 @@ const ProfileDropdown: React.FC<{
   );
 };
 
-export default ProfileDropdown;
+export default SettingsDropdown;

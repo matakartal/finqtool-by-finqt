@@ -144,7 +144,7 @@ const NotificationDropdown: React.FC = () => {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[320px] p-0 bg-white/10 dark:bg-black/20 backdrop-blur-md border-white/20 dark:border-zinc-800/50 rounded-xl">
-        <div className="flex items-center justify-between border-b border-white/20 dark:border-zinc-800/50 bg-white/5 dark:bg-black/10 backdrop-blur-sm px-4 pb-2 pt-3">
+        <div className="flex items-center justify-between border-b border-neutral-200/50 dark:border-zinc-800/50 bg-white/5 dark:bg-black/10 backdrop-blur-sm px-4 pb-2 pt-3">
           <DropdownMenuLabel className="p-0 text-base font-semibold tracking-tight">
             Notifications
           </DropdownMenuLabel>

@@ -64,14 +64,13 @@ const MAX_NOTES = 10;
 const MAX_TAGS = 5;
 const MAX_TAG_LENGTH = 20;
 
-const Notes: React.FC = () => {
+const Notes: React.FC<{ showTemplates: boolean }> = ({ showTemplates }) => {
   const { t } = useTranslation();
   const [notes, setNotes] = useState<Note[]>([]);
   const [templates, setTemplates] = useState<NoteTemplate[]>(defaultTemplates);
   const [renamingId, setRenamingId] = useState<string | null>(null);
   const [renameValue, setRenameValue] = useState('');
   const [showDeleteId, setShowDeleteId] = useState<string | null>(null);
-  const [showTemplates, setShowTemplates] = useState(false);
 
   // Load notes and templates from localStorage
   useEffect(() => {

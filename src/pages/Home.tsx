@@ -4,7 +4,7 @@ import BasicCalculator from '@/components/BasicCalculator';
 import MarketsTable from '@/components/MarketsTable';
 import Notes from '@/components/Notes';
 import Rules from './Rules';
-import ProfileDropdown from '@/components/ProfileDropdown';
+import SettingsDropdown from '@/components/SettingsDropdown';
 import { useNotificationStore } from '@/components/NotificationDropdown';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -89,7 +89,7 @@ const HomePage = () => {
 
                         <NotificationDropdown />
 
-                        <ProfileDropdown
+                        <SettingsDropdown
                             autoRefresh={autoRefresh}
                             onAutoRefreshChange={handleAutoRefreshChange}
                         />
