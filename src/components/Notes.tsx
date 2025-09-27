@@ -608,7 +608,7 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
               </div>
               <div className="flex flex-col px-4 py-4 bg-muted/40">
                 <Textarea
-                  className="w-full min-h-[340px] rounded-lg border border-neutral-200 dark:border-border p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-muted resize-vertical font-medium"
+                  className="w-full min-h-[280px] rounded-lg border border-neutral-200 dark:border-border p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-muted resize-vertical font-medium"
                   value={note.content}
                   onChange={e => {
                     if (e.target.value.length > 500) {
