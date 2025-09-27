@@ -416,7 +416,14 @@ function AnimatedNumberWithFlash({ value, symbol, field, compact = false, percen
   let display = value;
   if (compact) display = formatCompactNumber(value);
   else if (percent && typeof value === 'number') display = `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`;
-  else if (typeof value === 'number') display = value.toLocaleString();
+  else if (typeof value === 'number') {
+    // For small prices, show more decimal places
+    if (value < 0.001 && value > 0) {
+      display = value.toFixed(6);
+    } else {
+      display = value.toLocaleString();
+    }
+  }
   return <span className={`inline-block px-1 rounded transition-all duration-300 ${flash === 'up' ? 'bg-crypto-green/20 dark:bg-green-900' : flash === 'down' ? 'bg-red-100 dark:bg-red-900' : ''} ${className}`}>{display}</span>;
 }
 

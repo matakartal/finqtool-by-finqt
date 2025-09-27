@@ -619,7 +619,12 @@ function AnimatedNumberWithFlash({
   } else if (percent && typeof value === 'number') {
     display = `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`;
   } else if (typeof value === 'number') {
-    display = value.toLocaleString();
+    // For small prices, show more decimal places
+    if (value < 0.001 && value > 0) {
+      display = value.toFixed(6);
+    } else {
+      display = value.toLocaleString();
+    }
   }
 
   return (
