@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
-import { Settings, RefreshCcw, Building, Info, Mail, Globe, Check } from "lucide-react";
+import { Settings, RefreshCcw, Building, Info, Mail, Globe, Check, X, Youtube, Instagram } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { useTranslation } from "react-i18next";
 
@@ -117,6 +117,39 @@ const SettingsDropdown: React.FC<{
               <span className="tracking-tight">Türkçe</span>
             </span>
           </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator className="!bg-neutral-200/50 dark:!bg-muted" />
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="px-2 py-1.5 text-[13px] font-semibold text-foreground">
+            <div className="flex items-center gap-2">
+              Socials
+            </div>
+          </DropdownMenuLabel>
+          <div className="px-2 py-1.5">
+            <div className="flex items-center gap-3">
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-white/15 dark:hover:bg-black/25 transition-colors"
+                onClick={() => window.open('https://x.com/finqtcom', '_blank')}
+                title="Follow us on X"
+              >
+                <X size={16} />
+              </button>
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-white/15 dark:hover:bg-black/25 transition-colors"
+                onClick={() => window.open('https://youtube.com/finqtcom', '_blank')}
+                title="Subscribe on YouTube"
+              >
+                <Youtube size={16} />
+              </button>
+              <button
+                className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:text-primary hover:bg-white/15 dark:hover:bg-black/25 transition-colors"
+                onClick={() => window.open('https://instagram.com/finqtcom', '_blank')}
+                title="Follow us on Instagram"
+              >
+                <Instagram size={16} />
+              </button>
+            </div>
+          </div>
         </DropdownMenuGroup>
         <DropdownMenuSeparator className="!bg-neutral-200/50 dark:!bg-muted" />
         <DropdownMenuGroup>

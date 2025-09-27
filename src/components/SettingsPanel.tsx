@@ -86,6 +86,49 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ autoRefresh, onAutoRefres
             </p>
           </div>
         </div>
+
+        {/* Socials section */}
+        <div className="space-y-1.5">
+          <h4 className="text-xs font-semibold text-muted-foreground">SOCIALS</h4>
+          <div className="flex flex-col gap-2 text-xs text-muted-foreground">
+            <button
+              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              onClick={() => window.open('https://x.com/finqtcom', '_blank')}
+              type="button"
+            >
+              <span className="font-medium">𝕏</span>
+              @finqtcom
+            </button>
+            <button
+              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              onClick={() => window.open('https://tiktok.com/finqtcom', '_blank')}
+              type="button"
+            >
+              <span className="font-medium">TikTok</span>
+              @finqtcom
+            </button>
+            <button
+              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              onClick={() => window.open('https://youtube.com/finqtcom', '_blank')}
+              type="button"
+            >
+              <span className="font-medium">YouTube</span>
+              @finqtcom
+            </button>
+            <button
+              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
+              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+              onClick={() => window.open('https://instagram.com/finqtcom', '_blank')}
+              type="button"
+            >
+              <span className="font-medium">Instagram</span>
+              @finqtcom
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
