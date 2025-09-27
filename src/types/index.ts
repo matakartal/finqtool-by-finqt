@@ -9,5 +9,6 @@ export interface TabConfig {
 
 export interface StorageConfig {
   autoRefresh: boolean;
+  fontSize: 'original' | 'medium' | 'large';
   // Add other storage configurations as needed
 } 

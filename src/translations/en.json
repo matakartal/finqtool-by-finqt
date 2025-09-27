@@ -217,6 +217,7 @@
   },
   "settings": {
     "autoRefresh": "Auto Refresh",
+    "fontSize": "Font Size",
     "theme": {
       "light": "Light Mode",
       "dark": "Dark Mode"

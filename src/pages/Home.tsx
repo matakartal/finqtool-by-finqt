@@ -12,6 +12,7 @@ import { CircleAlert, Moon, Sun, Info, FileText } from 'lucide-react';
 import NotificationDropdown from '@/components/NotificationDropdown';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTheme } from '@/hooks/use-theme';
+import { useFontSize } from '@/contexts/FontSizeContext';
 import { storage } from '@/utils/storage';
 import { TABS } from '@/constants/tabs';
 import ErrorBoundary from '@/components/ErrorBoundary';
@@ -31,6 +32,7 @@ const HomePage = () => {
     const [showTemplates, setShowTemplates] = useState(false);
     const isMobile = useIsMobile();
     const { theme, toggleTheme } = useTheme();
+    const { fontSize } = useFontSize();
     const [selectedInfoTab, setSelectedInfoTab] = useState<string | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -107,7 +109,7 @@ const HomePage = () => {
     return (
         <ErrorBoundary>
             <>
-                <div className="flex flex-col min-h-full bg-[#f5f5f7] dark:bg-[#121212] p-0">
+                <div className={`flex flex-col min-h-full bg-[#f5f5f7] dark:bg-[#121212] p-0 font-size-${fontSize}`}>
                 <div className="bg-gradient-to-r from-black to-zinc-900 backdrop-blur-lg border-b border-zinc-800 p-3 flex justify-between items-center sticky top-0 z-10">
                     <AppLogo />
                     <div className="flex items-center space-x-2">

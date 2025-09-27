@@ -17,13 +17,15 @@ i18n
         translation: trTranslations
       }
     },
+    lng: 'en', // Set English as the default language
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false
     },
     detection: {
       order: ['localStorage', 'navigator'],
-      caches: ['localStorage']
+      caches: ['localStorage'],
+      lookupLocalStorage: 'i18nextLng'
     }
   });
 

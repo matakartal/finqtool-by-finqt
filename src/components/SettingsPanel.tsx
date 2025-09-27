@@ -1,8 +1,10 @@
 import React from 'react';
-import { Info, RefreshCw, X } from 'lucide-react';
+import { Info, RefreshCw, Type } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { showSuccessToast } from '@/lib/notifications';
+import { useFontSize } from '@/contexts/FontSizeContext';
 
 interface SettingsPanelProps {
   autoRefresh: boolean;
@@ -11,7 +13,14 @@ interface SettingsPanelProps {
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = ({ autoRefresh, onAutoRefreshChange, onChangePassword }) => {
-  
+  const { fontSize, setFontSize } = useFontSize();
+
+  const fontSizeOptions = [
+    { value: 'original', label: 'Original' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'large', label: 'Large' },
+  ];
+
   return (
     <div className="animate-scale-in">
       <div className="px-4 py-3 bg-primary/10 dark:bg-primary/5 border-b border-border flex items-center justify-between">
@@ -20,39 +29,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ autoRefresh, onAutoRefres
       </div>
       
       <div className="p-4 space-y-4">
-        {/* Exchanges tab */}
-        <div className="space-y-1.5">
-          <h4 className="text-xs font-semibold text-muted-foreground">EXCHANGES</h4>
-          <div className="flex flex-col gap-2 text-xs text-muted-foreground">
-            <button
-              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-              onClick={() => window.open('https://www.binance.com/', '_blank')}
-              type="button"
-            >
-              <img src="/binance.svg" alt="Binance logo" width={20} height={20} style={{ display: 'inline-block' }} />
-              Binance
-            </button>
-            <button
-              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-              onClick={() => window.open('https://partner.bybit.com/b/971', '_blank')}
-              type="button"
-            >
-              <img src="/bybit.svg" alt="Bybit logo" width={20} height={20} style={{ display: 'inline-block' }} />
-              Bybit
-            </button>
-            <button
-              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-              onClick={() => window.open('https://www.okx.com/', '_blank')}
-              type="button"
-            >
-              <img src="/okx.svg" alt="OKX logo" width={20} height={20} style={{ display: 'inline-block' }} />
-              OKX
-            </button>
-          </div>
-        </div>
 
         <div className="space-y-1.5">
           <h4 className="text-xs font-semibold text-muted-foreground">DATA</h4>
@@ -63,6 +39,25 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ autoRefresh, onAutoRefres
               <Label htmlFor="auto-refresh">Auto Refresh</Label>
             </div>
             <Switch id="auto-refresh" checked={autoRefresh} onCheckedChange={onAutoRefreshChange} />
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Type size={16} />
+              <Label htmlFor="font-size">Font Size</Label>
+            </div>
+            <Select value={fontSize} onValueChange={setFontSize}>
+              <SelectTrigger className="w-32" id="font-size">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {fontSizeOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
         
@@ -87,48 +82,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({ autoRefresh, onAutoRefres
           </div>
         </div>
 
-        {/* Socials section */}
-        <div className="space-y-1.5">
-          <h4 className="text-xs font-semibold text-muted-foreground">SOCIALS</h4>
-          <div className="flex flex-col gap-2 text-xs text-muted-foreground">
-            <button
-              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-              onClick={() => window.open('https://x.com/finqtcom', '_blank')}
-              type="button"
-            >
-              <span className="font-medium">𝕏</span>
-              @finqtcom
-            </button>
-            <button
-              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-              onClick={() => window.open('https://tiktok.com/finqtcom', '_blank')}
-              type="button"
-            >
-              <span className="font-medium">TikTok</span>
-              @finqtcom
-            </button>
-            <button
-              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-              onClick={() => window.open('https://youtube.com/finqtcom', '_blank')}
-              type="button"
-            >
-              <span className="font-medium">YouTube</span>
-              @finqtcom
-            </button>
-            <button
-              className="flex items-center gap-2 text-left hover:text-primary focus:outline-none focus:underline"
-              style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
-              onClick={() => window.open('https://instagram.com/finqtcom', '_blank')}
-              type="button"
-            >
-              <span className="font-medium">Instagram</span>
-              @finqtcom
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

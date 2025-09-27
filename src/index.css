@@ -307,3 +307,41 @@ html, body, * {
   }
 
 }
+
+/* Font size utilities */
+.font-size-original {
+  font-size: 12px !important;
+}
+
+.font-size-medium {
+  font-size: 14px !important;
+}
+
+.font-size-large {
+  font-size: 16px !important;
+}
+
+/* Responsive font size classes */
+.text-fs-xs { font-size: clamp(0.65rem, 0.8vw, 0.75rem); }
+.text-fs-sm { font-size: clamp(0.75rem, 1vw, 0.875rem); }
+.text-fs-base { font-size: clamp(0.875rem, 1.2vw, 1rem); }
+.text-fs-lg { font-size: clamp(1rem, 1.4vw, 1.125rem); }
+.text-fs-xl { font-size: clamp(1.125rem, 1.6vw, 1.25rem); }
+.text-fs-2xl { font-size: clamp(1.25rem, 2vw, 1.5rem); }
+.text-fs-3xl { font-size: clamp(1.5rem, 2.5vw, 1.875rem); }
+.text-fs-4xl { font-size: clamp(1.875rem, 3vw, 2.25rem); }
+
+/* Font size responsive adjustments */
+.font-size-medium .text-xs { font-size: 13px !important; }
+.font-size-medium .text-sm { font-size: 14px !important; }
+.font-size-medium .text-base { font-size: 15px !important; }
+.font-size-medium .text-lg { font-size: 16px !important; }
+.font-size-medium .text-xl { font-size: 18px !important; }
+.font-size-medium .text-2xl { font-size: 20px !important; }
+
+.font-size-large .text-xs { font-size: 15px !important; }
+.font-size-large .text-sm { font-size: 16px !important; }
+.font-size-large .text-base { font-size: 17px !important; }
+.font-size-large .text-lg { font-size: 19px !important; }
+.font-size-large .text-xl { font-size: 21px !important; }
+.font-size-large .text-2xl { font-size: 24px !important; }

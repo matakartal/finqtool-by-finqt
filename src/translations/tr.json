@@ -217,6 +217,7 @@
   },
   "settings": {
     "autoRefresh": "Otomatik Yenile",
+    "fontSize": "Yazı Boyutu",
     "theme": {
       "light": "Açık Tema",
       "dark": "Koyu Tema"
