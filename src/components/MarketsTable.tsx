@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef, memo } from 'react';
+import React, { useEffect, useState, useCallback, useRef, memo, useMemo } from 'react';
 import { useNotificationStore } from './NotificationDropdown';
 import { useTranslation } from 'react-i18next';
 import {
@@ -84,10 +84,10 @@ interface MarketRowProps {
 // Memoize individual table rows to prevent unnecessary re-renders
 const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProps) => {
   // Extract base asset from symbol (e.g., "BTC" from "BTCUSDT")
-  const baseAsset = market.symbol.replace('USDT', '');
+  const baseAsset = useMemo(() => market.symbol.replace('USDT', ''), [market.symbol]);
   
   return (
-    <TableRow className="hover:bg-muted/50">
+    <TableRow className="hover:bg-green-50 dark:hover:bg-green-950/20">
       <TableCell className="px-2 py-2 text-left w-[110px]">
         <div className="flex items-center gap-2">
           <button
@@ -164,10 +164,10 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
 
 MarketRow.displayName = 'MarketRow';
 
-// Optimized animated number with flash effect
+// Optimized animated number with flash effect and memoization
 const priceCache = new Map<string, number>();
 
-function AnimatedNumber({
+const AnimatedNumber = memo(function AnimatedNumber({
   value,
   compact = false,
   percent = false,
@@ -204,21 +204,24 @@ function AnimatedNumber({
     }
   }, [currentValue, cacheKey]);
 
-  let display = value;
-  if (formatValue) {
-    display = formatValue(value);
-  } else if (compact) {
-    display = formatCompactNumber(value);
-  } else if (percent && typeof value === 'number') {
-    display = `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`;
-  } else if (typeof value === 'number') {
-    // For small prices, show more decimal places
-    if (value < 0.001 && value > 0) {
-      display = value.toFixed(6);
-    } else {
-      display = value.toLocaleString();
+  // Memoize the display value calculation
+  const display = useMemo(() => {
+    if (formatValue) {
+      return formatValue(typeof value === 'number' ? value : parseFloat(value));
+    } else if (compact) {
+      return formatCompactNumber(value);
+    } else if (percent && typeof value === 'number') {
+      return `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`;
+    } else if (typeof value === 'number') {
+      // For small prices, show more decimal places
+      if (value < 0.001 && value > 0) {
+        return value.toFixed(6);
+      } else {
+        return value.toLocaleString();
+      }
     }
-  }
+    return value;
+  }, [value, compact, percent, decimals, formatValue]);
 
   return (
     <span className={`inline-block px-1 py-0.5 rounded transition-all duration-300 ${
@@ -228,7 +231,7 @@ function AnimatedNumber({
       {display}
     </span>
   );
-}
+});
 
 type SortableColumn = 'symbol' | 'lastPrice' | 'quoteVolume' | 'priceChangePercent' | 'fundingRate';
 
@@ -241,7 +244,7 @@ interface TableHeaderProps {
 const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => (
   <TableHeader>
     <TableRow>
-      <TableHead className="px-2 py-2 text-left cursor-pointer hover:bg-muted/50 w-[110px]" onClick={() => onSort('symbol')}>
+      <TableHead className="px-2 py-2 text-left cursor-pointer w-[110px]" onClick={() => onSort('symbol')}>
         <div className="flex items-center gap-1">
           Symbol
           {sortBy === 'symbol' && (
@@ -249,7 +252,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-left cursor-pointer hover:bg-muted/50 w-[140px]" onClick={() => onSort('lastPrice')}>
+      <TableHead className="px-2 py-2 text-left cursor-pointer w-[140px]" onClick={() => onSort('lastPrice')}>
         <div className="flex items-center gap-1">
           Price
           {sortBy === 'lastPrice' && (
@@ -257,7 +260,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50 w-[120px]" onClick={() => onSort('quoteVolume')}>
+      <TableHead className="px-2 py-2 text-right cursor-pointer w-[120px]" onClick={() => onSort('quoteVolume')}>
         <div className="flex items-center justify-end gap-1">
           Volume
           {sortBy === 'quoteVolume' && (
@@ -265,7 +268,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50 w-[80px]" onClick={() => onSort('priceChangePercent')}>
+      <TableHead className="px-2 py-2 text-right cursor-pointer w-[80px]" onClick={() => onSort('priceChangePercent')}>
         <div className="flex items-center justify-end gap-1">
           Change
           {sortBy === 'priceChangePercent' && (
@@ -273,7 +276,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50 w-[90px]" onClick={() => onSort('fundingRate')}>
+      <TableHead className="px-2 py-2 text-right cursor-pointer w-[90px]" onClick={() => onSort('fundingRate')}>
         <div className="flex items-center justify-end gap-1">
           Funding
           {sortBy === 'fundingRate' && (
@@ -293,17 +296,25 @@ interface MarketsTableProps {
   refreshInterval?: number;
 }
 
-const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterval = 5000 }) => {
+const MarketsTable: React.FC<MarketsTableProps> = memo(({ autoRefresh, refreshInterval = 5000 }) => {
   const { t } = useTranslation();
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [markets, setMarkets] = useState<MarketData[]>([]);
-  const [displayedMarkets, setDisplayedMarkets] = useState<MarketData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<SortableColumn>('quoteVolume');
   const [sortDir, setSortDir] = useState<'asc'|'desc'>('desc');
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [favourites, setFavourites] = useState<string[]>([]);
+
+  // Debounce search input to improve performance
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search]);
   const [showFavouritesOnly, setShowFavouritesOnly] = useState(false);
   const [selectedExchange, setSelectedExchange] = useState<Exchange>('BINANCE');
   const [retryCount, setRetryCount] = useState(0);
@@ -344,7 +355,18 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
   const toggleFavourite = useCallback((symbol: string) => {
     setFavourites(favs => favs.includes(symbol) ? favs.filter(s => s !== symbol) : [...favs, symbol]);
   }, []);
-  const isFavourite = useCallback((symbol: string) => favourites.includes(symbol), [favourites]);
+
+  // Memoize favourites set for better performance
+  const favouritesSet = useMemo(() => new Set(favourites), [favourites]);
+  const isFavourite = useCallback((symbol: string) => favouritesSet.has(symbol), [favouritesSet]);
+
+  // Memoized fetch configuration to reduce dependency changes
+  const fetchConfig = useMemo(() => ({
+    selectedExchange,
+    search: debouncedSearch,
+    sortBy,
+    sortDir
+  }), [selectedExchange, debouncedSearch, sortBy, sortDir]);
 
   // Fetch data function with caching
   const fetchData = useCallback(async (manual?: boolean, forceRefresh?: boolean, showNotification?: boolean) => {
@@ -429,28 +451,38 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
 
         if (!cachedFundingMap) {
           try {
-            // Fetch funding rates for each symbol individually
-            const fundingPromises = usdtPairs.map(async (item) => {
-              try {
-                const symbol = item.symbol;
-                const fundingRes = await fetch(`https://api.bybit.com/v5/market/funding/history?category=linear&symbol=${symbol}&limit=1`);
-                if (!fundingRes.ok) throw new Error(`Funding fetch failed for ${symbol}: ${fundingRes.status}`);
-                const fundingData = await fundingRes.json();
-                if (fundingData.retCode === 0 && fundingData.result && fundingData.result.list && fundingData.result.list.length > 0) {
-                  return { symbol, rate: fundingData.result.list[0].fundingRate };
-                }
-                return null;
-              } catch (err) {
-                console.error(`Failed to fetch funding rate for ${item.symbol}:`, err);
-                return null;
-              }
-            });
-
-            const fundingResults = await Promise.all(fundingPromises);
+            // Batch funding rate requests in chunks to avoid rate limiting
+            const BATCH_SIZE = 10;
             const freshFundingMap: Record<string, string> = {};
-            for (const result of fundingResults) {
-              if (result) {
-                freshFundingMap[result.symbol] = result.rate;
+
+            for (let i = 0; i < usdtPairs.length; i += BATCH_SIZE) {
+              const batch = usdtPairs.slice(i, i + BATCH_SIZE);
+              const fundingPromises = batch.map(async (item) => {
+                try {
+                  const symbol = item.symbol;
+                  const fundingRes = await fetch(`https://api.bybit.com/v5/market/funding/history?category=linear&symbol=${symbol}&limit=1`);
+                  if (!fundingRes.ok) throw new Error(`Funding fetch failed for ${symbol}: ${fundingRes.status}`);
+                  const fundingData = await fundingRes.json();
+                  if (fundingData.retCode === 0 && fundingData.result && fundingData.result.list && fundingData.result.list.length > 0) {
+                    return { symbol, rate: fundingData.result.list[0].fundingRate };
+                  }
+                  return null;
+                } catch (err) {
+                  console.error(`Failed to fetch funding rate for ${item.symbol}:`, err);
+                  return null;
+                }
+              });
+
+              const batchResults = await Promise.all(fundingPromises);
+              for (const result of batchResults) {
+                if (result) {
+                  freshFundingMap[result.symbol] = result.rate;
+                }
+              }
+
+              // Small delay between batches to be respectful to the API
+              if (i + BATCH_SIZE < usdtPairs.length) {
+                await new Promise(resolve => setTimeout(resolve, 100));
               }
             }
 
@@ -503,7 +535,6 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
 
       setMarkets(merged);
       setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-      setDisplayedMarkets(applySortAndSearch(merged, sortBy, sortDir, search));
       if (showNotification) {
         addNotification({
           title: 'Markets updated',
@@ -517,7 +548,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
       setLoading(false);
       if (manual) setIsRefreshing(false);
     }
-  }, [search, sortBy, sortDir, selectedExchange]);
+  }, [fetchConfig]);
 
   // Manual refresh - clears cache and fetches fresh data
   const refreshMarkets = useCallback(() => {
@@ -553,33 +584,45 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
     };
   }, [autoRefresh, fetchData, refreshInterval]);
 
-  // Sorting and searching helpers
-  function applySortAndSearch(data: MarketData[], sortBy: string, sortDir: string, search: string) {
+  // Optimized sorting and searching helpers with memoization
+  const applySortAndSearch = useCallback((data: MarketData[], sortBy: string, sortDir: string, search: string) => {
+    if (!data.length) return [];
+
+    // Filter first (more selective operation)
     let filtered = data;
     if (search) {
-      filtered = filtered.filter(m => m.symbol.toLowerCase().includes(search.toLowerCase()));
+      const searchLower = search.toLowerCase();
+      filtered = filtered.filter(m => m.symbol.toLowerCase().includes(searchLower));
     }
-    let sorted = [...filtered];
-    sorted.sort((a, b) => {
+
+    // Always sort by USD volume (quoteVolume) to ensure correct ordering
+
+    // Sort with optimized comparison
+    const sorted = [...filtered].sort((a, b) => {
       let aVal: string|number = a[sortBy as keyof MarketData] ?? '';
       let bVal: string|number = b[sortBy as keyof MarketData] ?? '';
+
+      // Numeric sorting for specific columns
       if (sortBy === 'lastPrice' || sortBy === 'quoteVolume' || sortBy === 'fundingRate' || sortBy === 'priceChangePercent') {
-        aVal = parseFloat(aVal as string);
-        bVal = parseFloat(bVal as string);
-        if (isNaN(aVal as number)) aVal = -Infinity;
-        if (isNaN(bVal as number)) bVal = -Infinity;
+        const aNum = parseFloat(aVal as string);
+        const bNum = parseFloat(bVal as string);
+        aVal = isNaN(aNum) ? -Infinity : aNum;
+        bVal = isNaN(bNum) ? -Infinity : bNum;
       }
+
       if (aVal < bVal) return sortDir === 'asc' ? -1 : 1;
       if (aVal > bVal) return sortDir === 'asc' ? 1 : -1;
       return 0;
     });
-    return sorted;
-  }
 
-  // Update displayedMarkets on sort/search change
-  useEffect(() => {
-    setDisplayedMarkets(applySortAndSearch(markets, sortBy, sortDir, search));
-  }, [markets, sortBy, sortDir, search]);
+    return sorted;
+  }, []);
+
+  // Memoize sorted and filtered markets
+  const displayedMarkets = useMemo(() => {
+    if (!markets.length) return [];
+    return applySortAndSearch(markets, sortBy, sortDir, debouncedSearch);
+  }, [markets, sortBy, sortDir, debouncedSearch, applySortAndSearch]);
 
   // Memoize handlers
   const handleToggleFavorite = useCallback((symbol: string) => {
@@ -631,7 +674,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
               <div className="flex items-center gap-1 ml-2">
                 <button
                   type="button"
-                  onClick={() => fetchData(true)}
+                  onClick={refreshMarkets}
                   className="flex items-center justify-center h-8 w-8 rounded-lg bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700 transition-all focus:outline-none focus:ring-2 focus:ring-zinc-500"
                   aria-label="Refresh"
                   style={{ verticalAlign: 'middle' }}
@@ -667,7 +710,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
             <Table className="w-full">
               <TableHeaderMemo sortBy={sortBy} sortDir={sortDir} onSort={handleSort} />
               <TableBody>
-                {(showFavouritesOnly ? displayedMarkets.filter(m => isFavourite(m.symbol)) : displayedMarkets).map((market) => (
+                {(showFavouritesOnly ? displayedMarkets.filter(m => isFavourite(m.symbol)) : displayedMarkets).slice(0, 200).map((market) => (
                   <MarketRow
                     key={market.symbol}
                     market={market}
@@ -694,18 +737,28 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
       </div>
     </div>
   );
-}
+});
 
-MarketsTable.displayName = 'MarketsTable';
+// Memoized compact number formatter
+const formatCompactNumber = (() => {
+  const cache = new Map<string | number, string>();
+  return (num: string | number): string => {
+    if (cache.has(num)) return cache.get(num)!;
 
-function formatCompactNumber(num: string | number) {
-  const n = typeof num === 'string' ? parseFloat(num) : num;
-  if (isNaN(n)) return '-';
-  if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
-  if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
-  if (n >= 1e3) return (n / 1e3).toFixed(2) + 'K';
-  return n.toLocaleString();
-}
+    const n = typeof num === 'string' ? parseFloat(num) : num;
+    if (isNaN(n)) return '-';
+    let result: string;
+    if (n >= 1e9) result = (n / 1e9).toFixed(2) + 'B';
+    else if (n >= 1e6) result = (n / 1e6).toFixed(2) + 'M';
+    else if (n >= 1e3) result = (n / 1e3).toFixed(2) + 'K';
+    else result = n.toLocaleString();
+
+    // Cache up to 1000 entries to prevent memory leaks
+    if (cache.size > 1000) cache.clear();
+    cache.set(num, result);
+    return result;
+  };
+})();
 
 // --- ANIMATION/UTIL COMPONENTS ---
 // (useRef already imported above, remove duplicate imports)
@@ -740,4 +793,6 @@ function AssetIcon({ symbol }: { symbol: string }) {
 // @keyframes fadeIn { from { opacity: 0; transform: translateY(12px);} to { opacity: 1; transform: none; } }
 // @keyframes fadeNumber { from { background: #ffe066; } to { background: none; } }
 
-export default memo(MarketsTable);
+MarketsTable.displayName = 'MarketsTable';
+
+export default MarketsTable;
