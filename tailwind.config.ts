@@ -20,8 +20,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				inter: ['Inter', 'sans-serif'],
-				sfpro: ['"SF Pro Text"', '"SF Pro Display"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+				sfpro: ['"SF Pro Text"', '"SF Pro Display"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -132,6 +131,5 @@ export default {
 			}
 		}
 	},
-	// eslint-disable-next-line @typescript-eslint/no-require-imports
 	plugins: [require("tailwindcss-animate")],
 } satisfies Config;

@@ -379,11 +379,28 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
     }
   }, []);
 
-  // Save notes and templates to localStorage
+  // Save notes and templates to localStorage with debouncing
   useEffect(() => {
-    localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
-    localStorage.setItem(NOTE_TEMPLATES_KEY, JSON.stringify(templates));
-  }, [notes, templates]);
+    const timeoutId = setTimeout(() => {
+      try {
+        localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
+      } catch (error) {
+        console.error('Failed to save notes:', error);
+      }
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [notes]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      try {
+        localStorage.setItem(NOTE_TEMPLATES_KEY, JSON.stringify(templates));
+      } catch (error) {
+        console.error('Failed to save templates:', error);
+      }
+    }, 500);
+    return () => clearTimeout(timeoutId);
+  }, [templates]);
 
   function addNote(template?: NoteTemplate) {
     if (notes.length >= MAX_NOTES) {

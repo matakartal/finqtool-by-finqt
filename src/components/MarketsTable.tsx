@@ -14,8 +14,8 @@ import {
 import { Star } from 'lucide-react';
 
 // Cache for API responses
-interface CacheEntry {
-  data: any;
+interface CacheEntry<T = unknown> {
+  data: T;
   timestamp: number;
   ttl: number; // Time to live in milliseconds
 }
@@ -23,7 +23,7 @@ interface CacheEntry {
 class ApiCache {
   private cache = new Map<string, CacheEntry>();
 
-  set(key: string, data: any, ttl: number = 30000) { // Default 30 seconds
+  set<T>(key: string, data: T, ttl: number = 30000) { // Default 30 seconds
     this.cache.set(key, {
       data,
       timestamp: Date.now(),
@@ -31,7 +31,7 @@ class ApiCache {
     });
   }
 
-  get(key: string): any | null {
+  get<T = unknown>(key: string): T | null {
     const entry = this.cache.get(key);
     if (!entry) return null;
 
@@ -40,7 +40,7 @@ class ApiCache {
       return null;
     }
 
-    return entry.data;
+    return entry.data as T;
   }
 
   clear() {
@@ -337,19 +337,28 @@ const MarketsTable: React.FC<MarketsTableProps> = memo(({ autoRefresh, refreshIn
   }, []);
 
   useEffect(() => {
-    if (favourites.length === 0) {
-      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-        chrome.storage.local.remove(['favourites']);
-      } else {
-        localStorage.removeItem('favourites');
+    const saveToStorage = async () => {
+      try {
+        if (favourites.length === 0) {
+          if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+            await chrome.storage.local.remove(['favourites']);
+          } else {
+            localStorage.removeItem('favourites');
+          }
+          return;
+        }
+        if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
+          await chrome.storage.local.set({ favourites });
+        } else {
+          localStorage.setItem('favourites', JSON.stringify(favourites));
+        }
+      } catch (error) {
+        console.error('Failed to save favourites:', error);
       }
-      return;
-    }
-    if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local) {
-      chrome.storage.local.set({ favourites });
-    } else {
-      localStorage.setItem('favourites', JSON.stringify(favourites));
-    }
+    };
+    
+    const timeoutId = setTimeout(saveToStorage, 300);
+    return () => clearTimeout(timeoutId);
   }, [favourites]);
 
   const toggleFavourite = useCallback((symbol: string) => {

@@ -6,6 +6,7 @@
   "description": "Powerful financial calculators and tools for cryptocurrency traders and investors",
   "action": {
     "default_popup": "index.html",
+    "default_title": "finqt - Financial Tools",
     "default_icon": {
       "16": "icons/icon16.png",
       "32": "icons/icon32.png",
@@ -13,12 +14,6 @@
       "128": "icons/icon128.png"
     }
   },
-  "web_accessible_resources": [
-    {
-      "resources": ["index.html"],
-      "matches": ["<all_urls>"]
-    }
-  ],
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -28,7 +23,9 @@
   "permissions": [
     "storage"
   ],
+  "host_permissions": [],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
-  }
+    "extension_pages": "script-src 'self'; object-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com"
+  },
+  "offline_enabled": true
 }

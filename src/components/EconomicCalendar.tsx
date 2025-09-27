@@ -353,19 +353,19 @@ const EconomicCalendar: React.FC = () => {
                 ))}
               </TableBody>
             </Table>
-                className="mt-2"
-              >
-                Return to today
-              </Button>
-            </div>
-          )}
-          
-          <div className="mt-4 py-2 text-[10px] text-center text-muted-foreground">
-            All times shown in UTC • Last updated: {new Date().toLocaleTimeString()}
           </div>
+        ) : (
+          <div className="text-center py-8 text-muted-foreground">
+            <Calendar size={48} className="mx-auto mb-4 opacity-50" />
+            <p className="text-sm">No events scheduled for this date</p>
+          </div>
+        )}
+        
+        <div className="mt-4 py-2 text-[10px] text-center text-muted-foreground">
+          All times shown in UTC • Last updated: {new Date().toLocaleTimeString()}
         </div>
-      </Card>
-    </div>
+      </div>
+    </MainCard>
   );
 };
 

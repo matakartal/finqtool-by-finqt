@@ -22,7 +22,7 @@ export default defineConfig(({ mode }) => ({
     // Optimize for Chrome extension
     outDir: 'dist',
     // Use relative paths for assets in production build
-    assetsDir: '',
+    assetsDir: 'assets',
     rollupOptions: {
       output: {
         // Intelligent chunk splitting for better caching
@@ -33,9 +33,17 @@ export default defineConfig(({ mode }) => ({
             if (id.includes('recharts') || id.includes('date-fns')) {
               return 'heavy-vendor';
             }
+            // Core UI libraries - keep together for context sharing
+            if (id.includes('@radix-ui') || id.includes('react-hook-form')) {
+              return 'ui-vendor';
+            }
             // Other node_modules - keep smaller chunks
-            if (id.includes('i18next') || id.includes('lucide-react') || id.includes('react-window')) {
+            if (id.includes('i18next') || id.includes('lucide-react')) {
               return 'vendor';
+            }
+            // React Query and state management
+            if (id.includes('@tanstack') || id.includes('zustand')) {
+              return 'state-vendor';
             }
           }
           // Separate chunk for translations
@@ -50,17 +58,19 @@ export default defineConfig(({ mode }) => ({
       },
     },
     // Ensure we don't use absolute paths in builds
-    assetsInlineLimit: 0,
-    chunkSizeWarningLimit: 1000, // Lower warning threshold
-    // Enable source maps for debugging (can be disabled in production)
+    assetsInlineLimit: 4096, // Inline small assets
+    chunkSizeWarningLimit: 800, // Lower warning threshold for Chrome extension
+    // Disable source maps for production
     sourcemap: false,
     // Minimize bundle size
     minify: 'esbuild',
     // Target modern browsers that support ES modules
-    target: 'es2015',
+    target: 'es2020',
     // Optimize assets
     reportCompressedSize: false, // Faster builds
     cssCodeSplit: true, // Split CSS for better caching
+    // Additional optimizations
+    emptyOutDir: true,
   },
   // Optimize dependency pre-bundling
   optimizeDeps: {

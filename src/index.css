@@ -1,5 +1,4 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Text:wght@400;500;600&display=swap');
 
@@ -90,7 +89,7 @@ body {
 @layer base {
   html, body {
     font-size: 12px !important;
-    font-family: 'Inter', 'SF Pro Display', 'SF Pro Text', Arial, sans-serif !important;
+    font-family: 'SF Pro Text', 'SF Pro Display', Arial, sans-serif !important;
     line-height: 1.2 !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -198,7 +197,7 @@ body {
 }
 
 html, body {
-  font-family: 'SF Pro Text', 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
   text-rendering: optimizeLegibility; /* Better text rendering */
 }
 
