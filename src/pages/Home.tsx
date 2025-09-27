@@ -56,6 +56,18 @@ const HomePage = () => {
         storage.set('autoRefresh', autoRefresh);
     }, [autoRefresh]);
 
+    // Scroll to top whenever tab changes
+    useEffect(() => {
+        // Use multiple approaches to ensure scroll to top works
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        window.scrollTo(0, 0);
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTop = 0;
+            scrollContainerRef.current.scrollTo({ top: 0, behavior: 'instant' });
+        }
+    }, [selectedTab]);
+
     useEffect(() => {
         const updateTime = () => {
             const now = new Date();
@@ -73,14 +85,6 @@ const HomePage = () => {
 
     const handleTabChange = useCallback((value: string) => {
         setSelectedTab(value);
-        // Scroll to top when changing tabs - both window and container
-        // Use setTimeout to ensure tab content is rendered first
-        setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'instant' });
-            if (scrollContainerRef.current) {
-                scrollContainerRef.current.scrollTo({ top: 0, behavior: 'instant' });
-            }
-        }, 0);
     }, []);
 
     const handleThemeToggle = useCallback(() => {
