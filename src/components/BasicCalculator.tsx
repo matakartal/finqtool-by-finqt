@@ -170,23 +170,18 @@ const BasicCalculator: React.FC = () => {
 
     if (isNaN(inputValue)) return;
 
-    if (storedValue === null) {
-      // First operation
+    if (storedValue === null || waitingForOperand) {
+      // First operation or continuing after equals - use current display value
       setStoredValue(inputValue);
-    } else if (operator && !waitingForOperand) {
-      // Chain operations
-      const result = calculate(storedValue, inputValue, operator);
-      if (!isNaN(result)) {
-        setStoredValue(result);
-        setDisplay(formatNumber(result));
-        setMemory(prev => [`${formatNumber(storedValue)} ${operator} ${formatNumber(inputValue)} = ${formatNumber(result)}`, ...prev.slice(0, MAX_HISTORY_LENGTH - 1)]);
-      }
+    } else if (operator) {
+      // Chain operations - update stored value without calculating
+      setStoredValue(inputValue);
     }
 
     setWaitingForOperand(true);
     setOperator(nextOperator);
     setLastOperation(`${formatNumber(inputValue)} ${nextOperator}`);
-  }, [display, storedValue, operator, waitingForOperand, calculate]);
+  }, [display, storedValue, operator, waitingForOperand]);
 
   // Enhanced equals handling with better result management
   const handleEquals = useCallback(() => {
@@ -199,7 +194,7 @@ const BasicCalculator: React.FC = () => {
 
     if (!isNaN(result)) {
       const formattedResult = formatNumber(result);
-      setDisplay(formattedResult);
+      setDisplay(result.toString());
 
       const calculation = `${formatNumber(storedValue)} ${operator} ${formatNumber(inputValue)} = ${formattedResult}`;
       setMemory(prev => [calculation, ...prev.slice(0, MAX_HISTORY_LENGTH - 1)]);
@@ -209,6 +204,7 @@ const BasicCalculator: React.FC = () => {
       // Prepare for next calculation
       setStoredValue(result);
       setWaitingForOperand(true);
+      setOperator(null);
       setLastOperation(null);
     }
   }, [display, storedValue, operator, calculate]);
@@ -345,7 +341,7 @@ const BasicCalculator: React.FC = () => {
                   </Button>
                 </div>
 
-                <div className="max-h-32 sm:max-h-40 overflow-y-auto space-y-2">
+                <div className="space-y-2">
                   {memory.slice(0, 10).map((item, index) => (
                     <div
                       key={index}
