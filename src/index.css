@@ -1,6 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=SF+Pro+Text:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600&display=swap');
 
 html, body, #root {
   width: 100vw;
@@ -97,6 +98,20 @@ body {
     min-width: 0;
     min-height: 0;
     box-sizing: border-box;
+  }
+
+  /* Windows-specific font override for better text rendering */
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    html, body {
+      font-family: 'Roboto', 'SF Pro Text', 'SF Pro Display', Arial, sans-serif !important;
+    }
+  }
+
+  /* Alternative Windows detection using CSS supports */
+  @supports (-ms-ime-align: auto) {
+    html, body {
+      font-family: 'Roboto', 'SF Pro Text', 'SF Pro Display', Arial, sans-serif !important;
+    }
   }
   :root {
     --background: 0 0% 100%;
@@ -199,6 +214,19 @@ body {
 html, body {
   font-family: 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
   text-rendering: optimizeLegibility; /* Better text rendering */
+}
+
+/* Windows-specific font override for general fallback */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  html, body {
+    font-family: 'Roboto', 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
+}
+
+@supports (-ms-ime-align: auto) {
+  html, body {
+    font-family: 'Roboto', 'SF Pro Text', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  }
 }
 
 /* Chrome extension specific styles */
