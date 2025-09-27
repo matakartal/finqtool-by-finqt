@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FileText, Download, Trash2, Pencil, PlusCircle, Search, Tag, History, Share2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import TemplateCard from '@/components/TemplateCard';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { showSuccessToast, showInfoToast } from '@/lib/notifications';
@@ -56,6 +56,18 @@ const defaultTemplates: NoteTemplate[] = [
     title: 'Risk Management',
     content: 'Account Size: \nRisk Per Trade: \nMaximum Drawdown: \nPosition Sizing: \nStop Loss Strategy: \nNotes:',
     category: 'Risk'
+  },
+  {
+    id: 'template4',
+    title: 'Performance Review',
+    content: 'Period: \nTotal Trades: \nWin Rate: \nProfit/Loss: \nBest Trade: \nWorst Trade: \nLessons Learned:',
+    category: 'Analysis'
+  },
+  {
+    id: 'template5',
+    title: 'Market News',
+    content: 'Date/Time: \nNews Headline: \nImpact: \nExpected Move: \nMy Position: \nFollow-up Notes:',
+    category: 'Trading'
   }
 ];
 
@@ -199,21 +211,13 @@ const UserNotes: React.FC = () => {
       </div>
 
       {showTemplates && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
           {templates.map(template => (
-            <Card 
-              key={template.id} 
-              className="cursor-pointer hover:shadow-lg transition-all bg-white dark:bg-[#232323] border-neutral-200 dark:border-neutral-700"
+            <TemplateCard
+              key={template.id}
+              template={template}
               onClick={() => addNote(template)}
-            >
-              <CardHeader className="pb-2">
-                <h3 className="font-semibold text-neutral-900 dark:text-neutral-100">{template.title}</h3>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400">{template.category}</p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-neutral-500 dark:text-neutral-400 line-clamp-3">{template.content}</p>
-              </CardContent>
-            </Card>
+            />
           ))}
         </div>
       )}
