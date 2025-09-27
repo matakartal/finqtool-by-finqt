@@ -5,6 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import TemplateCard from '@/components/TemplateCard';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -322,13 +323,13 @@ const PREDEFINED_CATEGORIES = [
 ];
 
 const CATEGORY_COLORS = {
-  'Trading': 'bg-blue-500/20 border-blue-400/50 text-blue-100 hover:bg-blue-500/30',
-  'Analysis': 'bg-green-500/20 border-green-400/50 text-green-100 hover:bg-green-500/30',
-  'Risk': 'bg-red-500/20 border-red-400/50 text-red-100 hover:bg-red-500/30',
-  'Strategy': 'bg-purple-500/20 border-purple-400/50 text-purple-100 hover:bg-purple-500/30',
-  'Psychology': 'bg-pink-500/20 border-pink-400/50 text-pink-100 hover:bg-pink-500/30',
-  'Education': 'bg-yellow-500/20 border-yellow-400/50 text-yellow-100 hover:bg-yellow-500/30',
-  'General': 'bg-gray-500/20 border-gray-400/50 text-gray-100 hover:bg-gray-500/30'
+  'Trading': 'bg-blue-100 dark:bg-blue-500/20 border-blue-200 dark:border-blue-400/50 text-blue-800 dark:text-blue-100 hover:bg-blue-200 dark:hover:bg-blue-500/30',
+  'Analysis': 'bg-green-100 dark:bg-green-500/20 border-green-200 dark:border-green-400/50 text-green-800 dark:text-green-100 hover:bg-green-200 dark:hover:bg-green-500/30',
+  'Risk': 'bg-red-100 dark:bg-red-500/20 border-red-200 dark:border-red-400/50 text-red-800 dark:text-red-100 hover:bg-red-200 dark:hover:bg-red-500/30',
+  'Strategy': 'bg-purple-100 dark:bg-purple-500/20 border-purple-200 dark:border-purple-400/50 text-purple-800 dark:text-purple-100 hover:bg-purple-200 dark:hover:bg-purple-500/30',
+  'Psychology': 'bg-pink-100 dark:bg-pink-500/20 border-pink-200 dark:border-pink-400/50 text-pink-800 dark:text-pink-100 hover:bg-pink-200 dark:hover:bg-pink-500/30',
+  'Education': 'bg-yellow-100 dark:bg-yellow-500/20 border-yellow-200 dark:border-yellow-400/50 text-yellow-800 dark:text-yellow-100 hover:bg-yellow-200 dark:hover:bg-yellow-500/30',
+  'General': 'bg-gray-100 dark:bg-gray-500/20 border-gray-200 dark:border-gray-400/50 text-gray-800 dark:text-gray-100 hover:bg-gray-200 dark:hover:bg-gray-500/30'
 };
 
 const CATEGORY_DOT_COLORS = {
@@ -509,24 +510,23 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {notes.map(note => (
-            <div key={note.id} className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
-              <div className="bg-black backdrop-blur-lg border-b border-zinc-800 px-4 pt-3 pb-3 flex flex-row items-center gap-3">
+            <div key={note.id} className="bg-card border rounded-lg shadow-sm overflow-hidden animate-fadeScaleIn transition-all hover:shadow-md">
+              <div className="px-4 py-3 border-b">
                 {renamingId === note.id ? (
-                  <div className="flex items-center gap-2 flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
                     <input
                       value={renameValue}
                       onChange={handleRenameChange}
                       onKeyDown={e => { if (e.key === 'Enter') finishRename(note.id); }}
                       autoFocus
-                      className="flex-1 px-3 py-2 rounded bg-white dark:bg-muted border text-sm font-medium outline-none focus:ring-2 focus:ring-primary min-w-0"
+                      className="flex-1 px-3 py-1 text-sm border rounded focus:outline-none focus:ring-2 focus:ring-primary"
                       placeholder={t('notes.noteTitle')}
                     />
                     <Button
                       onClick={() => finishRename(note.id)}
                       variant="default"
                       size="sm"
-                      className="h-8 px-3 bg-green-600 hover:bg-green-700 text-white flex-shrink-0"
-                      title="Save"
+                      className="h-7 px-2 text-xs"
                     >
                       Save
                     </Button>
@@ -537,78 +537,76 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
                       }}
                       variant="outline"
                       size="sm"
-                      className="h-8 px-3 border-white/20 text-white/90 hover:text-white hover:bg-white/10 flex-shrink-0"
-                      title="Cancel"
+                      className="h-7 px-2 text-xs"
                     >
                       Cancel
                     </Button>
                   </div>
                 ) : (
-                  <>
-                    <div className="flex items-center gap-1 min-w-0 flex-1">
-                      <span className="text-sm font-medium text-white truncate">{note.title}</span>
-                      <Button
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                      <h3
+                        className={`text-sm font-semibold truncate ${note.title === 'Untitled Note' ? 'text-muted-foreground cursor-pointer hover:text-foreground' : 'text-foreground cursor-pointer hover:text-primary'}`}
                         onClick={() => startRename(note.id, note.title)}
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6 text-white/70 hover:text-white hover:bg-white/10 flex-shrink-0"
-                        title={t('common.rename')}
+                        title="Click to rename"
                       >
-                        <Pencil size={12} />
-                        <span className="sr-only">{t('common.rename')}</span>
-                      </Button>
+                        {note.title}
+                      </h3>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <button
-                            className={`text-xs flex-shrink-0 border ml-1 px-2 py-0.5 rounded-md cursor-pointer transition-colors focus:outline-none focus:ring-1 focus:ring-white/50 ${CATEGORY_COLORS[note.category as keyof typeof CATEGORY_COLORS] || 'bg-gray-500/20 border-gray-400/50 text-gray-100 hover:bg-gray-500/30'}`}
-                          >
+                          <button className={`text-xs px-2 py-0.5 rounded border transition-colors ${CATEGORY_COLORS[note.category as keyof typeof CATEGORY_COLORS] || 'bg-muted text-muted-foreground'}`}>
                             {note.category}
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" side="bottom" sideOffset={4} className="w-40 z-[60]">
+                        <DropdownMenuContent align="end" className="w-40">
                           {PREDEFINED_CATEGORIES.map(category => (
                             <DropdownMenuItem
                               key={category}
                               onClick={() => updateCategory(note.id, category)}
-                              className={`flex items-center gap-2 ${note.category === category ? 'bg-muted' : ''}`}
+                              className="flex items-center gap-2"
                             >
-                              <div
-                                className={`w-2 h-2 rounded-full ${CATEGORY_DOT_COLORS[category as keyof typeof CATEGORY_DOT_COLORS]}`}
-                              />
+                              <div className={`w-2 h-2 rounded-full ${CATEGORY_DOT_COLORS[category as keyof typeof CATEGORY_DOT_COLORS]}`} />
                               {category}
                             </DropdownMenuItem>
                           ))}
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </div>
-                    <div className="flex items-center gap-1 ml-auto">
+                    <div className="flex items-center gap-1">
+                      <Button
+                        onClick={() => startRename(note.id, note.title)}
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6"
+                        title={t('common.rename')}
+                      >
+                        <Pencil size={12} />
+                      </Button>
+                      <Button
+                        onClick={() => exportNote(note)}
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-green-600"
+                        title={t('common.exportNote')}
+                      >
+                        <Download size={12} />
+                      </Button>
                       <Button
                         onClick={() => confirmDelete(note.id)}
                         variant="ghost"
                         size="icon"
-                        className="h-6 w-6 text-white/70 hover:text-red-400 hover:bg-white/10"
+                        className="h-6 w-6 text-red-600"
                         title={t('common.delete')}
                       >
                         <Trash2 size={12} />
-                        <span className="sr-only">{t('common.delete')}</span>
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => exportNote(note)}
-                        className="h-6 w-6 border-white/20 text-green-500 hover:text-green-400 hover:bg-black/10 dark:hover:bg-white/10"
-                        title={t('common.exportNote')}
-                      >
-                        <Download size={12} />
-                        <span className="sr-only">{t('common.exportNote')}</span>
                       </Button>
                     </div>
-                  </>
+                  </div>
                 )}
               </div>
-              <div className="flex flex-col px-4 py-4 bg-muted/40">
+              <div className="px-4 py-3">
                 <Textarea
-                  className="w-full min-h-[280px] rounded-lg border border-neutral-200 dark:border-border p-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-white dark:bg-muted resize-vertical font-medium"
+                  className="w-full min-h-[280px] text-sm border rounded p-3 focus:outline-none focus:ring-2 focus:ring-primary resize-vertical"
                   value={note.content}
                   onChange={e => {
                     if (e.target.value.length > 500) {
@@ -619,29 +617,44 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
                   }}
                   maxLength={500}
                   placeholder={t('notes.writeFinancialNotes')}
-                  style={{ fontFamily: 'inherit', fontWeight: 500 }}
                 />
-                <div className="flex justify-between items-center mt-3">
-                  <div className="text-xs text-muted-foreground">{note.content.length} / 500</div>
-                  <div className="text-xs text-muted-foreground">
-                    {new Date(note.updatedAt).toLocaleDateString()}
-                  </div>
+                <div className="flex justify-between items-center mt-2 text-xs text-muted-foreground">
+                  <span>{note.content.length} / 500</span>
+                  <span>{new Date(note.updatedAt).toLocaleDateString()}</span>
                 </div>
               </div>
               {/* Delete confirmation dialog for this note */}
-              {showDeleteId === note.id && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                  <div className="bg-white dark:bg-card rounded-xl shadow-2xl p-6 w-full max-w-sm flex flex-col items-center border border-neutral-200 dark:border-border">
-                    <Trash2 size={32} className="mb-3 text-red-500" />
-                    <div className="font-semibold text-lg mb-2 text-center">{t('common.deleteThisNote')}</div>
-                    <div className="text-sm text-muted-foreground mb-4 text-center">{t('common.thisActionCannotBeUndone')}</div>
-                    <div className="flex gap-3">
-                      <Button variant="destructive" onClick={() => deleteNote(note.id)}>Delete</Button>
-                      <Button variant="outline" onClick={() => setShowDeleteId(null)}>Cancel</Button>
+              <Dialog open={showDeleteId === note.id} onOpenChange={(open) => !open && setShowDeleteId(null)}>
+                <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
+                  <DialogHeader className="text-left pb-3">
+                    <DialogTitle className="text-xl font-bold text-foreground text-left">{t('common.deleteThisNote')}</DialogTitle>
+                  </DialogHeader>
+                  <div className="px-1">
+                    <div className="flex items-start gap-4">
+                      <div className="flex-shrink-0 mt-1">
+                        <div className="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/20 flex items-center justify-center">
+                          <Trash2 size={24} className="text-red-600 dark:text-red-400" />
+                        </div>
+                      </div>
+                      <div className="flex-1 space-y-3">
+                        <div>
+                          <p className="text-sm text-foreground leading-relaxed">
+                            {t('common.thisActionCannotBeUndone')}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1">
+                            This will permanently remove this note from your collection.
+                          </p>
+                        </div>
+                        <div className="flex justify-end pt-2">
+                          <Button variant="destructive" onClick={() => deleteNote(note.id)}>
+                            Delete Note
+                          </Button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
+                </DialogContent>
+              </Dialog>
             </div>
           ))}
         </div>
