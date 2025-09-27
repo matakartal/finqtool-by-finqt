@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -111,7 +111,7 @@ const ProfitLossCalculator: React.FC = () => {
     breakEven: string;
   } | null>(null);
 
-  const calculateResults = () => {
+  const calculateResults = useCallback(() => {
     if (!entryPrice || !positionSize || !exitPrice) {
       showInfoToast(t('financial.calculator.messages.incompleteInfo'), t('financial.calculator.messages.missingData'));
       return;
@@ -156,11 +156,11 @@ const ProfitLossCalculator: React.FC = () => {
       `${t('financial.calculator.messages.calculationComplete')}: $${pl.toFixed(2)} (${t('financial.calculator.labels.roi')}: ${roi.toFixed(2)}%)`,
       t('financial.calculator.messages.calculationComplete')
     );
-  };
+  }, [entryPrice, positionSize, exitPrice, position, leverage, fee, includeFees, t]);
 
-  const togglePosition = () => {
+  const togglePosition = useCallback(() => {
     setPosition(position === 'long' ? 'short' : 'long');
-  };
+  }, [position]);
   return <CardContent className="px-4 py-4">
       <div className="space-y-4">
         {/* First row - Entry and Exit prices */}

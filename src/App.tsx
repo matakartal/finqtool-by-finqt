@@ -14,14 +14,14 @@ import Rules from "./pages/Rules";
 const queryClient = new QueryClient();
 
 const App: React.FC = () => (
-  <ThemeProvider>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        {/* Use HashRouter for Chrome extensions */}
-        <div className="h-screen">
-          <ErrorBoundary>
+  <ErrorBoundary>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          {/* Use HashRouter for Chrome extensions */}
+          <div className="h-screen">
             <HashRouter>
               <Routes>
                 <Route path="/" element={<Home />} />
@@ -29,11 +29,11 @@ const App: React.FC = () => (
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </HashRouter>
-          </ErrorBoundary>
-        </div>
-      </TooltipProvider>
-    </QueryClientProvider>
-  </ThemeProvider>
+          </div>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
+  </ErrorBoundary>
 );
 
 export default App;

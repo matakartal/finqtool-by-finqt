@@ -260,68 +260,23 @@ html, body, * {
   }
 }
 
-@keyframes slide-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes bounce-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-  70% { transform: scale(0.9); }
-  100% { transform: scale(1); }
-}
 
 /* Animation utilities */
 @layer utilities {
   .animate-fade-in {
     animation: fade-in 0.3s ease-out;
   }
-  
+
   .animate-scale-in {
     animation: scale-in 0.2s ease-out;
   }
-  
-  .animate-slide-in {
-    animation: slide-in 0.3s ease-out;
-  }
-  
-  .animate-slide-in-right {
-    animation: slide-in-right 0.3s ease-out;
-  }
-  
-  .animate-bounce-in {
-    animation: bounce-in 0.5s ease-out;
-  }
-  
+
   .will-change-transform {
     will-change: transform;
   }
-  
+
   .will-change-opacity {
     will-change: opacity;
   }
+
 }

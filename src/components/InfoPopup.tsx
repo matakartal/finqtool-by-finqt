@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -20,11 +21,12 @@ const InfoPopup: React.FC<InfoPopupProps> = ({ open, onClose, title, children, i
   const { t } = useTranslation();
 
   const renderStructuredInfo = (key: string) => {
-    const infoData = t(`${key}.info`, { returnObjects: true }) as any;
+    try {
+      const infoData = t(`${key}.info`, { returnObjects: true }) as any;
 
-    if (!infoData || typeof infoData !== 'object') {
-      return null;
-    }
+      if (!infoData || typeof infoData !== 'object') {
+        return null;
+      }
 
     return (
       <div className="space-y-3">
@@ -45,6 +47,10 @@ const InfoPopup: React.FC<InfoPopupProps> = ({ open, onClose, title, children, i
         </div>
       </div>
     );
+    } catch (error) {
+      console.error('Error rendering structured info:', error);
+      return null;
+    }
   };
 
   return (
@@ -52,6 +58,9 @@ const InfoPopup: React.FC<InfoPopupProps> = ({ open, onClose, title, children, i
       <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
         <DialogHeader className="text-left pb-3">
           <DialogTitle className="text-xl font-bold text-foreground text-left">{title}</DialogTitle>
+          <DialogDescription className="text-sm text-muted-foreground">
+            Learn more about this feature and how to use it effectively.
+          </DialogDescription>
         </DialogHeader>
         <div className="px-1">
           {infoKey ? renderStructuredInfo(infoKey) : children}

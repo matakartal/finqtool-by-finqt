@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import TemplateCard from '@/components/TemplateCard';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -628,6 +628,9 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
                 <DialogContent className="max-w-lg max-h-[80vh] overflow-y-auto">
                   <DialogHeader className="text-left pb-3">
                     <DialogTitle className="text-xl font-bold text-foreground text-left">{t('common.deleteThisNote')}</DialogTitle>
+                    <DialogDescription className="text-sm text-muted-foreground">
+                      This action cannot be undone. The note will be permanently deleted.
+                    </DialogDescription>
                   </DialogHeader>
                   <div className="px-1">
                     <div className="flex items-start gap-4">

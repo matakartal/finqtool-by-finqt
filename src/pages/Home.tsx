@@ -91,6 +91,17 @@ const HomePage = () => {
         toggleTheme();
     }, [toggleTheme]);
 
+    const handleInfoTabClose = useCallback(() => {
+        setSelectedInfoTab(null);
+    }, []);
+
+    const handleTemplateToggle = useCallback(() => {
+        setShowTemplates(prev => !prev);
+    }, []);
+
+    const handleHideTemplates = useCallback(() => {
+        setShowTemplates(false);
+    }, []);
 
 
     return (
@@ -169,7 +180,7 @@ const HomePage = () => {
                                             {tab.id === 'notes' && (
                                                 <Button
                                                     variant="outline"
-                                                    onClick={() => setShowTemplates(!showTemplates)}
+                                                    onClick={handleTemplateToggle}
                                                     className="flex items-center gap-2 bg-white dark:bg-[#232323] border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800"
                                                     size="sm"
                                                 >
@@ -180,25 +191,25 @@ const HomePage = () => {
                                         </div>
                                     </div>
 
-                                    {tab.id === "financial" && (
-                                        <FinancialCalculator />
-                                    )}
+                                {selectedTab === "financial" && (
+                                    <FinancialCalculator />
+                                )}
 
-                                    {tab.id === "calculator" && (
-                                        <BasicCalculator />
-                                    )}
+                                {selectedTab === "calculator" && (
+                                    <BasicCalculator />
+                                )}
 
-                                    {tab.id === "markets" && (
-                                        <MarketsTable autoRefresh={autoRefresh} />
-                                    )}
+                                {selectedTab === "markets" && (
+                                    <MarketsTable autoRefresh={autoRefresh} />
+                                )}
 
-                                    {tab.id === "notes" && (
-                                        <Notes showTemplates={showTemplates} onHideTemplates={() => setShowTemplates(false)} />
-                                    )}
+                                {selectedTab === "notes" && (
+                                    <Notes showTemplates={showTemplates} onHideTemplates={handleHideTemplates} />
+                                )}
 
-                                    {tab.id === "rules" && (
-                                        <Rules />
-                                    )}
+                                {selectedTab === "rules" && (
+                                    <Rules />
+                                )}
                                 </div>
                             </TabsContent>
                         ))}
@@ -208,7 +219,7 @@ const HomePage = () => {
                 {selectedInfoTab && (
                     <InfoPopup
                         open={!!selectedInfoTab}
-                        onClose={() => setSelectedInfoTab(null)}
+                        onClose={handleInfoTabClose}
                         title={t(`${selectedInfoTab}.title`)}
                         infoKey={selectedInfoTab}
                     />

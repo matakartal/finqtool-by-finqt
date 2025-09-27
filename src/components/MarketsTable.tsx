@@ -13,6 +13,43 @@ import {
 } from '@/components/ui/table';
 import { Star } from 'lucide-react';
 
+// Cache for API responses
+interface CacheEntry {
+  data: any;
+  timestamp: number;
+  ttl: number; // Time to live in milliseconds
+}
+
+class ApiCache {
+  private cache = new Map<string, CacheEntry>();
+
+  set(key: string, data: any, ttl: number = 30000) { // Default 30 seconds
+    this.cache.set(key, {
+      data,
+      timestamp: Date.now(),
+      ttl
+    });
+  }
+
+  get(key: string): any | null {
+    const entry = this.cache.get(key);
+    if (!entry) return null;
+
+    if (Date.now() - entry.timestamp > entry.ttl) {
+      this.cache.delete(key);
+      return null;
+    }
+
+    return entry.data;
+  }
+
+  clear() {
+    this.cache.clear();
+  }
+}
+
+const apiCache = new ApiCache();
+
 // Exchange endpoints
 const EXCHANGES = {
   BINANCE: {
@@ -51,7 +88,7 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
   
   return (
     <TableRow className="hover:bg-muted/50">
-      <TableCell className="px-2 py-2 text-left w-[120px]">
+      <TableCell className="px-2 py-2 text-left w-[110px]">
         <div className="flex items-center gap-2">
           <button
             onClick={() => onToggleFavorite(market.symbol)}
@@ -64,38 +101,50 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
           <span className="font-medium truncate">{baseAsset}</span>
         </div>
       </TableCell>
-      <TableCell className="px-2 py-2 text-left text-neutral-900 dark:text-foreground">
-        <AnimatedNumberWithFlash value={parseFloat(market.lastPrice)} symbol={market.symbol} field="lastPrice" className="font-mono" />
+      <TableCell className="px-2 py-2 text-left text-neutral-900 dark:text-foreground w-[140px]">
+        <AnimatedNumber
+          value={parseFloat(market.lastPrice)}
+          symbol={market.symbol}
+          field="lastPrice"
+          className="font-mono"
+        />
       </TableCell>
-      <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground">
-        <AnimatedNumberWithFlash value={market.quoteVolume} symbol={market.symbol} field="quoteVolume" compact className="font-mono" />
+      <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground w-[120px]">
+        <AnimatedNumber
+          value={market.quoteVolume}
+          symbol={market.symbol}
+          field="quoteVolume"
+          compact
+          className="font-mono"
+        />
       </TableCell>
-      <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground">
+      <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground w-[80px]">
         {typeof market.priceChangePercent !== 'undefined' && market.priceChangePercent !== '-' ? (
-          <AnimatedNumberWithFlash
+          <AnimatedNumber
             value={parseFloat(market.priceChangePercent)}
             symbol={market.symbol}
             field="priceChangePercent"
             percent
-            className={
+            className={`font-mono ${
               parseFloat(market.priceChangePercent) > 0
-                ? 'text-crypto-green dark:text-green-400 font-mono'
+                ? 'text-crypto-green dark:text-green-400'
                 : parseFloat(market.priceChangePercent) < 0
-                ? 'text-red-600 dark:text-red-400 font-mono'
-                : 'text-muted-foreground font-mono'
-            }
+                ? 'text-red-600 dark:text-red-400'
+                : 'text-muted-foreground'
+            }`}
           />
         ) : (
           <span className="text-muted-foreground">-</span>
         )}
       </TableCell>
-      <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground w-[100px]">
+      <TableCell className="px-2 py-2 text-right text-neutral-900 dark:text-foreground w-[90px]">
         {market.fundingRate && market.fundingRate !== '-' ? (
-          <AnimatedNumberWithFlash
+          <AnimatedNumber
             value={parseFloat(market.fundingRate) * 100}
             symbol={market.symbol}
             field="fundingRate"
             percent
+            decimals={4}
             className={`font-mono ${
               parseFloat(market.fundingRate) > 0
                 ? 'text-crypto-green dark:text-green-400'
@@ -103,10 +152,7 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
                 ? 'text-red-600 dark:text-red-400'
                 : 'text-muted-foreground'
             }`}
-            formatValue={(value) => {
-              const num = parseFloat(value.toString());
-              return `${num >= 0 ? '+' : ''}${num.toFixed(4)}%`;
-            }}
+            formatValue={(value) => `${value >= 0 ? '+' : ''}${value.toFixed(4)}%`}
           />
         ) : (
           <span className="text-muted-foreground">-</span>
@@ -117,6 +163,72 @@ const MarketRow = memo(({ market, isFavourite, onToggleFavorite }: MarketRowProp
 });
 
 MarketRow.displayName = 'MarketRow';
+
+// Optimized animated number with flash effect
+const priceCache = new Map<string, number>();
+
+function AnimatedNumber({
+  value,
+  compact = false,
+  percent = false,
+  decimals = 2,
+  className = '',
+  formatValue,
+  symbol,
+  field
+}: {
+  value: number|string,
+  compact?: boolean,
+  percent?: boolean,
+  decimals?: number,
+  className?: string,
+  formatValue?: (value: number) => string,
+  symbol?: string,
+  field?: string
+}) {
+  const [flash, setFlash] = useState<'up' | 'down' | null>(null);
+  const currentValue = typeof value === 'number' ? value : parseFloat(value as string);
+  const cacheKey = symbol && field ? `${symbol}-${field}` : '';
+
+  useEffect(() => {
+    if (cacheKey && priceCache.has(cacheKey)) {
+      const prevValue = priceCache.get(cacheKey)!;
+      if (prevValue !== currentValue) {
+        setFlash(currentValue > prevValue ? 'up' : 'down');
+        const timeout = setTimeout(() => setFlash(null), 300);
+        return () => clearTimeout(timeout);
+      }
+    }
+    if (cacheKey) {
+      priceCache.set(cacheKey, currentValue);
+    }
+  }, [currentValue, cacheKey]);
+
+  let display = value;
+  if (formatValue) {
+    display = formatValue(value);
+  } else if (compact) {
+    display = formatCompactNumber(value);
+  } else if (percent && typeof value === 'number') {
+    display = `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`;
+  } else if (typeof value === 'number') {
+    // For small prices, show more decimal places
+    if (value < 0.001 && value > 0) {
+      display = value.toFixed(6);
+    } else {
+      display = value.toLocaleString();
+    }
+  }
+
+  return (
+    <span className={`inline-block px-1 py-0.5 rounded transition-all duration-300 ${
+      flash === 'up' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
+      flash === 'down' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' : ''
+    } ${className}`}>
+      {display}
+    </span>
+  );
+}
 
 type SortableColumn = 'symbol' | 'lastPrice' | 'quoteVolume' | 'priceChangePercent' | 'fundingRate';
 
@@ -129,7 +241,7 @@ interface TableHeaderProps {
 const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => (
   <TableHeader>
     <TableRow>
-      <TableHead className="px-2 py-2 text-left cursor-pointer hover:bg-muted/50" onClick={() => onSort('symbol')}>
+      <TableHead className="px-2 py-2 text-left cursor-pointer hover:bg-muted/50 w-[110px]" onClick={() => onSort('symbol')}>
         <div className="flex items-center gap-1">
           Symbol
           {sortBy === 'symbol' && (
@@ -137,7 +249,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-left cursor-pointer hover:bg-muted/50" onClick={() => onSort('lastPrice')}>
+      <TableHead className="px-2 py-2 text-left cursor-pointer hover:bg-muted/50 w-[140px]" onClick={() => onSort('lastPrice')}>
         <div className="flex items-center gap-1">
           Price
           {sortBy === 'lastPrice' && (
@@ -145,7 +257,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50" onClick={() => onSort('quoteVolume')}>
+      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50 w-[120px]" onClick={() => onSort('quoteVolume')}>
         <div className="flex items-center justify-end gap-1">
           Volume
           {sortBy === 'quoteVolume' && (
@@ -153,7 +265,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50" onClick={() => onSort('priceChangePercent')}>
+      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50 w-[80px]" onClick={() => onSort('priceChangePercent')}>
         <div className="flex items-center justify-end gap-1">
           Change
           {sortBy === 'priceChangePercent' && (
@@ -161,7 +273,7 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
           )}
         </div>
       </TableHead>
-      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50" onClick={() => onSort('fundingRate')}>
+      <TableHead className="px-2 py-2 text-right cursor-pointer hover:bg-muted/50 w-[90px]" onClick={() => onSort('fundingRate')}>
         <div className="flex items-center justify-end gap-1">
           Funding
           {sortBy === 'fundingRate' && (
@@ -175,12 +287,13 @@ const TableHeaderMemo = memo(({ sortBy, sortDir, onSort }: TableHeaderProps) => 
 
 TableHeaderMemo.displayName = 'TableHeaderMemo';
 
+
 interface MarketsTableProps {
   autoRefresh: boolean;
   refreshInterval?: number;
 }
 
-const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterval = 8000 }) => {
+const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterval = 5000 }) => {
   const { t } = useTranslation();
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [markets, setMarkets] = useState<MarketData[]>([]);
@@ -228,29 +341,41 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
     }
   }, [favourites]);
 
-  const toggleFavourite = (symbol: string) => {
+  const toggleFavourite = useCallback((symbol: string) => {
     setFavourites(favs => favs.includes(symbol) ? favs.filter(s => s !== symbol) : [...favs, symbol]);
-  };
-  const isFavourite = (symbol: string) => favourites.includes(symbol);
+  }, []);
+  const isFavourite = useCallback((symbol: string) => favourites.includes(symbol), [favourites]);
 
-  // Fetch data function
-  const fetchData = useCallback(async (manual?: boolean) => {
+  // Fetch data function with caching
+  const fetchData = useCallback(async (manual?: boolean, forceRefresh?: boolean, showNotification?: boolean) => {
     try {
       setLoading(true);
       setError(null);
       if (manual) setIsRefreshing(true);
-      
+
       const exchange = EXCHANGES[selectedExchange];
-      let rawData: any;
-      try {
-        const res = await fetch(exchange.ticker);
-        if (!res.ok) throw new Error(`Ticker fetch failed for ${selectedExchange}: ${res.status}`);
-        rawData = await res.json();
-      } catch (tickerErr) {
-        setError(`Failed to fetch ${selectedExchange} ticker data.`);
-        console.error(`MarketsTable fetch error: ${selectedExchange} TICKER`, tickerErr);
-        setLoading(false);
-        return;
+      const tickerCacheKey = `${selectedExchange}-ticker`;
+
+      // Try to get ticker data from cache first (unless manual refresh or force refresh)
+      let rawData: any = null;
+      if (!manual && !forceRefresh) {
+        rawData = apiCache.get(tickerCacheKey);
+      }
+
+      // Fetch ticker data if not cached or manual refresh
+      if (!rawData) {
+        try {
+          const res = await fetch(exchange.ticker);
+          if (!res.ok) throw new Error(`Ticker fetch failed for ${selectedExchange}: ${res.status}`);
+          rawData = await res.json();
+          // Cache ticker data for 30 seconds
+          apiCache.set(tickerCacheKey, rawData, 30000);
+        } catch (tickerErr) {
+          setError(`Failed to fetch ${selectedExchange} ticker data.`);
+          console.error(`MarketsTable fetch error: ${selectedExchange} TICKER`, tickerErr);
+          setLoading(false);
+          return;
+        }
       }
 
       let usdtPairs: any[] = [];
@@ -268,45 +393,76 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
       }
 
       const fundingMap: Record<string, string> = {};
+      const fundingCacheKey = `${selectedExchange}-funding`;
+
+      // Try to get funding data from cache first (unless manual refresh or force refresh)
+      let fundingData: any = null;
+      if (!manual && !forceRefresh) {
+        fundingData = apiCache.get(fundingCacheKey);
+      }
+
       if (selectedExchange === 'BINANCE') {
-        try {
-          const fundingRes = await fetch(exchange.funding);
-          if (!fundingRes.ok) throw new Error(`Funding fetch failed for ${selectedExchange}: ${fundingRes.status}`);
-          const fundingData = await fundingRes.json();
+        if (!fundingData) {
+          try {
+            const fundingRes = await fetch(exchange.funding);
+            if (!fundingRes.ok) throw new Error(`Funding fetch failed for ${selectedExchange}: ${fundingRes.status}`);
+            fundingData = await fundingRes.json();
+            // Cache funding data for 5 minutes (funding rates change less frequently)
+            apiCache.set(fundingCacheKey, fundingData, 300000);
+          } catch (fundingErr) {
+            console.error(`MarketsTable fetch error: ${selectedExchange} FUNDING`, fundingErr);
+            fundingData = null;
+          }
+        }
+
+        if (fundingData) {
           for (const f of fundingData) {
             fundingMap[f.symbol] = f.lastFundingRate;
           }
-        } catch (fundingErr) {
-          console.error(`MarketsTable fetch error: ${selectedExchange} FUNDING`, fundingErr);
         }
       } else if (selectedExchange === 'BYBIT') {
-        try {
-          // Fetch funding rates for each symbol individually
-          const fundingPromises = usdtPairs.map(async (item) => {
-            try {
-              const symbol = item.symbol;
-              const fundingRes = await fetch(`https://api.bybit.com/v5/market/funding/history?category=linear&symbol=${symbol}&limit=1`);
-              if (!fundingRes.ok) throw new Error(`Funding fetch failed for ${symbol}: ${fundingRes.status}`);
-          const fundingData = await fundingRes.json();
-              if (fundingData.retCode === 0 && fundingData.result && fundingData.result.list && fundingData.result.list.length > 0) {
-                return { symbol, rate: fundingData.result.list[0].fundingRate };
-              }
-              return null;
-            } catch (err) {
-              console.error(`Failed to fetch funding rate for ${item.symbol}:`, err);
-              return null;
-            }
-          });
+        // Try to get cached funding data for Bybit
+        let cachedFundingMap: Record<string, string> | null = null;
+        if (!manual && !forceRefresh) {
+          cachedFundingMap = apiCache.get(fundingCacheKey);
+        }
 
-          const fundingResults = await Promise.all(fundingPromises);
-          for (const result of fundingResults) {
-            if (result) {
-              fundingMap[result.symbol] = result.rate;
+        if (!cachedFundingMap) {
+          try {
+            // Fetch funding rates for each symbol individually
+            const fundingPromises = usdtPairs.map(async (item) => {
+              try {
+                const symbol = item.symbol;
+                const fundingRes = await fetch(`https://api.bybit.com/v5/market/funding/history?category=linear&symbol=${symbol}&limit=1`);
+                if (!fundingRes.ok) throw new Error(`Funding fetch failed for ${symbol}: ${fundingRes.status}`);
+                const fundingData = await fundingRes.json();
+                if (fundingData.retCode === 0 && fundingData.result && fundingData.result.list && fundingData.result.list.length > 0) {
+                  return { symbol, rate: fundingData.result.list[0].fundingRate };
+                }
+                return null;
+              } catch (err) {
+                console.error(`Failed to fetch funding rate for ${item.symbol}:`, err);
+                return null;
+              }
+            });
+
+            const fundingResults = await Promise.all(fundingPromises);
+            const freshFundingMap: Record<string, string> = {};
+            for (const result of fundingResults) {
+              if (result) {
+                freshFundingMap[result.symbol] = result.rate;
+              }
             }
+
+            // Cache funding data for 5 minutes
+            apiCache.set(fundingCacheKey, freshFundingMap, 300000);
+            Object.assign(fundingMap, freshFundingMap);
+          } catch (fundingErr) {
+            console.error(`MarketsTable fetch error: ${selectedExchange} FUNDING`, fundingErr);
           }
-          console.log('Final funding map:', fundingMap);
-        } catch (fundingErr) {
-          console.error(`MarketsTable fetch error: ${selectedExchange} FUNDING`, fundingErr);
+        } else {
+          // Use cached funding data
+          Object.assign(fundingMap, cachedFundingMap);
         }
       }
 
@@ -348,7 +504,7 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
       setMarkets(merged);
       setLastUpdated(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
       setDisplayedMarkets(applySortAndSearch(merged, sortBy, sortDir, search));
-      if (manual) {
+      if (showNotification) {
         addNotification({
           title: 'Markets updated',
           description: 'Market data was refreshed.'
@@ -363,22 +519,30 @@ const MarketsTable: React.FC<MarketsTableProps> = ({ autoRefresh, refreshInterva
     }
   }, [search, sortBy, sortDir, selectedExchange]);
 
-  // Manual refresh
-  const refreshMarkets = () => {
-    fetchData();
-  };
+  // Manual refresh - clears cache and fetches fresh data
+  const refreshMarkets = useCallback(() => {
+    // Clear cache for current exchange before fetching
+    apiCache.clear();
+    fetchData(true, true, true); // showNotification = true
+  }, [fetchData]);
+
+  // Clear cache when switching exchanges
+  useEffect(() => {
+    apiCache.clear();
+    fetchData(true, true, false); // no notification
+  }, [selectedExchange]);
 
   // Auto-refresh logic
   useEffect(() => {
     if (!autoRefresh) return;
-    
+
     // Initial fetch
-    fetchData();
-    
+    fetchData(undefined, true, false); // no notification
+
     let intervalId: NodeJS.Timeout;
     if (autoRefresh) {
       intervalId = setInterval(() => {
-        fetchData();
+        fetchData(undefined, true, false); // no notification
       }, refreshInterval);
     }
 
@@ -562,80 +726,7 @@ function AssetIcon({ symbol }: { symbol: string }) {
   );
 }
 
-function AnimatedNumber({ value, compact = false }: { value: number|string, compact?: boolean }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.classList.remove('flash');
-      // force reflow
-      void ref.current.offsetWidth;
-      ref.current.classList.add('flash');
-    }
-  }, [value]);
-  let display = value;
-  if (compact) display = formatCompactNumber(value);
-  else if (typeof value === 'number') display = value.toLocaleString();
-  return <span ref={ref} className="transition-all duration-200 flash">{display}</span>;
-}
 
-// Animated number with flash on change (yellow)
-const prevValues: Record<string, number> = {};
-function AnimatedNumberWithFlash({ 
-  value, 
-  symbol, 
-  field, 
-  compact = false, 
-  percent = false, 
-  decimals = 2, 
-  className = '',
-  formatValue
-}: { 
-  value: number|string, 
-  symbol: string, 
-  field: string, 
-  compact?: boolean, 
-  percent?: boolean, 
-  decimals?: number, 
-  className?: string,
-  formatValue?: (value: number|string) => string 
-}) {
-  const key = symbol + ':' + field;
-  const [flash, setFlash] = useState<'up' | 'down' | null>(null);
-  const prev = prevValues[key];
-  useEffect(() => {
-    if (typeof value === 'number' && typeof prev === 'number' && value !== prev) {
-      setFlash(value > prev ? 'up' : 'down');
-      const timeout = setTimeout(() => setFlash(null), 400);
-      return () => clearTimeout(timeout);
-    }
-    prevValues[key] = typeof value === 'number' ? value : parseFloat(value as string);
-  }, [value, prev, key]);
-
-  let display = value;
-  if (formatValue) {
-    display = formatValue(value);
-  } else if (compact) {
-    display = formatCompactNumber(value);
-  } else if (percent && typeof value === 'number') {
-    display = `${value > 0 ? '+' : ''}${value.toFixed(decimals)}%`;
-  } else if (typeof value === 'number') {
-    // For small prices, show more decimal places
-    if (value < 0.001 && value > 0) {
-      display = value.toFixed(6);
-    } else {
-      display = value.toLocaleString();
-    }
-  }
-
-  return (
-    <span className={`inline-block px-1 rounded transition-all duration-300 ${
-      flash === 'up' ? 'bg-crypto-green/20 dark:bg-green-900' :
-      flash === 'down' ? 'bg-red-100 dark:bg-red-900' : ''
-    } ${className}`}>
-      {display}
-    </span>
-  );
-}
 
 // Example breathing SVG animation (not rendered, just for reference)
 // <svg className="animate-breathing" ...>...</svg>
