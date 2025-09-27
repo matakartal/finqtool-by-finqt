@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { showInfoToast, showSuccessToast } from '@/lib/notifications';
+
+const MAX_DISPLAY_LENGTH = 15;
+const MAX_HISTORY_LENGTH = 50;
 
 const BUTTONS = [
   [
@@ -37,103 +40,217 @@ const BUTTONS = [
   ],
 ];
 
+// Utility functions for better number handling
+const formatNumber = (num: number): string => {
+  if (isNaN(num) || !isFinite(num)) return 'Error';
+
+  const str = num.toString();
+  if (str.length > MAX_DISPLAY_LENGTH) {
+    // Use scientific notation for very large/small numbers
+    return num.toExponential(6);
+  }
+
+  // Split into integer and decimal parts
+  const [integerPart, decimalPart] = str.split('.');
+
+  // Add commas to integer part
+  const formattedInteger = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  // Handle decimal places intelligently
+  if (decimalPart !== undefined) {
+    const decimalPlaces = Math.min(8, MAX_DISPLAY_LENGTH - formattedInteger.length - 1);
+    const trimmedDecimal = decimalPart.substring(0, decimalPlaces).replace(/0+$/, '');
+    return trimmedDecimal ? `${formattedInteger}.${trimmedDecimal}` : formattedInteger;
+  }
+
+  return formattedInteger;
+};
+
+const isValidNumber = (value: string): boolean => {
+  return !isNaN(Number(value)) && isFinite(Number(value));
+};
+
 const BasicCalculator: React.FC = () => {
   const [display, setDisplay] = useState('0');
   const [memory, setMemory] = useState<string[]>([]);
-  const [currentValue, setCurrentValue] = useState('0');
+  const [storedValue, setStoredValue] = useState<number | null>(null);
   const [operator, setOperator] = useState<string | null>(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
+  const [lastOperation, setLastOperation] = useState<string | null>(null);
   const isMobile = useIsMobile();
 
-  const clearAll = () => {
+  // Improved clear functions
+  const clearAll = useCallback(() => {
     setDisplay('0');
-    setCurrentValue('0');
+    setStoredValue(null);
     setOperator(null);
     setWaitingForOperand(false);
+    setLastOperation(null);
     showInfoToast("Calculator reset", "Reset");
-  };
+  }, []);
 
-  const clearHistory = () => {
+  const clearHistory = useCallback(() => {
     setMemory([]);
     showInfoToast("History cleared", "Cleared");
-  };
+  }, []);
 
-  const inputDigit = (digit: string) => {
+  // Enhanced input validation and digit handling
+  const inputDigit = useCallback((digit: string) => {
+    if (display.length >= MAX_DISPLAY_LENGTH && !waitingForOperand) {
+      showInfoToast("Maximum digits reached", "Cannot enter more digits");
+      return;
+    }
+
     if (waitingForOperand) {
       setDisplay(digit);
       setWaitingForOperand(false);
     } else {
-      setDisplay(display === '0' ? digit : display + digit);
+      const newDisplay = display === '0' ? digit : display + digit;
+      if (isValidNumber(newDisplay)) {
+        setDisplay(newDisplay);
+      }
     }
-  };
+  }, [display, waitingForOperand]);
 
-  const inputDecimal = () => {
+  // Improved decimal input with better validation
+  const inputDecimal = useCallback(() => {
     if (waitingForOperand) {
       setDisplay('0.');
       setWaitingForOperand(false);
-    } else if (display.indexOf('.') === -1) {
+    } else if (display.indexOf('.') === -1 && display.length < MAX_DISPLAY_LENGTH) {
       setDisplay(display + '.');
     }
-  };
+  }, [display, waitingForOperand]);
 
-  const toggleSign = () => {
-    setDisplay(display.charAt(0) === '-' ? display.substring(1) : '-' + display);
-  };
+  // Enhanced sign toggle
+  const toggleSign = useCallback(() => {
+    if (display === '0' || display === 'Error') return;
 
-  const inputPercent = () => {
-    const value = parseFloat(display) / 100;
-    setDisplay(value.toString());
-  };
+    const newDisplay = display.startsWith('-') ? display.substring(1) : '-' + display;
+    if (isValidNumber(newDisplay)) {
+      setDisplay(newDisplay);
+    }
+  }, [display]);
 
-  const performOperation = (nextOperator: string) => {
+  // Improved percent calculation
+  const inputPercent = useCallback(() => {
+    const currentValue = parseFloat(display);
+    if (!isNaN(currentValue)) {
+      const percentValue = currentValue / 100;
+      setDisplay(formatNumber(percentValue));
+    }
+  }, [display]);
+
+  // Enhanced calculation with better precision handling
+  const calculate = useCallback((firstValue: number, secondValue: number, operation: string): number => {
+    // Use higher precision arithmetic to avoid floating point issues
+    const precision = 1000000000; // 9 decimal places
+
+    switch (operation) {
+      case '+':
+        return Math.round((firstValue + secondValue) * precision) / precision;
+      case '-':
+        return Math.round((firstValue - secondValue) * precision) / precision;
+      case '×':
+        return Math.round((firstValue * secondValue) * precision) / precision;
+      case '÷':
+        if (secondValue === 0) {
+          showInfoToast("Division by zero", "Cannot divide by zero");
+          return NaN;
+        }
+        return Math.round((firstValue / secondValue) * precision) / precision;
+      default:
+        return secondValue;
+    }
+  }, []);
+
+  // Improved operation handling
+  const performOperation = useCallback((nextOperator: string) => {
     const inputValue = parseFloat(display);
 
-    if (currentValue === '0' && operator === null) {
-      setCurrentValue(display);
-    } else if (operator) {
-      const result = calculate(parseFloat(currentValue), inputValue, operator);
-      setDisplay(result.toString());
-      setCurrentValue(result.toString());
-      setMemory([...memory, `${currentValue} ${operator} ${inputValue} = ${result}`]);
+    if (isNaN(inputValue)) return;
+
+    if (storedValue === null) {
+      // First operation
+      setStoredValue(inputValue);
+    } else if (operator && !waitingForOperand) {
+      // Chain operations
+      const result = calculate(storedValue, inputValue, operator);
+      if (!isNaN(result)) {
+        setStoredValue(result);
+        setDisplay(formatNumber(result));
+        setMemory(prev => [`${formatNumber(storedValue)} ${operator} ${formatNumber(inputValue)} = ${formatNumber(result)}`, ...prev.slice(0, MAX_HISTORY_LENGTH - 1)]);
+      }
     }
 
     setWaitingForOperand(true);
     setOperator(nextOperator);
-  };
+    setLastOperation(`${formatNumber(inputValue)} ${nextOperator}`);
+  }, [display, storedValue, operator, waitingForOperand, calculate]);
 
-  const calculate = (firstValue: number, secondValue: number, op: string): number => {
-    switch (op) {
-      case '+':
-        return firstValue + secondValue;
-      case '-':
-        return firstValue - secondValue;
-      case '×':
-        return firstValue * secondValue;
-      case '÷':
-        return secondValue !== 0 ? firstValue / secondValue : NaN;
-      default:
-        return secondValue;
-    }
-  };
-
-  const handleEquals = () => {
-    if (!operator) return;
+  // Enhanced equals handling with better result management
+  const handleEquals = useCallback(() => {
+    if (!operator || storedValue === null) return;
 
     const inputValue = parseFloat(display);
-    const result = calculate(parseFloat(currentValue), inputValue, operator);
-    setDisplay(result.toString());
-    setMemory([...memory, `${currentValue} ${operator} ${inputValue} = ${result}`]);
-    
-    showSuccessToast(`${currentValue} ${operator} ${inputValue} = ${result}`, "Calculation Result");
-    
-    setCurrentValue('0');
-    setOperator(null);
-    setWaitingForOperand(true);
-  };
+    if (isNaN(inputValue)) return;
+
+    const result = calculate(storedValue, inputValue, operator);
+
+    if (!isNaN(result)) {
+      const formattedResult = formatNumber(result);
+      setDisplay(formattedResult);
+
+      const calculation = `${formatNumber(storedValue)} ${operator} ${formatNumber(inputValue)} = ${formattedResult}`;
+      setMemory(prev => [calculation, ...prev.slice(0, MAX_HISTORY_LENGTH - 1)]);
+
+      showSuccessToast(calculation, "Calculation Result");
+
+      // Prepare for next calculation
+      setStoredValue(result);
+      setWaitingForOperand(true);
+      setLastOperation(null);
+    }
+  }, [display, storedValue, operator, calculate]);
+
+  // Keyboard support
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      const key = event.key;
+
+      if (key >= '0' && key <= '9') {
+        inputDigit(key);
+      } else if (key === '.') {
+        inputDecimal();
+      } else if (key === '+' || key === '-' || key === '*' || key === 'x' || key === 'X' || key === '/') {
+        const operatorMap: { [key: string]: string } = {
+          '*': '×',
+          'x': '×',
+          'X': '×',
+          '/': '÷'
+        };
+        performOperation(operatorMap[key] || key);
+      } else if (key === 'Enter' || key === '=') {
+        handleEquals();
+      } else if (key === 'Escape' || key === 'c' || key === 'C') {
+        clearAll();
+      } else if (key === 'Backspace') {
+        // Remove last digit
+        if (display.length > 1) {
+          setDisplay(display.slice(0, -1));
+        } else {
+          setDisplay('0');
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [inputDigit, inputDecimal, performOperation, handleEquals, clearAll, display]);
 
   const CalculatorButton = ({ text, className, onClick }: { text: string, className?: string, onClick: () => void }) => (
     <button
-      className={`${className} backdrop-blur-sm font-medium text-base sm:text-xl h-12 sm:h-16 rounded-full transition-all focus:outline-none focus:ring-0 active:scale-95 ${text === '0' ? 'col-span-2' : ''}`}
+      className={`${className} backdrop-blur-sm font-medium text-base sm:text-xl h-12 sm:h-16 rounded-full transition-all focus:outline-none focus:ring-0 active:scale-[0.998] ${text === '0' ? 'col-span-2' : ''}`}
       onClick={onClick}
     >
       {text}
@@ -142,24 +259,28 @@ const BasicCalculator: React.FC = () => {
 
   return (
     <div>
-      <Card className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card shadow-lg overflow-hidden animate-fadeScaleIn transition-all hover:shadow-xl">
+      <Card className="rounded-xl border border-neutral-200 dark:border-border bg-white dark:bg-card overflow-hidden animate-fadeScaleIn transition-all">
         <CardContent className="p-0">
           {/* Display */}
           <div className="flex flex-col gap-1.5 px-4 py-3 sm:py-4">
             <div className="flex items-center justify-end min-h-[1rem] sm:min-h-[1.25rem]">
               <div className="text-neutral-500 dark:text-neutral-400 text-xs font-medium select-none">
-                {/* Show operation if present */}
-                {operator && (
-                  <span className="opacity-75">{currentValue} {operator}</span>
+                {/* Show current operation */}
+                {operator && storedValue !== null && (
+                  <span className="opacity-75">
+                    {formatNumber(storedValue)} {operator}
+                  </span>
                 )}
               </div>
             </div>
             <div
-              className="rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-right text-2xl sm:text-3xl lg:text-4xl font-bold text-neutral-900 dark:text-white px-3 py-3 sm:py-4 focus:outline-none transition-all shadow-sm"
+              className="rounded-lg bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-right text-2xl sm:text-3xl lg:text-4xl font-bold text-neutral-900 dark:text-white px-3 py-3 sm:py-4 focus:outline-none transition-all overflow-hidden"
               tabIndex={0}
               aria-label="Calculator display"
             >
-              {display}
+              <div className="truncate">
+                {display === 'Error' ? 'Error' : formatNumber(parseFloat(display) || 0)}
+              </div>
             </div>
           </div>
 
@@ -225,16 +346,16 @@ const BasicCalculator: React.FC = () => {
                 </div>
 
                 <div className="max-h-32 sm:max-h-40 overflow-y-auto space-y-2">
-                  {memory.map((item, index) => (
+                  {memory.slice(0, 10).map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center justify-between p-2 sm:p-3 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-md shadow-sm hover:shadow-md transition-shadow"
+                      className="flex items-center justify-between p-2 sm:p-3 bg-white dark:bg-neutral-700 border border-neutral-200 dark:border-neutral-600 rounded-md transition-all"
                     >
                       <span className="text-xs sm:text-sm font-mono text-neutral-900 dark:text-neutral-100 flex-1 break-all">
                         {item}
                       </span>
                       <div className="text-xs text-neutral-500 dark:text-neutral-400 ml-2 flex-shrink-0">
-                        #{memory.length - index}
+                        #{index + 1}
                       </div>
                     </div>
                   ))}

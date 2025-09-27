@@ -24,7 +24,12 @@
     "success": "Success",
     "warning": "Warning",
     "info": "Info",
-    "returnHome": "Return to Home"
+    "returnHome": "Return to Home",
+    "deleteThisNote": "Delete this note",
+    "thisActionCannotBeUndone": "This action cannot be undone",
+    "addNewNote": "Add new note",
+    "rename": "Rename",
+    "exportNote": "Export note"
   },
   "tabs": {
     "markets": "Markets",
@@ -152,6 +157,7 @@
     "deleteNote": "Delete Note",
     "searchNotes": "Search notes...",
     "noNotes": "No notes found",
+    "clickAddNote": "Click to add a note",
     "categories": {
       "all": "All Categories",
       "trade": "Trade",
@@ -172,6 +178,9 @@
       "title": "Enter note title...",
       "content": "Enter your note here..."
     },
+    "writeFinancialNotes": "Write your financial notes here...",
+    "noteTitle": "Note title",
+    "lastUpdated": "Last updated",
     "info": {
       "title": "Notes",
       "description": "Your personal trading journal and strategy notebook:",

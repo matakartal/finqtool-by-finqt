@@ -24,7 +24,12 @@
     "success": "Başarılı",
     "warning": "Uyarı",
     "info": "Bilgi",
-    "returnHome": "Ana Sayfaya Dön"
+    "returnHome": "Ana Sayfaya Dön",
+    "deleteThisNote": "Bu notu sil",
+    "thisActionCannotBeUndone": "Bu işlem geri alınamaz",
+    "addNewNote": "Yeni not ekle",
+    "rename": "Yeniden adlandır",
+    "exportNote": "Notu dışa aktar"
   },
   "tabs": {
     "markets": "Piyasalar",
@@ -173,6 +178,9 @@
       "title": "Not başlığı girin...",
       "content": "Notunuzu buraya yazın..."
     },
+    "writeFinancialNotes": "Finansal notlarınızı buraya yazın...",
+    "noteTitle": "Not başlığı",
+    "lastUpdated": "Son güncelleme",
     "info": {
       "title": "Notlar",
       "description": "Kişisel alım satım günlüğünüz ve strateji defteriniz:",

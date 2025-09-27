@@ -7,7 +7,8 @@ import Rules from './Rules';
 import ProfileDropdown from '@/components/ProfileDropdown';
 import { useNotificationStore } from '@/components/NotificationDropdown';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CircleAlert, Moon, Sun, Info } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { CircleAlert, Moon, Sun, Info, FileText } from 'lucide-react';
 import NotificationDropdown from '@/components/NotificationDropdown';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useTheme } from '@/hooks/use-theme';
@@ -27,6 +28,7 @@ const HomePage = () => {
     const [selectedTab, setSelectedTab] = useState<string>("calculator");
     const [currentTime, setCurrentTime] = useState<string>('');
     const [autoRefresh, setAutoRefresh] = useState(true);
+    const [showTemplates, setShowTemplates] = useState(false);
     const isMobile = useIsMobile();
     const { theme, toggleTheme } = useTheme();
     const [selectedInfoTab, setSelectedInfoTab] = useState<string | null>(null);
@@ -139,9 +141,22 @@ const HomePage = () => {
                                                 <Info size={16} className="text-neutral-400 hover:text-primary" />
                                             </button>
                                         </div>
-                                        <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
-                                            {t(`${tab.id}.description`)}
-                                        </p>
+                                        <div className="flex items-center justify-between w-full">
+                                            <p className="text-sm text-neutral-500 dark:text-neutral-400 max-w-xl">
+                                                {t(`${tab.id}.description`)}
+                                            </p>
+                                            {tab.id === 'notes' && (
+                                                <Button
+                                                    variant="outline"
+                                                    onClick={() => setShowTemplates(!showTemplates)}
+                                                    className="flex items-center gap-2 bg-white dark:bg-[#232323] border-neutral-200 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                                                    size="sm"
+                                                >
+                                                    <FileText size={16} />
+                                                    {showTemplates ? t('notes.templates.hideTemplates') : t('notes.templates.showTemplates')}
+                                                </Button>
+                                            )}
+                                        </div>
                                     </div>
 
                                     {tab.id === "financial" && (
@@ -157,7 +172,7 @@ const HomePage = () => {
                                     )}
 
                                     {tab.id === "notes" && (
-                                        <Notes />
+                                        <Notes showTemplates={showTemplates} />
                                     )}
 
                                     {tab.id === "rules" && (
