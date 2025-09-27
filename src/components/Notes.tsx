@@ -45,49 +45,72 @@ const defaultNote = (): Note => ({
 const defaultTemplates: NoteTemplate[] = [
   {
     id: 'template1',
-    title: 'Trade Setup',
-    content: `TRADE SETUP
-Entry Price:
-Target Price:
-Stop Loss:
-Position Size:
-Risk/Reward:
+    title: 'Trading Notes',
+    content: `TRADING NOTES
+Date/Time:
+Asset/Market:
 
-Analysis:
-• Trend:
-• Timeframe:
-• Indicators:
+Current Analysis:
+• Market Trend:
+• Key Levels (Support/Resistance):
+• Technical Indicators:
+• Price Action:
 
-Trade Plan:
+Trade Idea:
+• Entry Point:
+• Target Price:
+• Stop Loss:
+• Position Size:
+• Risk/Reward Ratio:
+
+Execution:
 • Entry Signal:
 • Exit Strategy:
 • Risk Management:
 
-Notes:`,
+Notes & Follow-up:
+• Actual Entry:
+• Actual Exit:
+• P&L Result:
+• Lesson Learned:`,
     category: 'Trading'
   },
   {
     id: 'template2',
     title: 'Market Analysis',
-    content: `MARKET ANALYSIS
-Current Trend:
-Key Levels:
-• Support:
-• Resistance:
-• Pivot Point:
+    content: `MARKET ANALYSIS NOTES
+Asset/Market:
+Timeframe:
+Date:
 
-Technical Indicators:
-• RSI(14):
-• MACD:
-• Moving Averages:
-• Volume:
+Technical Analysis:
+• Trend Direction:
+• Key Support Levels:
+• Key Resistance Levels:
+• Indicators Used:
+• Chart Patterns:
+
+Fundamental Analysis:
+• Economic Data:
+• News Events:
+• Market Sentiment:
+• External Factors:
 
 Price Action:
-• Recent High/Low:
 • Current Price:
+• Recent High/Low:
+• Volume Analysis:
 
-Market Sentiment:
-Conclusion:`,
+Conclusion & Outlook:
+• Market Bias:
+• Entry Opportunities:
+• Risk Factors:
+• Next Review Date:
+
+Action Items:
+• Watch List:
+• Alerts to Set:
+• Research Needed:`,
     category: 'Analysis'
   },
   {
@@ -126,75 +149,161 @@ Notes:`,
   },
   {
     id: 'template4',
-    title: 'Performance Review',
-    content: `TRADING PERFORMANCE REVIEW
-Period:
-Total Trading Days:
+    title: 'Trading Strategy',
+    content: `TRADING STRATEGY FRAMEWORK
+Strategy Name:
+Timeframe:
+Markets:
 
-Financial Results:
-• Starting Balance:
-• Ending Balance:
-• Net P&L:
-• Best/Worst Day:
+Strategy Overview:
+• Core Concept:
+• Entry Rules:
+• Exit Rules:
+• Risk Management:
 
-Trade Statistics:
-• Total Trades:
-• Winning Trades:
-• Losing Trades:
+Technical Setup:
+• Indicators:
+• Chart Patterns:
+• Timeframes:
+• Confirmation Signals:
+
+Entry Criteria:
+• Primary Signal:
+• Secondary Confirmation:
+• Volume Requirements:
+• Market Conditions:
+
+Exit Strategy:
+• Profit Targets:
+• Stop Loss Placement:
+• Trailing Stop Rules:
+• Time-based Exits:
+
+Risk Parameters:
+• Max Risk per Trade:
+• Max Daily Loss:
+• Win Rate Target:
+• Reward/Risk Ratio:
+
+Backtest Results:
+• Sample Size:
+• Win Rate:
 • Average Win/Loss:
-• Profit Factor:
-• Expectancy:
-
-Risk Metrics:
 • Max Drawdown:
-• Sharpe Ratio:
-• Win/Loss Ratio:
 
-Top Performing:
-• Best Trade:
-• Most Traded:
-• Highest Win Rate:
-
-Lessons Learned:
-• What worked well:
-• What needs improvement:
-• Strategy adjustments:
-• Goals for next period:`,
-    category: 'Analysis'
+Strategy Notes:
+• Strengths:
+• Weaknesses:
+• Adjustments Needed:`,
+    category: 'Strategy'
   },
   {
     id: 'template5',
-    title: 'Market News Tracker',
-    content: `MARKET NEWS ANALYSIS
-Date/Time:
+    title: 'Trading Psychology',
+    content: `TRADING PSYCHOLOGY JOURNAL
+Date:
+Trading Session:
 
-News Event:
-• Headline:
-• Source:
-• Expected Impact:
+Emotional State Before Trading:
+• Energy Level:
+• Confidence Level:
+• Stress Factors:
+• Mental Preparation:
 
-Market Impact:
-• Affected Assets:
-• Expected Volatility:
-• Direction Bias:
-• Timeframe:
+During Trading:
+• Emotions Experienced:
+• Decision Making Process:
+• Discipline Level:
+• Patience Level:
 
-Price Reaction:
-• Pre-News Price:
-• Post-News Target:
-• Stop Loss:
+Post-Trading Review:
+• Wins/Losses:
+• What went well:
+• What went wrong:
+• Lessons Learned:
 
-Trading Plan:
-• Entry Strategy:
-• Position Size:
-• Risk Management:
-• Exit Strategy:
+Psychological Patterns:
+• Greed/Fear Triggers:
+• Overconfidence Moments:
+• Doubt/Uncertainty:
+• Impatience Signs:
 
-Follow-up Notes:
-• Actual Impact:
-• Price Movement:
-• Lesson Learned:`,
-    category: 'Trading'
+Improvement Plan:
+• Mental Training:
+• Routine Adjustments:
+• Support Systems:
+• Goals for Next Session:
+
+Reflection:
+• Overall Mindset:
+• Areas for Growth:
+• Positive Affirmations:`,
+    category: 'Psychology'
+  },
+  {
+    id: 'template6',
+    title: 'Educational Notes',
+    content: `FINANCIAL EDUCATION NOTES
+Topic:
+Source:
+Date:
+
+Key Concepts:
+• Definition:
+• Importance:
+• Applications:
+
+Detailed Notes:
+• Main Points:
+• Examples:
+• Case Studies:
+
+Practical Applications:
+• In Trading:
+• In Investing:
+• In Risk Management:
+
+Key Takeaways:
+• Most Important Lesson:
+• Action Items:
+• Further Reading:
+
+Personal Insights:
+• How this applies to me:
+• Questions raised:
+• Areas for deeper study:
+
+Review Schedule:
+• Short-term Review:
+• Long-term Review:
+• Application Timeline:`,
+    category: 'Education'
+  },
+  {
+    id: 'template7',
+    title: 'General Notes',
+    content: `GENERAL NOTES
+Topic:
+Date:
+
+Key Points:
+•
+
+Details:
+•
+
+Action Items:
+•
+
+Questions/Thoughts:
+•
+
+References:
+•
+
+Follow-up:
+•`,
+    category: 'General'
   }
 ];
 
@@ -248,7 +357,24 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
       setNotes(JSON.parse(savedNotes));
     }
     if (savedTemplates) {
-      setTemplates(JSON.parse(savedTemplates));
+      const parsedTemplates = JSON.parse(savedTemplates);
+      // Merge saved templates with default templates, prioritizing saved custom templates
+      const mergedTemplates = [...defaultTemplates];
+      parsedTemplates.forEach((savedTemplate: NoteTemplate) => {
+        const existingIndex = mergedTemplates.findIndex(t => t.id === savedTemplate.id);
+        if (existingIndex >= 0) {
+          // Update existing default template
+          mergedTemplates[existingIndex] = savedTemplate;
+        } else {
+          // Add new custom template
+          mergedTemplates.push(savedTemplate);
+        }
+      });
+      setTemplates(mergedTemplates);
+    } else {
+      // No saved templates, use defaults and save them
+      setTemplates(defaultTemplates);
+      localStorage.setItem(NOTE_TEMPLATES_KEY, JSON.stringify(defaultTemplates));
     }
   }, []);
 
@@ -523,10 +649,10 @@ const Notes: React.FC<{ showTemplates: boolean; onHideTemplates?: () => void }> 
       {/* Floating Add Note Button */}
       <button
         onClick={() => addNote()}
-        className="fixed bottom-16 right-6 bg-primary text-white w-14 h-14 rounded-full shadow-lg hover:bg-primary/90 transition-all hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 flex items-center justify-center"
+        className="fixed bottom-16 right-6 w-14 h-14 rounded-full backdrop-blur-md bg-[#05d53d]/20 border border-[#05d53d]/30 shadow-2xl hover:bg-[#05d53d]/30 hover:border-[#05d53d]/50 hover:shadow-3xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-[#05d53d]/60 focus:ring-offset-2 focus:ring-offset-transparent flex items-center justify-center group"
         title={t('common.addNewNote')}
       >
-        <PlusCircle size={32} />
+        <PlusCircle size={28} className="text-[#05d53d] group-hover:text-white transition-colors duration-300 drop-shadow-sm" />
         <span className="sr-only">{t('common.addNewNote')}</span>
       </button>
     </div>
