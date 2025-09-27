@@ -17,10 +17,16 @@ const RULES_STORAGE_KEY = 'trading-rules';
 
 function getInitialRules() {
   return [
-    { id: 1, text: 'Check trend direction', done: false },
-    { id: 2, text: 'Set stop-loss and target', done: false },
-    { id: 3, text: 'Position size calculated', done: false },
-    { id: 4, text: 'No news event imminent', done: false }
+    { id: 1, text: 'Risk no more than 1-2% of account per trade', done: false },
+    { id: 2, text: 'Stop-loss set at technical support/resistance level', done: false },
+    { id: 3, text: 'Risk-to-reward ratio of at least 1:2', done: false },
+    { id: 4, text: 'Position size calculated with risk management', done: false },
+    { id: 5, text: 'Trend direction confirmed on multiple timeframes', done: false },
+    { id: 6, text: 'Volume supports the trade direction', done: false },
+    { id: 7, text: 'No major news events or catalysts imminent', done: false },
+    { id: 8, text: 'Trading with discipline (not emotional)', done: false },
+    { id: 9, text: 'Take-profit target clearly defined', done: false },
+    { id: 10, text: 'Entry signal confirmed by technical analysis', done: false }
   ];
 }
 
