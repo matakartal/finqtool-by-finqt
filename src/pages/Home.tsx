@@ -25,7 +25,7 @@ const HomePage = () => {
     const { t, i18n } = useTranslation();
     const { addNotification } = useNotificationStore();
 
-    const [selectedTab, setSelectedTab] = useState<string>("calculator");
+    const [selectedTab, setSelectedTab] = useState<string>("markets");
     const [currentTime, setCurrentTime] = useState<string>('');
     const [autoRefresh, setAutoRefresh] = useState(true);
     const [showTemplates, setShowTemplates] = useState(false);
@@ -64,6 +64,8 @@ const HomePage = () => {
 
     const handleTabChange = useCallback((value: string) => {
         setSelectedTab(value);
+        // Scroll to top when changing tabs
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, []);
 
     const handleThemeToggle = useCallback(() => {
