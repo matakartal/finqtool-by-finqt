@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { useTranslation } from 'react-i18next';
 
 interface InfoPopupProps {
@@ -54,6 +55,14 @@ const InfoPopup: React.FC<InfoPopupProps> = ({ open, onClose, title, children, i
         </DialogHeader>
         <div className="px-1">
           {infoKey ? renderStructuredInfo(infoKey) : children}
+        </div>
+        <div className="flex justify-end pt-4 px-1">
+          <Button
+            onClick={onClose}
+            className="bg-black hover:bg-gray-800 text-white dark:bg-white dark:hover:bg-gray-200 dark:text-black px-4 py-2"
+          >
+            Understand
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
