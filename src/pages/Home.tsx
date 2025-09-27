@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, memo } from 'react';
+import React, { useState, useEffect, useCallback, memo, useRef } from 'react';
 import FinancialCalculator from '@/components/FinancialCalculator';
 import BasicCalculator from '@/components/BasicCalculator';
 import MarketsTable from '@/components/MarketsTable';
@@ -32,6 +32,7 @@ const HomePage = () => {
     const isMobile = useIsMobile();
     const { theme, toggleTheme } = useTheme();
     const [selectedInfoTab, setSelectedInfoTab] = useState<string | null>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const loadAutoRefresh = async () => {
@@ -41,6 +42,14 @@ const HomePage = () => {
             }
         };
         loadAutoRefresh();
+    }, []);
+
+    // Scroll to top when component mounts (initial load)
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        if (scrollContainerRef.current) {
+            scrollContainerRef.current.scrollTo({ top: 0, behavior: 'instant' });
+        }
     }, []);
 
     useEffect(() => {
@@ -64,8 +73,14 @@ const HomePage = () => {
 
     const handleTabChange = useCallback((value: string) => {
         setSelectedTab(value);
-        // Scroll to top when changing tabs
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Scroll to top when changing tabs - both window and container
+        // Use setTimeout to ensure tab content is rendered first
+        setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+            if (scrollContainerRef.current) {
+                scrollContainerRef.current.scrollTo({ top: 0, behavior: 'instant' });
+            }
+        }, 0);
     }, []);
 
     const handleThemeToggle = useCallback(() => {
@@ -122,7 +137,7 @@ const HomePage = () => {
                     </Tabs>
                 </div>
 
-                <div className="flex-1 h-full overflow-y-auto p-1.5 sm:p-2 relative">
+                <div ref={scrollContainerRef} className="flex-1 h-full overflow-y-auto p-1.5 sm:p-2 relative">
                     <Tabs value={selectedTab} className="h-full">
                         {TABS.map((tab) => (
                             <TabsContent key={tab.id} value={tab.id} className="mt-0">
