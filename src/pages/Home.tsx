@@ -172,7 +172,7 @@ const HomePage = () => {
                                     )}
 
                                     {tab.id === "notes" && (
-                                        <Notes showTemplates={showTemplates} />
+                                        <Notes showTemplates={showTemplates} onHideTemplates={() => setShowTemplates(false)} />
                                     )}
 
                                     {tab.id === "rules" && (
